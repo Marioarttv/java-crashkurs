@@ -18,6 +18,7 @@
   --k-tuerkis: #0E9F8E;
   --k-marker: #FFE066;
   --k-marker-ink: #16213D;
+  --k-page: var(--background, #FFFFFF);
   --k-radius: var(--radius, 10px);
   --k-sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
   --k-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -27,7 +28,7 @@
   html.standalone {
     --k-ink: #E8ECF5; --k-muted: #9AA6C0; --k-surface: #1B2438; --k-code: #1B2438;
     --k-line: #2E3A55; --k-accent: #8FA8FF; --k-accent-ink: #0F1626;
-    --k-go: #4CC38A; --k-stop: #F0786F;
+    --k-go: #4CC38A; --k-stop: #F0786F; --k-page: #0F1626;
   }
   html.standalone body { background: #0F1626; }
 }
@@ -220,10 +221,12 @@ html.standalone body { margin: 0; padding: 24px 16px 80px; background: #FFFFFF; 
 .urteil.wahr { background: var(--k-go); }
 .urteil.falsch { background: var(--k-stop); }
 .knoepfe { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.lauf > .knoepfe { position: sticky; top: 0; z-index: 3; background: var(--k-page); margin: -8px -16px 12px; padding: 8px 16px; border-bottom: 1px solid var(--k-line); }
 .knopf { border: 1px solid var(--k-line); background: transparent; color: inherit; border-radius: 8px; padding: 8px 14px; }
 .knopf.haupt { background: var(--k-accent); color: var(--k-accent-ink); border-color: var(--k-accent); font-weight: 700; }
 .knopf:disabled { opacity: 0.4; cursor: default; }
 .knoepfe .stand { margin-left: auto; color: var(--k-muted); font-size: 15px; }
+@media (max-width: 480px) { .knoepfe { gap: 6px; } .knoepfe .knopf { padding: 6px 10px; font-size: 16px; } .knoepfe .stand { font-size: 14px; } }
 
 /* Tabellen im Text */
 .zeichen { border-collapse: collapse; margin: 0 0 16px; }

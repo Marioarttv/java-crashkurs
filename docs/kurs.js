@@ -302,7 +302,8 @@ var Kurs = (function () {
     [weiter, zurueck, neu, stand].forEach(function (k) { knoepfe.appendChild(k); });
     box.innerHTML = '';
     if (ein) box.appendChild(eingabe);
-    [reiter, dateiBox, unten, sagt, knoepfe].forEach(function (k) { box.appendChild(k); });
+    // Knöpfe über dem Code: beim Scrollen bleiben sie oben stehen (position: sticky), Code und Erklärung darunter.
+    [knoepfe, reiter, dateiBox, unten, sagt].forEach(function (k) { box.appendChild(k); });
 
     function dateiIndex(d, s) {
       if (d == null) return 0;
