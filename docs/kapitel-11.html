@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 11: Exceptions – Java-Crashkurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kurs.css">
+<style>
+/* Nur in diesem Kapitel: eine Meldung so zeigen, wie sie im Terminal steht, und Teile ohne Rollenfarbe im Schaubild (gestrichelt). */
+.k11-meldung { font-family: var(--k-mono); font-size: 14px; line-height: 1.55; background: #16213D; color: #FF8A80; border-radius: var(--k-radius); padding: 12px 14px; margin: 10px 0 16px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.k11-meldung .k11-wo { color: #FFE9A8; }
+.aufbau .teil.k11-neutral .stueck { border-bottom-style: dashed; border-bottom-color: var(--k-muted); }
+.aufbau .teil.k11-neutral .heisst b { text-decoration: underline dashed var(--k-muted); text-underline-offset: 4px; }
+.k11-tabelle { width: 100%; border-collapse: collapse; margin: 8px 0 18px; font-size: 16px; }
+.k11-tabelle th, .k11-tabelle td { text-align: left; vertical-align: top; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--k-line); }
+.k11-tabelle th { font-size: 14px; color: var(--k-muted); }
+.k11-tabelle code { overflow-wrap: anywhere; }
+.k11-rahmen { overflow-x: auto; }
+.k11-art { border: 1px solid var(--k-line); border-radius: var(--k-radius); padding: 4px 16px 6px; margin: 0 0 14px; }
+.k11-art h3 { font-family: var(--k-mono); font-size: 17px; overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<main class="kurs">
+
+  <p class="vorwissen">Das solltest du schon kennen: Methoden mit Parametern und <code>return</code> (Kapitel 3), Objekte und <code>new</code> (Kapitel 4), <code>static</code> (Kapitel 6), <code>if</code> (Kapitel 7) und Arrays (Kapitel 10).</p>
+
+  <p>Am Ausgang eines Parkhauses steht ein Kassenautomat. Du steckst dein Ticket hinein. Er rechnet die Gebühr aus. Was macht er, wenn das Ticket zerknickt und nicht lesbar ist? Er rechnet nicht mit irgendeiner Zahl weiter. Er bricht den Vorgang ab und zeigt dir, warum: <em>Ticket ungültig.</em></p>
+  <p>Java macht es genauso. Manchmal kann Java eine Anweisung (einen Befehl an den Computer) nicht ausführen, obwohl der Code stimmt. Zum Beispiel soll Java das vierte Fach eines Arrays lesen, das nur drei Fächer hat. Dann bricht Java an dieser Stelle ab und zeigt eine Meldung mit dem Grund. Das heißt <strong>Exception</strong>: Java bricht ab und sagt, warum.</p>
+
+  <h2>Ein Absturz mitten im Programm</h2>
+  <p>Das Programm unten merkt sich in einem Array, wie viele Plätze auf jeder Ebene des Parkhauses frei sind. Ebene 0 hat 12 freie Plätze, Ebene 1 keinen, Ebene 2 hat 7. Dann gibt es die freien Plätze der Ebene <code>level</code> aus.</p>
+  <p>Klick dich zuerst mit Ebene 0 durch. Stell danach Ebene 3 ein. Die gibt es nicht. Schau, welche Zeilen dann noch laufen.</p>
+
+  <div id="lauf1"></div>
+
+  <p>Bei Ebene 3 hat das Programm „Start“ noch ausgegeben. In Zeile 6 hat Java abgebrochen. Zeile 7 lief nie, deshalb fehlt „Ende“. Das Programm stürzt also nicht am Anfang ab. Es bricht genau an der Stelle ab, an der eine Anweisung nicht geht. Alles davor ist schon gelaufen.</p>
+
+  <h2>Die Meldung lesen</h2>
+  <p>Die rote Meldung sieht am Anfang wild aus. Sie hat aber immer denselben Aufbau. Hier ist noch einmal die Meldung aus dem Beispiel:</p>
+  <pre class="k11-meldung">Exception in thread "main" java.lang.<b>ArrayIndexOutOfBoundsException</b>: Index 3 out of bounds for length 3
+<span class="k11-wo">	at Main.main(Main.java:6)</span></pre>
+  <p>Du brauchst drei Stücke daraus:</p>
+
+  <div class="aufbau">
+    <div class="teil" data-farbe="typ"><span class="stueck">ArrayIndexOutOfBoundsException</span><span class="heisst"><b>Die Art</b>Der Name der Exception. Er sagt, was für ein Problem es ist. Das Wort davor, <code>java.lang.</code>, ist das Paket (der Ordner), in dem Java sie aufbewahrt. Das darfst du überlesen.</span></div>
+    <div class="teil k11-neutral"><span class="stueck">Index 3 out of bounds for length 3</span><span class="heisst"><b>Der Text</b>Steht hinter dem Doppelpunkt. Er sagt genauer, was los war.</span></div>
+    <div class="teil k11-neutral"><span class="stueck">at Main.main(Main.java:6)</span><span class="heisst"><b>Wo es passiert ist</b>In der Klammer stehen die Datei und die Zeile. Vor der Klammer steht die Methode: <code>Main.main</code> heißt „in der Methode <code>main</code> der Klasse <code>Main</code>“.</span></div>
+  </div>
+
+  <p class="vorlesen">Eine <span class="t-typ">ArrayIndexOutOfBoundsException</span> ist passiert: Das Fach 3 gibt es nicht, das Array hat nur 3 Fächer (0, 1 und 2). Passiert ist es in der Datei <code>Main.java</code>, Zeile 6.</p>
+  <p>Die Wörter <code>Exception in thread "main"</code> am Anfang heißen nur „im Hauptprogramm ist eine Exception passiert“. Die stehen immer da.</p>
+  <p>Nur die Art hat hier einen Rahmen, denselben grauen Rahmen wie ein Typ (zum Beispiel <code>int</code>). Das hat einen Grund: Beim <code>catch</code> weiter unten schreibst du die Art genau an die Stelle, an der sonst ein Typ steht.</p>
+  <p>Der englische Text lässt sich Wort für Wort übersetzen: <em>Index 3</em> ist die Nummer des Fachs, <em>out of bounds</em> heißt „außerhalb der Grenzen“, <em>for length 3</em> heißt „bei Länge 3“.</p>
+
+  <h2>Die drei häufigsten Exceptions</h2>
+  <p>Diese drei Arten wirst du am häufigsten sehen. Die Meldungen darunter sind echte Meldungen von Java. Die Zeile mit <code>at</code> steht hier nicht dabei.</p>
+  <div class="k11-art">
+    <h3>NullPointerException</h3>
+    <div class="code" data-code='ParkingGarage garage = null;
+System.out.println(garage.getFreeSpots());'></div>
+    <pre class="k11-meldung">Exception in thread "main" java.lang.NullPointerException: Cannot invoke "ParkingGarage.getFreeSpots()" because "garage" is null</pre>
+    <p>Die Variable <code>garage</code> zeigt auf kein Objekt. Sie ist <code>null</code>. Rufst du <code>garage.getFreeSpots()</code> auf, fragst du also niemanden. Meist fehlt ein <code>new</code> (Kapitel 4). Der Text heißt übersetzt: „Kann <code>getFreeSpots()</code> nicht aufrufen, weil <code>garage</code> null ist.“</p>
+  </div>
+  <div class="k11-art">
+    <h3>ArrayIndexOutOfBoundsException</h3>
+    <div class="code" data-code='int[] freeSpots = {12, 0, 7};
+System.out.println(freeSpots[3]);'></div>
+    <pre class="k11-meldung">Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3</pre>
+    <p>Das Fach gibt es nicht. Die Fächer sind ab 0 nummeriert. Das letzte Fach hat die Nummer <code>length - 1</code> (Kapitel 10). Oft steckt ein <code>&lt;=</code> statt <code>&lt;</code> in einer <code>for</code>-Schleife dahinter.</p>
+  </div>
+  <div class="k11-art">
+    <h3>ArithmeticException</h3>
+    <div class="code" data-code='int cars = 0;
+System.out.println(120 / cars);'></div>
+    <pre class="k11-meldung">Exception in thread "main" java.lang.ArithmeticException: / by zero</pre>
+    <p>Das Programm teilt eine ganze Zahl durch 0. Das geht nicht. <em>by zero</em> heißt „durch null“.</p>
+  </div>
+
+  <h2>Abfangen mit try und catch</h2>
+  <p>Ein Absturz ärgert alle, die das Programm benutzen. Weißt du vorher, an welcher Stelle etwas schiefgehen kann, dann kannst du die Exception abfangen. Das Programm läuft dann weiter. Dafür gibt es zwei Blöcke (Code zwischen geschweiften Klammern):</p>
+
+  <div class="aufbau">
+    <div class="teil" data-farbe="violett"><span class="stueck">try</span><span class="heisst"><b>„versuche“</b>Steht vor dem Block mit dem riskanten Code.</span></div>
+    <div class="teil" data-farbe="blau"><span class="stueck">{ ... }</span><span class="heisst"><b>Der try-Block</b>Läuft wie gewohnt. Passiert darin eine Exception, bricht Java nur diesen Block ab.</span></div>
+    <div class="teil" data-farbe="violett"><span class="stueck">catch</span><span class="heisst"><b>„fang ab“</b>Kommt direkt nach dem try-Block.</span></div>
+    <div class="teil" data-farbe="typ"><span class="stueck">(ArrayIndexOutOfBoundsException e)</span><span class="heisst"><b>Die Art</b>Welche Exception dieser Block abfängt. In <code>e</code> steckt danach die Exception selbst.</span></div>
+    <div class="teil" data-farbe="blau"><span class="stueck">{ ... }</span><span class="heisst"><b>Der catch-Block</b>Läuft nur, wenn im try-Block genau diese Art von Exception passiert ist.</span></div>
+  </div>
+
+  <p class="vorlesen"><span class="t-violett">Versuche</span>, <span class="t-blau">die freien Plätze auszugeben</span>. <span class="t-violett">Wenn dabei</span> eine <span class="t-typ">ArrayIndexOutOfBoundsException</span> passiert, <span class="t-blau">gib stattdessen „Ebene 3 gibt es nicht“ aus</span>.</p>
+  <p>Probier es mit Ebene 2 und Ebene 3 aus. Achte bei Ebene 3 darauf, welche Zeile nach dem Abbruch gelb wird.</p>
+
+  <div id="lauf2"></div>
+
+  <p>Bei Ebene 2 läuft der try-Block komplett durch. Java überspringt den catch-Block. Bei Ebene 3 springt Java mitten aus dem try-Block in den catch-Block. Alle Zeilen danach im try-Block laufen nicht mehr. Danach läuft das Programm normal weiter. Deshalb steht am Ende „Ende“ in der Ausgabe.</p>
+
+  <h2>Selbst eine Exception werfen</h2>
+  <p>Bisher hat Java die Exception ausgelöst. Du kannst das auch selbst tun. Wozu? Stell dir eine Methode vor, die die Parkgebühr ausrechnet: 2 Euro pro Stunde. Ruft jemand sie mit 0 Stunden auf, liefert sie 0 Euro. Das sieht aus wie ein echtes Ergebnis, ist aber Unsinn. Besser: Die Methode lehnt den Wert ab und meldet klar, was falsch ist.</p>
+  <p>Dafür prüft die Methode gleich am Anfang den Parameter (den Wert, den sie beim Aufruf bekommt). Ist er ungültig, <em>wirft</em> sie eine Exception. „Werfen“ heißt: Die Methode bricht sofort ab, und die Exception geht an die Stelle zurück, die die Methode aufgerufen hat.</p>
+
+  <div class="aufbau">
+    <div class="teil" data-farbe="violett"><span class="stueck">throw new</span><span class="heisst"><b>„wirf eine neue“</b><code>new</code> baut wie in Kapitel 4 ein Objekt, hier die Exception. <code>throw</code> wirft sie.</span></div>
+    <div class="teil" data-farbe="typ"><span class="stueck">IllegalArgumentException</span><span class="heisst"><b>Die Art</b>Heißt „ungültiger Parameter“. Die passende Art, wenn ein Wert nicht erlaubt ist.</span></div>
+    <div class="teil" data-farbe="tuerkis"><span class="stueck">("Parkdauer muss …")</span><span class="heisst"><b>Der Text</b>Den schreibst du selbst. Er erscheint später in der Meldung.</span></div>
+  </div>
+
+  <p class="vorlesen"><span class="t-violett">Wirf eine neue</span> Exception der Art <span class="t-typ">IllegalArgumentException</span> mit dem Text <span class="t-tuerkis">„Parkdauer muss mindestens 1 Stunde sein“</span>.</p>
+  <p>Die Methode <code>fee</code> ist <code>static</code> (Kapitel 6). Sie braucht kein Parkhaus-Objekt, deshalb ruft <code>main</code> sie über den Klassennamen auf: <code>ParkingGarage.fee(hours)</code>.</p>
+  <p>Achte im Beispiel auf die Farben: Die Art und der Text, die du beim <code>throw</code> hinschreibst, stehen hinterher genau so in der Meldung. Probier 3 Stunden, 1 Stunde und 0 Stunden aus.</p>
+
+  <div id="lauf3"></div>
+
+  <p>Bei 0 Stunden hat die Meldung zwei Zeilen mit <code>at</code>. Diese Liste heißt <strong>Stacktrace</strong> (übersetzt: Spur der Aufrufe). Sie zeigt den Weg der Exception:</p>
+  <pre class="k11-meldung">Exception in thread "main" java.lang.IllegalArgumentException: Parkdauer muss mindestens 1 Stunde sein
+<span class="k11-wo">	at ParkingGarage.fee(ParkingGarage.java:4)</span>
+	at Main.main(Main.java:4)</pre>
+  <ul>
+    <li>Die <strong>oberste</strong> <code>at</code>-Zeile ist die Stelle, an der die Exception entstanden ist: <code>ParkingGarage.java</code>, Zeile 4, das <code>throw</code>.</li>
+    <li>Die Zeile darunter ist die Stelle, die diese Methode aufgerufen hat: <code>Main.java</code>, Zeile 4.</li>
+  </ul>
+  <p>Lies einen Stacktrace deshalb von oben nach unten. Im Übungsprojekt stehen vor den Klassennamen noch die Pakete, zum Beispiel <code>at de.phl.crashkurs.k11.ParkingGarage.fee(ParkingGarage.java:29)</code>. Wichtig sind trotzdem nur die Datei und die Zeile in der Klammer.</p>
+
+  <h2>Werfen und abfangen zusammen</h2>
+  <p>Jetzt kommen beide Teile zusammen. Die Methode <code>fee</code> wirft die Exception. <code>main</code> fängt sie mit <code>try</code> und <code>catch</code> ab und gibt den Text aus. Den Text holst du mit <code>e.getMessage()</code> aus der Exception. Dabei ist <code>e</code> ein Objekt, und seine Methode <code>getMessage()</code> gibt den Text zurück.</p>
+
+  <div id="lauf4"></div>
+
+  <p>So teilen sich die beiden Methoden die Arbeit: <code>fee</code> erkennt den ungültigen Wert und meldet ihn. <code>main</code> entscheidet, was dann passiert. Hier gibt es den Text aus und macht weiter.</p>
+
+  <h2>Exception oder rot unterstrichen?</h2>
+  <p>Beides ist rot, aber es sind zwei verschiedene Dinge:</p>
+  <div class="k11-rahmen">
+  <table class="k11-tabelle">
+    <tr><th></th><th>Rot unterstrichen in VS Code</th><th>Exception</th></tr>
+    <tr><td><strong>Wann?</strong></td><td>Schon beim Schreiben, bevor das Programm startet.</td><td>Erst beim Laufen, an einer bestimmten Zeile.</td></tr>
+    <tr><td><strong>Was heißt das?</strong></td><td>Java versteht den Code nicht, zum Beispiel weil ein Semikolon fehlt.</td><td>Java versteht den Code, aber mit diesen Werten geht etwas nicht.</td></tr>
+    <tr><td><strong>Was läuft?</strong></td><td>Nichts. Das Programm startet gar nicht. Bei der Bewertung läuft dann kein einziger Test im ganzen Projekt (Kapitel 12).</td><td>Alles bis zu der Zeile. Danach bricht das Programm ab, außer ein <code>catch</code> fängt die Exception ab.</td></tr>
+  </table>
+  </div>
+  <p>Kapitel 12 zeigt dir, wie du bei jeder Art von Rot vorgehst.</p>
+
+  <div class="merke">
+    <h3>Sechs Regeln zum Merken</h3>
+    <ol>
+      <li>Eine Exception heißt: Java bricht ab und sagt, warum. Alles vor der Zeile ist schon gelaufen, nichts danach.</li>
+      <li>In der Meldung stehen die Art (der Name der Exception), der Text und in der Klammer hinter <code>at</code> die Datei und die Zeile.</li>
+      <li>Im Stacktrace ist die oberste <code>at</code>-Zeile die Stelle, an der die Exception entstanden ist. Darunter steht, wer diese Methode aufgerufen hat.</li>
+      <li><code>throw new IllegalArgumentException("Text");</code> wirft selbst eine Exception. Die Prüfung dafür steht am Anfang der Methode. Nach dem <code>throw</code> läuft in der Methode nichts mehr.</li>
+      <li><code>try { … } catch (Art e) { … }</code> fängt eine Exception ab. Der catch-Block läuft nur, wenn die Art passt. Danach geht das Programm normal weiter.</li>
+      <li><code>e.getMessage()</code> gibt den Text der Exception zurück.</li>
+    </ol>
+  </div>
+
+  <h2>Fünf häufige Fehler verstehen und beheben</h2>
+  <p>Die ersten vier unterstreicht VS Code rot. Der letzte fällt erst beim Laufen auf.</p>
+  <div id="fehler"></div>
+
+  <h2>Kurz geprüft: Exceptions im Kopf durchgehen</h2>
+  <p>Geh den Code im Kopf Zeile für Zeile durch, genau wie in den Beispielen oben. Überlege bei jeder Zeile: Läuft sie, oder ist das Programm schon abgebrochen?</p>
+  <div id="fragen"></div>
+
+  <h2>Jetzt schreibst du selbst: zwei Aufgaben im Projekt</h2>
+  <p>Die Aufgaben liegen im Ordner <code>src/main/java/de/phl/crashkurs/k11</code>. In der Datei <code>ParkingGarage.java</code> findest du auch die fertige Methode <code>fee</code> aus den Beispielen. Schau sie dir an, bevor du anfängst.</p>
+  <ol class="schritte">
+    <li>Lies die Aufgabe und schreib dir auf: Welche Werte sind ungültig? Welcher Text gehört zu welchem Fall?</li>
+    <li>Schreib die Prüfungen an den Anfang der Methode, je ein <code>if</code> mit einem <code>throw</code>. Danach kommt der normale Teil.</li>
+    <li>Starte den Test. Die Tests prüfen auch den Text der Exception. Schreib ihn deshalb Buchstabe für Buchstabe so wie in der Aufgabe.</li>
+  </ol>
+  <p>Die Tests in diesen Aufgaben rufen deine Methode absichtlich mit ungültigen Werten auf. Wirft deine Methode dann keine Exception, meldet der Test zum Beispiel <span class="meldung">Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.</span> Das heißt: Der Test hat eine IllegalArgumentException erwartet, aber deine Methode hat keine geworfen.</p>
+  <div id="aufgaben"></div>
+
+</main>
+
+<script src="kurs.js"></script>
+<script>
+(function () {
+  var urteil = Kurs.urteil;
+
+  /* Main.java für Lauf 1 und 2: eine ganze Klasse, damit „Main.java:6“ in der Meldung echt ist. */
+  function ebenenCode(v, mitTry) {
+    var z = ['public class Main {', '    public static void main(String[] args) {', '        int[] freeSpots = {12, 0, 7};', '        int level = ' + v + ';', '        System.out.println("Start");'];
+    if (mitTry) z = z.concat(['        try {', '            System.out.println(freeSpots[level]);', '            System.out.println("Bitte einfahren");', '        } catch («typ:ArrayIndexOutOfBoundsException» e) {', '            System.out.println("Ebene " + level + " gibt es nicht");', '        }']);
+    else z.push('        System.out.println(freeSpots[level]);');
+    return z.concat(['        System.out.println("Ende");', '    }', '}']);
+  }
+  var FREI = [12, 0, 7];
+  function aiobe(v) { return 'Index ' + v + ' out of bounds for length 3'; }
+
+  /* ParkingGarage.java für Lauf 3 und 4 */
+  var GARAGE = ['public class ParkingGarage {', '    public static int fee(int hours) {', '        if (hours < 1) {',
+    '            «violett:throw new» «typ:IllegalArgumentException»(«tuerkis:"Parkdauer muss mindestens 1 Stunde sein"»);',
+    '        }', '        return hours * 2;', '    }', '}'];
+  var TEXT = 'Parkdauer muss mindestens 1 Stunde sein';
+
+  /* Gemeinsamer Teil von Lauf 3 und 4: Sprung in fee, Prüfung, throw oder return. Gibt true zurück, wenn geworfen wurde. */
+  function inFee(a, v, zeileMain) {
+    a.bereich('fee(…)', 'ParkingGarage.java').setze('hours', v)
+      .schritt(2, 'Java springt in die Methode <code>fee</code> in <code>ParkingGarage.java</code>. Der Parameter <code>hours</code> bekommt den Wert ' + v + '. Zeile ' + zeileMain + ' in <code>Main.java</code> wartet so lange.');
+    a.schritt(3, 'Zuerst prüft die Methode den Parameter: ' + urteil(v + ' < 1', v < 1) + '.');
+    if (v < 1) {
+      a.objekt('1', 'IllegalArgumentException', [['message', '"' + TEXT + '"']]);
+      return true;
+    }
+    a.schritt(6, 'Der Wert ist gültig. Java überspringt den Block mit dem <code>throw</code> und rechnet ' + v + ' * 2 = ' + (v * 2) + '. <code>return</code> gibt das Ergebnis zurück.', { skip: [4], gibt: v * 2 });
+    return false;
+  }
+
+  Kurs.start({
+    nr: 11,
+    legende: { violett: 'Schlüsselwort', typ: 'Art der Exception', tuerkis: 'Text der Exception', blau: 'Block' },
+
+    laeufe: {
+      lauf1: {
+        eingabe: { art: 'zahl', label: 'Ebene', start: 0, proben: [0, 2, 3], min: 0, max: 5 },
+        dateien: function (v) { return [{ name: 'Main.java', code: ebenenCode(v, false) }]; },
+        schritte: function (v) {
+          var a = Kurs.ablauf().datei('Main.java'), gibt = v <= 2;
+          a.setze('freeSpots', { array: FREI }).schritt(3, 'Ein Array mit drei Fächern. Sie sind ab 0 nummeriert: Fach 0, Fach 1 und Fach 2.');
+          a.setze('level', v).schritt(4, 'Die Variable <code>level</code> bekommt den Wert ' + v + '.');
+          a.aus('Start').schritt(5, 'Ausgabe „Start“.');
+          if (gibt) {
+            a.aus(String(FREI[v])).schritt(6, 'Java liest Fach ' + v + ' des Arrays. Darin steht ' + FREI[v] + '. Java gibt diesen Wert aus.');
+            a.aus('Ende').schritt(7, 'Ausgabe „Ende“. Das Programm endet normal.');
+          } else {
+            a.ausRot('Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: ' + aiobe(v) + '\n\tat Main.main(Main.java:6)')
+              .schritt(6, 'Java soll Fach ' + v + ' lesen. Das gibt es nicht, das letzte Fach hat die Nummer 2. Hier bricht Java ab und schreibt die rote Meldung. Zeile 7 läuft nie.', { abbruch: true });
+          }
+          return a.schritte;
+        }
+      },
+      lauf2: {
+        eingabe: { art: 'zahl', label: 'Ebene', start: 2, proben: [2, 3], min: 0, max: 5 },
+        dateien: function (v) { return [{ name: 'Main.java', code: ebenenCode(v, true) }]; },
+        schritte: function (v) {
+          var a = Kurs.ablauf().datei('Main.java'), gibt = v <= 2;
+          a.setze('freeSpots', { array: FREI }).schritt(3, 'Dasselbe Array mit den Fächern 0, 1 und 2.');
+          a.setze('level', v).schritt(4, 'Die Variable <code>level</code> bekommt den Wert ' + v + '.');
+          a.aus('Start').schritt(5, 'Ausgabe „Start“.');
+          a.schritt(6, 'Jetzt beginnt der try-Block. Java führt ihn normal aus. Es merkt sich: Passiert hier eine Exception, schau beim catch nach.');
+          if (gibt) {
+            a.aus(String(FREI[v])).schritt(7, 'Fach ' + v + ' gibt es. Java gibt ' + FREI[v] + ' aus. Keine Exception.');
+            a.aus('Bitte einfahren').schritt(8, 'Auch die zweite Zeile im try-Block läuft und gibt „Bitte einfahren“ aus.');
+            a.aus('Ende').schritt(12, 'Der try-Block ist ohne Exception zu Ende. Deshalb überspringt Java den catch-Block und gibt „Ende“ aus.', { skip: [10] });
+          } else {
+            a.objekt('1', 'ArrayIndexOutOfBoundsException', [['message', '"' + aiobe(v) + '"']])
+              .schritt(7, 'Fach ' + v + ' gibt es nicht. Java baut eine Exception (das Objekt ①) und bricht den try-Block hier ab. Zeile 8 läuft nicht mehr. Weil die Exception im try-Block passiert ist, stürzt das Programm aber nicht ab.', { abbruch: true });
+            a.setze('e', { ref: '1' }).schritt(9, 'Java prüft das catch: Fängt es diese Art ab? Ja, hier steht genau <code>ArrayIndexOutOfBoundsException</code>. Die Variable <code>e</code> zeigt jetzt auf die Exception.');
+            a.aus('Ebene ' + v + ' gibt es nicht').schritt(10, 'Der catch-Block läuft und gibt „Ebene ' + v + ' gibt es nicht“ aus. „Bitte einfahren“ fehlt in der Ausgabe, denn Java hat Zeile 8 übersprungen.', { skip: [8] });
+            a.loesche('e').aus('Ende').schritt(12, 'Der catch-Block ist fertig. Das Programm läuft normal weiter und gibt „Ende“ aus. Es erscheint keine rote Meldung.', { skip: [8] });
+          }
+          return a.schritte;
+        }
+      },
+      lauf3: {
+        eingabe: { art: 'zahl', label: 'Stunden', start: 3, proben: [3, 1, 0], min: -5, max: 24 },
+        nebeneinander: true,
+        dateien: function (v) {
+          return [
+            { name: 'Main.java', code: ['public class Main {', '    public static void main(String[] args) {', '        int hours = ' + v + ';', '        int price = ParkingGarage.fee(hours);', '        System.out.println("Gebühr: " + price + " Euro");', '        System.out.println("Ende");', '    }', '}'] },
+            { name: 'ParkingGarage.java', code: GARAGE }
+          ];
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf().datei('Main.java');
+          a.setze('hours', v).schritt(3, 'Die Variable <code>hours</code> bekommt den Wert ' + v + '.');
+          a.schritt(4, 'Java ruft die Methode <code>fee</code> der Klasse <code>ParkingGarage</code> auf und gibt ihr den Wert von <code>hours</code> mit.');
+          if (inFee(a, v, 4)) {
+            a.schritt(4, '<code>throw</code> wirft die Exception mit dem Text aus der Klammer. Die Methode bricht sofort ab, Zeile 6 läuft nie.', { abbruch: true });
+            a.verlasse().ausRot('Exception in thread "main" java.lang.IllegalArgumentException: ' + TEXT + '\n\tat ParkingGarage.fee(ParkingGarage.java:4)\n\tat Main.main(Main.java:4)').schritt(4, 'Die Exception geht zurück an die Stelle, die <code>fee</code> aufgerufen hat: <code>Main.java</code>, Zeile 4. Dort fängt sie niemand ab. Also bricht auch <code>main</code> hier ab, und erst jetzt erscheint die rote Meldung. Die Zeilen 5 und 6 laufen nie.', { abbruch: true });
+          } else {
+            a.verlasse().setze('price', v * 2).schritt(4, 'Zurück in <code>Main.java</code>, Zeile 4. Java speichert den Rückgabewert ' + (v * 2) + ' in <code>price</code>.');
+            a.aus('Gebühr: ' + (v * 2) + ' Euro').schritt(5, 'Ausgabe „Gebühr: ' + (v * 2) + ' Euro“.');
+            a.aus('Ende').schritt(6, 'Ausgabe „Ende“. Alles ist normal gelaufen.');
+          }
+          return a.schritte;
+        }
+      },
+      lauf4: {
+        eingabe: { art: 'zahl', label: 'Stunden', start: 3, proben: [3, 0], min: -5, max: 24 },
+        nebeneinander: true,
+        dateien: function (v) {
+          return [
+            { name: 'Main.java', code: ['public class Main {', '    public static void main(String[] args) {', '        int hours = ' + v + ';', '        try {', '            int price = ParkingGarage.fee(hours);', '            System.out.println("Gebühr: " + price + " Euro");', '        } catch («typ:IllegalArgumentException» e) {', '            System.out.println("Fehler: " + e.getMessage());', '        }', '        System.out.println("Ende");', '    }', '}'] },
+            { name: 'ParkingGarage.java', code: GARAGE }
+          ];
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf().datei('Main.java');
+          a.setze('hours', v).schritt(3, 'Die Variable <code>hours</code> bekommt den Wert ' + v + '.');
+          a.schritt(4, 'Der try-Block beginnt.');
+          a.schritt(5, 'Java ruft <code>fee</code> auf und gibt ihr den Wert ' + v + ' mit.');
+          if (inFee(a, v, 5)) {
+            a.schritt(4, '<code>throw</code> wirft die Exception mit dem Text aus der Klammer. Die Methode <code>fee</code> bricht sofort ab.', { abbruch: true });
+            a.verlasse().schritt(5, 'Die Exception kommt zurück in <code>Main.java</code>, Zeile 5. Diese Zeile steht im try-Block. Also bricht Java nur den try-Block ab. Zeile 6 läuft nie.', { abbruch: true });
+            a.setze('e', { ref: '1' }).schritt(7, 'Die Art passt: Das catch fängt eine <code>IllegalArgumentException</code> ab. Die Variable <code>e</code> zeigt jetzt auf die Exception ①.');
+            a.aus('Fehler: ' + TEXT).schritt(8, '<code>e.getMessage()</code> fragt die Exception nach ihrem Text. Er kommt aus dem <code>throw</code> in <code>ParkingGarage.java</code>. Ausgabe: „Fehler: ' + TEXT + '“.');
+            a.loesche('e').aus('Ende').schritt(10, 'Danach läuft das Programm normal weiter und gibt „Ende“ aus.');
+          } else {
+            a.verlasse().setze('price', v * 2).schritt(5, 'Zurück in Zeile 5. <code>price</code> bekommt den Rückgabewert ' + (v * 2) + '.');
+            a.aus('Gebühr: ' + (v * 2) + ' Euro').schritt(6, 'Ausgabe „Gebühr: ' + (v * 2) + ' Euro“. Der try-Block ist ohne Exception zu Ende.');
+            a.aus('Ende').schritt(10, 'Java überspringt den catch-Block und gibt „Ende“ aus.', { skip: [8] });
+          }
+          return a.schritte;
+        }
+      }
+    },
+
+    fehler: [
+      { titel: 'throw ohne new', code: ['throw IllegalArgumentException("Parkdauer muss mindestens 1 Stunde sein");'],
+        meldung: 'The method IllegalArgumentException(String) is undefined for the type ParkingGarage',
+        text: '<p>Ohne <code>new</code> hält Java <code>IllegalArgumentException(…)</code> für den Aufruf einer Methode. So eine Methode gibt es nicht. Die Exception ist aber ein Objekt, und Objekte baust du mit <code>new</code>. Richtig ist <code>throw new IllegalArgumentException("…");</code>.</p>' },
+      { titel: 'Variable im try-Block angelegt und danach benutzt',
+        code: ['try {', '    int price = ParkingGarage.fee(hours);', '} catch (IllegalArgumentException e) {', '    System.out.println("Fehler: " + e.getMessage());', '}', 'System.out.println("Gebühr: " + price + " Euro");'], rot: [6],
+        meldung: 'price cannot be resolved to a variable',
+        text: '<p>Eine Variable gibt es nur in dem Block, in dem du sie anlegst. <code>price</code> entsteht im try-Block und ist nach der geschweiften Klammer in Zeile 3 wieder weg. Schreib die Ausgabe deshalb mit in den try-Block, direkt unter Zeile 2. Dann läuft sie nur, wenn <code>fee</code> geklappt hat.</p>' },
+      { titel: 'Code nach throw', code: ['if (hours < 1) {', '    throw new IllegalArgumentException("Parkdauer muss mindestens 1 Stunde sein");', '    return 0;', '}'], rot: [3],
+        meldung: 'Unreachable code',
+        text: '<p>Das heißt „Code, den Java nie erreicht“. Nach <code>throw</code> ist die Methode sofort zu Ende. Ein <code>return</code> direkt dahinter kann nie laufen, und das lässt Java nicht zu. Lösch die Zeile.</p>' },
+      { titel: 'return nur im try-Block', code: ['public static int feeOrZero(int hours) {', '    try {', '        return ParkingGarage.fee(hours);', '    } catch (IllegalArgumentException e) {', '        System.out.println("Fehler: " + e.getMessage());', '    }', '}'], rot: [1],
+        meldung: 'This method must return a result of type int',
+        text: '<p>Die Methode verspricht in Zeile 1 ein <code>int</code> als Rückgabewert. Wirft <code>fee</code> aber eine Exception, läuft das <code>return</code> in Zeile 3 nie. Dann endet die Methode im catch-Block ohne <code>return</code>. Java merkt das schon beim Schreiben. Schreib auch in den catch-Block ein <code>return</code> mit einem passenden Wert, hier zum Beispiel <code>return 0;</code>.</p>' },
+      { titel: 'catch für die falsche Art', code: ['int[] freeSpots = {12, 0, 7};', 'try {', '    System.out.println(freeSpots[3]);', '} catch (ArithmeticException e) {', '    System.out.println("Diese Ebene gibt es nicht");', '}', 'System.out.println("Ende");'], rot: [3],
+        quelle: 'Programm', meldung: 'Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3',
+        text: '<p>Hier unterstreicht VS Code nichts. Trotzdem bricht das Programm ab, obwohl es ein <code>try</code> und ein <code>catch</code> gibt. Der Grund: Der catch-Block fängt nur <code>ArithmeticException</code> ab. Passiert ist aber eine <code>ArrayIndexOutOfBoundsException</code>. Die Art passt nicht, also läuft der catch-Block nicht. Schreib im catch genau die Art, die in der Meldung steht.</p>' }
+    ],
+
+    fragen: [
+      { art: 'reihenfolge', frage: 'Bring die Zeilen in die richtige Reihenfolge: Das Programm soll die Gebühr ausgeben. Wirft fee eine Exception, soll stattdessen ihr Text erscheinen.',
+        zeilen: ['try {', '    int price = ParkingGarage.fee(hours);', '    System.out.println("Gebühr: " + price + " Euro");', '} catch (IllegalArgumentException e) {', '    System.out.println("Fehler: " + e.getMessage());', '}'],
+        richtig: 'Richtig. Erst der try-Block mit dem riskanten Aufruf und allem, was nur bei Erfolg laufen soll. Direkt danach der catch-Block mit der Art und dem Namen e.',
+        falsch: 'Die rot markierten Zeilen stehen noch am falschen Platz. Zuerst kommt try mit dem Aufruf von fee und der Ausgabe der Gebühr. Danach folgt catch.' },
+      { art: 'wahl', frage: 'Was gibt dieses Programm aus?',
+        code: ['try {', '    System.out.println("1");', '    int x = 10 / 0;', '    System.out.println("2");', '} catch (ArithmeticException e) {', '    System.out.println("3");', '}', 'System.out.println("4");'],
+        optionen: [
+          { t: '1 2 3 4', warum: 'Zeile 4 läuft nicht. In Zeile 3 passiert die Exception. Java bricht den try-Block dort ab und springt sofort in den catch-Block.' },
+          { t: '1 3 4', ok: true, warum: 'Richtig. Zeile 2 läuft, in Zeile 3 passiert die ArithmeticException (geteilt durch 0). Java springt in den catch-Block, gibt 3 aus und macht danach mit Zeile 8 weiter.' },
+          { t: '1 2 4', warum: 'Der catch-Block läuft, denn die Art passt: 10 / 0 löst eine ArithmeticException aus. Und Zeile 4 läuft nicht mehr, weil Java den try-Block in Zeile 3 abbricht.' },
+          { t: '1', warum: 'Der catch-Block fängt die Exception ab. Deshalb stürzt das Programm nicht ab. Es gibt im catch-Block 3 aus und läuft danach mit Zeile 8 weiter.' }
+        ] },
+      { art: 'zeile', frage: 'Das Programm bricht mit dieser Meldung ab. Klick auf die Zeile, in der die Exception entstanden ist.',
+        text: '<pre class="k11-meldung">Exception in thread "main" java.lang.ArithmeticException: / by zero\n<span class="k11-wo">\tat Main.average(Main.java:4)</span>\n\tat Main.main(Main.java:9)</pre>',
+        code: ['public class Main {', '    public static int average(int sum, int count) {', '        System.out.println("Rechne ...");', '        return sum / count;', '    }', '', '    public static void main(String[] args) {', '        int cars = 0;', '        System.out.println(average(120, cars));', '    }', '}'],
+        ok: 4,
+        richtig: 'Richtig. Die oberste at-Zeile nennt Main.java, Zeile 4. Dort teilt Java durch count, und count ist 0.',
+        falsch: 'Schau in die oberste at-Zeile der Meldung. In der Klammer stehen die Datei und die Zeile.',
+        warum: { 9: 'Fast. Zeile 9 steht auch im Stacktrace, aber weiter unten. Sie ruft average auf. Entstanden ist die Exception in der obersten at-Zeile: Main.java, Zeile 4.', 8: 'Zeile 8 legt die 0 in cars ab. Das ist die Ursache, aber noch kein Fehler. Abgebrochen hat Java erst in Zeile 4, beim Teilen durch 0. Das sagt die oberste at-Zeile.' } },
+      { art: 'zuordnen', frage: 'Welche Exception bedeutet was? Ordne zu.',
+        paare: [['NullPointerException', 'Eine Variable zeigt auf kein Objekt (null).', 'Null heißt „kein Objekt“. Rufst du eine Methode an null auf, fragst du niemanden.'],
+                ['ArrayIndexOutOfBoundsException', 'Ein Fach im Array gibt es nicht.', 'Index heißt die Nummer eines Fachs, out of bounds heißt „außerhalb der Grenzen“.'],
+                ['ArithmeticException', 'Das Programm teilt eine ganze Zahl durch 0.', 'Arithmetic heißt Rechnen. Der Text dazu ist meist „/ by zero“.'],
+                ['IllegalArgumentException', 'Eine Methode lehnt einen ungültigen Wert ab.', 'Illegal argument heißt „ungültiger Parameter“. Diese Art wirfst du selbst mit throw.']],
+        richtig: 'Alles richtig zugeordnet.', falsch: 'Noch nicht ganz. Die Namen lassen sich übersetzen:' },
+      { art: 'luecke', frage: 'Bei weniger als 1 Auto soll die Methode abbrechen und eine Exception werfen. Welches Wort fehlt?',
+        code: ['if (cars < 1) {', '    ___ new IllegalArgumentException("Anzahl muss mindestens 1 sein");', '}'],
+        ok: ['throw'], proben: ['return', 'catch', 'throw'],
+        falschBei: { 'return': 'return gibt ein Ergebnis zurück. Die Methode endet dann normal. Eine Exception wirfst du mit throw.', 'catch': 'catch fängt eine Exception ab. Hier soll die Methode aber eine werfen. Das Wort dafür ist throw.', 'throws': 'Fast. Das Wort heißt throw, ohne s am Ende.' },
+        richtig: 'Stimmt. throw heißt „wirf“. Danach ist die Methode sofort zu Ende.',
+        falsch: 'Das passt noch nicht. Gesucht ist das englische Wort für „wirf“.' },
+      { art: 'wahl', frage: 'In VS Code ist nichts rot unterstrichen. Beim Start erscheint aber eine rote Meldung mit „Exception“. Was heißt das?',
+        optionen: [
+          { t: 'Java versteht den Code. Beim Laufen ist mit den Werten etwas nicht gegangen.', ok: true, warum: 'Richtig. Eine Exception passiert erst beim Laufen. Die Meldung sagt dir, welche Art, warum und in welcher Zeile.' },
+          { t: 'Im Code fehlt irgendwo ein Semikolon.', warum: 'Ein fehlendes Semikolon unterstreicht VS Code schon beim Schreiben rot, und das Programm startet dann gar nicht. Hier ist es aber gestartet. Das spricht für eine Exception.' },
+          { t: 'Das Programm hat gar nicht angefangen.', warum: 'Doch. Eine Exception passiert mitten im Laufen. Alles vor der Zeile aus der Meldung ist schon gelaufen.' }
+        ] }
+    ],
+
+    aufgaben: [
+      { titel: 'Aufgabe 1: Das Parkhaus lehnt ungültige Werte ab', datei: 'ParkingGarage.java, Methode enter', befehl: './gradlew test --tests "*k11.ParkingGarageTest"',
+        text: '<p>Das Parkhaus merkt sich im Attribut <code>freeSpots</code>, wie viele Plätze frei sind. Die Methode <code>enter</code> bekommt die Zahl der Autos (<code>cars</code>), die einfahren wollen. Sie soll so arbeiten:</p><table><tr><th>Fall</th><th>Was passiert</th></tr><tr><td><code>cars</code> kleiner als 1</td><td><code>IllegalArgumentException</code> mit dem Text <code>Anzahl muss mindestens 1 sein</code></td></tr><tr><td><code>cars</code> größer als <code>freeSpots</code></td><td><code>IllegalArgumentException</code> mit dem Text <code>Nicht genug freie Plätze</code></td></tr><tr><td>sonst</td><td><code>cars</code> von <code>freeSpots</code> abziehen</td></tr></table><p>Genau so viele Autos, wie Plätze frei sind, dürfen noch hinein. Wirft die Methode eine Exception, darf sich <code>freeSpots</code> nicht ändern.</p>',
+        tipps: ['Schreib zwei <code>if</code> ohne <code>else</code> untereinander, in jedem ein <code>throw new IllegalArgumentException("…");</code>. Weil <code>throw</code> die Methode beendet, brauchst du kein <code>else</code>. Die Zeile mit dem Abziehen kommt ganz ans Ende.', 'Die zweite Bedingung heißt <code>cars &gt; freeSpots</code>. Bei <code>&gt;=</code> würde Java auch dann abbrechen, wenn die Autos genau hineinpassen.'],
+        loesung: ['public void enter(int cars) {', '    if (cars < 1) {', '        throw new IllegalArgumentException("Anzahl muss mindestens 1 sein");', '    }', '    if (cars > freeSpots) {', '        throw new IllegalArgumentException("Nicht genug freie Plätze");', '    }', '    freeSpots = freeSpots - cars;', '}'],
+        erklaerung: '<p>Die Prüfungen stehen vor dem Abziehen. So ändert sich <code>freeSpots</code> nur, wenn beide Prüfungen klappen.</p>' },
+      { titel: 'Aufgabe 2: Der Kassenautomat stürzt nicht ab', datei: 'PayStation.java, Methode priceText', befehl: './gradlew test --tests "*k11.PayStationTest"',
+        text: '<p>Die Methode <code>priceText</code> gibt den Text für die Anzeige am Kassenautomaten zurück. Sie ruft die fertige Methode <code>ParkingGarage.fee(hours)</code> auf, dieselbe wie in den Beispielen oben.</p><table><tr><th>Fall</th><th>Rückgabewert</th></tr><tr><td><code>fee</code> klappt, zum Beispiel bei 3 Stunden</td><td><code>Gebühr: 6 Euro</code></td></tr><tr><td><code>fee</code> wirft eine <code>IllegalArgumentException</code></td><td><code>Fehler: </code> und der Text der Exception, also <code>Fehler: Parkdauer muss mindestens 1 Stunde sein</code></td></tr></table><p>Die Methode darf nie mit einer Exception abbrechen. Die Zeile <code>return "";</code> im Ausgangszustand ersetzt du durch deinen Code.</p>',
+        tipps: ['Bau es wie im Beispiel „Werfen und abfangen zusammen“. Statt etwas auszugeben, gibst du den Text mit <code>return</code> zurück: einmal im try-Block, einmal im catch-Block.', 'Im try-Block: <code>int fee = ParkingGarage.fee(hours);</code> und danach <code>return "Gebühr: " + fee + " Euro";</code>. Im catch-Block holst du den Text mit <code>e.getMessage()</code>.'],
+        loesung: ['public static String priceText(int hours) {', '    try {', '        int fee = ParkingGarage.fee(hours);', '        return "Gebühr: " + fee + " Euro";', '    } catch (IllegalArgumentException e) {', '        return "Fehler: " + e.getMessage();', '    }', '}'],
+        erklaerung: '<p>Wirft <code>fee</code> eine Exception, läuft Zeile 4 nie. Java springt in den catch-Block, und die Methode gibt dort den Fehlertext zurück. Weil in beiden Blöcken ein <code>return</code> steht, kommt die Methode in jedem Fall mit einem Ergebnis zurück.</p>' }
+    ]
+  });
+})();
+</script>
+</body>
+</html>

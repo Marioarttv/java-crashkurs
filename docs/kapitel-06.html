@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 6: static: einmal für alle – Java-Crashkurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kurs.css">
+</head>
+<body>
+<main class="kurs">
+
+  <p class="vorwissen">Das solltest du schon kennen: Klasse, Objekt, Attribut und Konstruktor aus Kapitel 4, <code>objekt.methode()</code> aus Kapitel 5 und <code>x++</code> (um 1 erhöhen) aus Kapitel 2.</p>
+
+  <p>Im Bürgeramt ziehst du am Eingang eine Wartemarke. Der Automat druckt auf jede Marke eine eigene Nummer. Und er weiß jederzeit, wie viele Marken er heute schon gedruckt hat. Die Nummer gehört zu deiner Marke. Der Zähler gehört zum Automaten, und es gibt ihn nur einmal.</p>
+  <p>In Java ist jede Marke ein Objekt der Klasse <code>WaitingTicket</code>. Damit stellt sich eine Frage, an der viele hängen bleiben:</p>
+  <p class="vorlesen">Wie zählst du mit, wie viele Objekte einer Klasse schon entstanden sind?</p>
+  <p>Denk kurz selbst nach, bevor du weiterliest. Ein Hinweis: Es gibt einen Programmteil, der bei jedem <code>new</code> genau einmal läuft.</p>
+
+  <h2>Der erste Versuch: ein normales Attribut</h2>
+  <p>Richtig, das ist der Konstruktor (Kapitel 4). Er läuft bei jedem <code>new</code> genau einmal. Also zählst du dort hoch. Der naheliegende Versuch: ein Attribut <code>count</code>, das im Konstruktor um 1 steigt.</p>
+  <div class="code" data-code='public class WaitingTicket {
+    private int «pink:count»;
+
+    public WaitingTicket() {
+        «pink:count»++;
+    }
+}'></div>
+  <p>Stell im Lauf ein, wie viele Marken du ziehst. Achte auf die Karten unter „Objekte“: Wo steht <code>count</code>, und welchen Wert hat es?</p>
+
+  <div id="lauf1"></div>
+
+  <p>Bei einer Marke stimmt die 1 zufällig. Stell 2 oder 3 Marken ein: Das Ergebnis bleibt 1. Der Grund steht auf den Karten: Jedes Objekt hat sein eigenes Attribut <code>count</code>. Jedes beginnt bei 0, und jeder Konstruktor erhöht nur das <code>count</code> seiner eigenen Karte. Genau das wolltest du in Kapitel 4: Jedes Buch hatte seinen eigenen Titel. Für einen Zähler ist es falsch. Es gibt hier keinen roten Fehler, nur ein falsches Ergebnis.</p>
+
+  <h2>static: gehört der Klasse, gibt es nur einmal</h2>
+  <p>Du brauchst einen Zähler, den es nur einmal gibt und den alle Objekte teilen, wie im Automaten. Dafür gibt es das Wort <code>static</code>:</p>
+  <div class="aufbau">
+    <div class="teil" data-farbe="violett"><span class="stueck">static</span><span class="heisst"><b>gehört der Klasse</b>Es gibt das Attribut nur einmal, nicht einmal pro Objekt. Alle Objekte teilen es.</span></div>
+    <div class="teil" data-farbe="typ"><span class="stueck">int</span><span class="heisst"><b>Der Typ</b>Wie bei jedem Attribut.</span></div>
+    <div class="teil" data-farbe="pink"><span class="stueck">count</span><span class="heisst"><b>Der Name</b>Wie bei jedem Attribut.</span></div>
+  </div>
+  <div class="code" data-code='private «violett:static» «typ:int» «pink:count»;'></div>
+  <p class="vorlesen">Leg ein Attribut <span class="t-pink"><code>count</code></span> vom <span class="t-typ">Typ int</span> an, das <span class="t-violett">der Klasse gehört</span> und das es nur einmal gibt.</p>
+  <p>Ein <code>static</code>-Attribut steht nicht auf den Karten der Objekte. Im Lauf siehst du es auf einer eigenen Karte mit der Aufschrift „gehört der Klasse“. Diese Karte gibt es schon, bevor das erste Objekt entsteht. Sonst ändert sich am Code nur ein Wort.</p>
+
+  <div id="lauf2"></div>
+
+  <p>Jetzt steht nach drei Marken 3 auf der Karte der Klasse. Selbst <code>t1</code>, die erste Marke, meldet den neuen Stand. Sie hat keinen eigenen Zähler mehr, sondern liest den gemeinsamen.</p>
+  <p>Das ist die Antwort auf die Frage vom Anfang: <strong>Ein <code>static</code>-Attribut, das der Konstruktor hochzählt.</strong> Weil der Konstruktor bei jedem <code>new</code> genau einmal läuft, zählt er jedes Objekt genau einmal.</p>
+
+  <h2>static-Methoden brauchen kein Objekt</h2>
+  <p>Im Lauf oben hat <code>main</code> die Marke <code>t1</code> nach dem Zähler gefragt. Das passt nicht: Der Zähler gehört der Klasse, nicht einer einzelnen Marke. Und vor der ersten Marke gibt es noch gar kein Objekt, das du fragen könntest.</p>
+  <p>Deshalb machst du auch den Getter <code>static</code>. Eine <code>static</code>-Methode gehört der Klasse. Du rufst sie mit dem Klassennamen vor dem Punkt auf, ohne Objekt:</p>
+  <div class="code" data-code='public «violett:static» int getCount() {
+    return count;
+}'></div>
+  <div class="code" data-code='System.out.println(«pink:WaitingTicket».getCount());'></div>
+  <p>Vor dem Punkt steht hier der Klassenname, nicht eine Variable. In Kapitel 5 war genau das ein Fehler. Der Unterschied: Damals war die Methode nicht <code>static</code>. Der Lauf fragt den Zähler einmal vor der ersten Marke und einmal danach.</p>
+
+  <div id="lauf3"></div>
+
+  <p>Schau auf den Bereich von <code>getCount()</code>: Dort steht kein <code>this</code>. Eine <code>static</code>-Methode läuft für kein bestimmtes Objekt. Daraus folgt eine wichtige Regel: <strong>Eine <code>static</code>-Methode kommt nicht direkt an normale Attribute.</strong> Sie wüsste nicht, zu welchem Objekt das Attribut gehört. Direkt, ohne Objekt vor dem Punkt, liest sie nur <code>static</code>-Attribute. Über eine Variable, die auf ein Objekt zeigt, geht es: Auch <code>main</code> ist <code>static</code> und kann trotzdem <code>t1.getNumber()</code> aufrufen, denn vor dem Punkt steht das Objekt.</p>
+
+  <h2>Jetzt ergibt static überall einen Sinn</h2>
+  <p>Seit Kapitel 1 steht <code>static</code> vor <code>main</code>, und an mehreren Stellen hieß es: „Kapitel 6 erklärt es.“ Hier sind die Antworten:</p>
+  <ul>
+    <li><strong>Warum <code>main</code> <code>static</code> ist:</strong> Beim Start eines Programms gibt es noch kein einziges Objekt. Java muss <code>main</code> aufrufen können, ohne vorher etwas zu bauen. Das geht nur, weil <code>main</code> der Klasse gehört.</li>
+    <li><strong>Warum die Methoden in Kapitel 3 <code>static</code> hatten:</strong> Sie haben nur mit ihren Parametern gerechnet, nicht mit Attributen eines Objekts. Deshalb brauchten sie kein Objekt, und <code>main</code> konnte sie direkt aufrufen.</li>
+    <li><strong>Warum Getter in Kapitel 4 kein <code>static</code> hatten:</strong> <code>getTitle()</code> gibt den Titel eines bestimmten Buchs zurück. Dafür braucht die Methode das Objekt, also <code>this</code>.</li>
+    <li><strong>Die Meldung aus Kapitel 5:</strong> <code>Bike.getBattery()</code> ergab „Cannot make a static reference to the non-static method“. Übersetzt: Du rufst über den Klassennamen auf (wie bei <code>static</code>), aber die Methode ist nicht <code>static</code>. Sie braucht ein Objekt.</li>
+  </ul>
+  <p>Als Faustregel: Arbeitet etwas mit den Werten eines einzelnen Objekts, kein <code>static</code>. Gehört etwas allen Objekten gemeinsam oder braucht gar kein Objekt, <code>static</code>.</p>
+
+  <h2>Fortlaufende Nummern: Zähler und eigene Nummer zusammen</h2>
+  <p>Zurück zum Automaten im Bürgeramt: Jede Marke soll ihre eigene Nummer bekommen. Dafür brauchst du beides. Ein <code>static</code>-Attribut <code>count</code>, das alle teilen. Und ein normales Attribut <code>number</code>, das jede Marke für sich behält. Im Konstruktor zählst du zuerst hoch und kopierst dann den neuen Stand auf die Karte des Objekts.</p>
+
+  <div id="lauf4"></div>
+
+  <p>Am Ende steht auf der Karte der Klasse 3, auf den drei Objektkarten stehen 1, 2 und 3. <code>number = count;</code> kopiert den Wert in dem Moment, in dem die Marke entsteht. Spätere Marken ändern ihn nicht mehr.</p>
+
+  <div class="merke">
+    <h3>Sechs Regeln zum Merken</h3>
+    <ol>
+      <li>Ein normales Attribut gibt es einmal pro Objekt. Ein <code>static</code>-Attribut gibt es nur einmal. Es gehört der Klasse, und alle Objekte teilen es.</li>
+      <li>Objekte mitzählen: ein <code>static</code>-Attribut, das der Konstruktor hochzählt. Du schreibst <code>private static int count;</code> und im Konstruktor <code>count++;</code>.</li>
+      <li>Ohne <code>static</code> hat jedes Objekt seinen eigenen Zähler, und alle stehen auf 1. Es gibt keinen roten Fehler.</li>
+      <li>Eine <code>static</code>-Methode rufst du über den Klassennamen auf, ohne Objekt: <code>WaitingTicket.getCount()</code>.</li>
+      <li>Eine <code>static</code>-Methode kennt kein <code>this</code>. Direkt, ohne Objekt vor dem Punkt, kommt sie nur an <code>static</code>-Attribute.</li>
+      <li><code>main</code> ist <code>static</code>, weil beim Start noch kein Objekt existiert.</li>
+    </ol>
+  </div>
+
+  <h2>Vier häufige Fehler verstehen und beheben</h2>
+  <p>Fast alle Meldungen zu <code>static</code> beginnen mit „Cannot make a static reference“ oder enthalten „static context“. Gemeint ist immer: Eine Stelle ohne Objekt (<code>static</code>) will etwas benutzen, das ein Objekt braucht.</p>
+  <div id="fehler"></div>
+
+  <h2>Kurz geprüft: static</h2>
+  <p>Sechs kurze Aufgaben zum Mitdenken. Stell dir bei jeder vor, welche Karten es im Speicher gibt und auf welcher Karte der Zähler steht.</p>
+  <div id="fragen"></div>
+
+  <h2>Jetzt schreibst du selbst: zwei Aufgaben im Projekt</h2>
+  <p>Die Aufgaben liegen im Ordner <code>src/main/java/de/phl/crashkurs/k06</code>. Ein Hinweis zu den Tests: Ein <code>static</code>-Attribut bleibt stehen, solange das Programm läuft. Deshalb vergleichen die Tests immer den Stand vorher und nachher, statt feste Zahlen zu erwarten.</p>
+  <p>In Aufgabe 2 bekommt ein Attribut gleich einen Startwert: <code>private static int nextNumber = 1001;</code>. Das geht bei jedem Attribut. Ohne Startwert beginnt ein <code>int</code>-Attribut bei 0, wie in Kapitel 4.</p>
+  <div id="aufgaben"></div>
+
+</main>
+
+<script src="kurs.js"></script>
+<script>
+(function () {
+  var MARKE = ['', '①', '②', '③'];
+  function mainCode(n, ausgabe) {
+    var z = ['public class Main {', '    public static void main(String[] args) {'];
+    for (var i = 1; i <= n; i++) z.push('        WaitingTicket t' + i + ' = new WaitingTicket();');
+    return z.concat(['        System.out.println(' + ausgabe + ');', '    }', '}']);
+  }
+  function ticketCode(stat) {
+    return ['public class WaitingTicket {', '    private ' + (stat ? '«violett:static» ' : '') + 'int «pink:count»;', '',
+      '    public WaitingTicket() {', '        «pink:count»++;', '    }', '',
+      '    public int getCount() {', '        return count;', '    }', '}'];
+  }
+
+  /* Lauf 1 und 2: n Marken ziehen, dann eine Marke nach dem Zähler fragen */
+  function zaehlen(n, stat) {
+    var a = Kurs.ablauf().datei('Main.java');
+    if (stat) a.statisch('WaitingTicket', 'count', 0);
+    for (var i = 1; i <= n; i++) {
+      var id = String(i), m = MARKE[i];
+      a.objekt(id, 'WaitingTicket', stat ? [] : [['count', 0]]);
+      a.schritt(2 + i, i === 1
+        ? '<code>new</code> baut die erste Marke als Karte ①.' + (stat ? ' Die Karte hat kein Attribut <code>count</code>: Das steht auf der Karte der Klasse und hat dort den Standardwert 0.' : ' Ihr Attribut <code>count</code> hat den Standardwert 0.')
+        : '<code>new</code> baut Marke Nummer ' + i + ' als Karte ' + m + '.' + (stat ? '' : ' Sie bekommt ihr eigenes <code>count</code>, wieder mit 0.'));
+      a.bereich('WaitingTicket()', 'WaitingTicket.java').setze('this', { ref: id });
+      if (stat) a.statisch('WaitingTicket', 'count', i);
+      else a.attr(id, 'count', 1);
+      a.schritt(5, stat
+        ? 'Der Konstruktor läuft für ' + m + '. <code>count++</code> erhöht den gemeinsamen Zähler auf der Karte der Klasse: von ' + (i - 1) + ' auf ' + i + '.'
+        : 'Der Konstruktor läuft für ' + m + '. <code>count++</code> erhöht das <code>count</code>, das zu diesem Objekt gehört, also das auf Karte ' + m + ': von 0 auf 1.' + (i > 1 ? ' Die anderen Karten ändert er nicht.' : ''));
+      a.verlasse().setze('t' + i, { ref: id }).schritt(2 + i, 'Zurück in <code>main</code>: <code>t' + i + '</code> zeigt auf die Karte ' + m + '.');
+    }
+    var wer = stat ? 't1' : 't' + n, wert = stat ? n : 1;
+    a.aus(String(wert)).schritt(3 + n, stat
+      ? '<code>t1.getCount()</code> fragt die erste Marke. <code>count</code> steht nicht auf ihrer Karte, sondern auf der Karte der Klasse. Dort steht ' + n + '. Den Sprung in den Getter zeigt dieser Lauf nicht.'
+      : '<code>' + wer + '.getCount()</code> fragt die letzte Marke nach ihrem <code>count</code>. Auf ihrer Karte steht 1' + (n > 1 ? ', wie auf allen anderen Karten, obwohl es ' + n + ' Marken gibt' : '. Bei einer Marke stimmt das zufällig') + '. Den Sprung in den Getter zeigt dieser Lauf nicht.');
+    return a.schritte;
+  }
+
+  var TICKET3 = ['public class WaitingTicket {', '    private static int count;', '',
+    '    public WaitingTicket() {', '        count++;', '    }', '',
+    '    public «violett:static» int getCount() {', '        return count;', '    }', '}'];
+  var TICKET4 = ['public class WaitingTicket {', '    private static int count;', '    private int number;', '',
+    '    public WaitingTicket() {', '        count++;', '        number = count;', '    }', '',
+    '    public int getNumber() {', '        return number;', '    }', '}'];
+
+  Kurs.start({
+    nr: 6,
+    legende: { violett: 'static', pink: 'Name', typ: 'Typ' },
+
+    laeufe: {
+      lauf1: {
+        nebeneinander: true,
+        eingabe: { art: 'zahl', label: 'Marken', start: 3, proben: [1, 2, 3], min: 1, max: 3 },
+        dateien: function (v) { return [{ name: 'Main.java', code: mainCode(v, 't' + v + '.getCount()') }, { name: 'WaitingTicket.java', code: ticketCode(false) }]; },
+        schritte: function (v) { return zaehlen(v, false); }
+      },
+      lauf2: {
+        nebeneinander: true,
+        eingabe: { art: 'zahl', label: 'Marken', start: 3, proben: [1, 2, 3], min: 1, max: 3 },
+        dateien: function (v) { return [{ name: 'Main.java', code: mainCode(v, 't1.getCount()') }, { name: 'WaitingTicket.java', code: ticketCode(true) }]; },
+        schritte: function (v) { return zaehlen(v, true); }
+      },
+      lauf3: {
+        nebeneinander: true,
+        dateien: [{ name: 'Main.java', code: ['public class Main {', '    public static void main(String[] args) {', '        System.out.println(WaitingTicket.getCount());',
+          '        WaitingTicket t1 = new WaitingTicket();', '        WaitingTicket t2 = new WaitingTicket();', '        System.out.println(WaitingTicket.getCount());', '    }', '}'] },
+          { name: 'WaitingTicket.java', code: TICKET3 }],
+        schritte: function () {
+          var a = Kurs.ablauf().datei('Main.java').statisch('WaitingTicket', 'count', 0);
+          a.schritt(3, 'Noch gibt es keine einzige Marke. Trotzdem kann Java <code>WaitingTicket.getCount()</code> aufrufen, denn die Methode ist <code>static</code>. Vor dem Punkt steht der Klassenname.');
+          a.bereich('getCount()', 'WaitingTicket.java').schritt(9, 'Java springt in <code>getCount</code>. Im Bereich steht kein <code>this</code>, denn es gibt kein Objekt, um das es geht. <code>count</code> ist der Zähler der Klasse: 0.', { gibt: 0 });
+          a.verlasse().aus('0').schritt(3, 'Zurück in Zeile 3: Java gibt 0 aus.');
+          a.objekt('1', 'WaitingTicket', []).statisch('WaitingTicket', 'count', 1).setze('t1', { ref: '1' })
+            .schritt(4, 'Die erste Marke entsteht. Der Konstruktor zählt den Zähler der Klasse auf 1 (hier in einem Schritt zusammengefasst).');
+          a.objekt('2', 'WaitingTicket', []).statisch('WaitingTicket', 'count', 2).setze('t2', { ref: '2' })
+            .schritt(5, 'Die zweite Marke entsteht. Der Zähler steht jetzt auf 2.');
+          a.bereich('getCount()', 'WaitingTicket.java').schritt(9, 'Wieder über den Klassennamen, wieder ohne <code>this</code>. Der Zähler der Klasse ist 2.', { gibt: 2 });
+          a.verlasse().aus('2').schritt(6, 'Java gibt 2 aus. Der Aufruf fragt kein Objekt, sondern nur die Klasse.');
+          return a.schritte;
+        }
+      },
+      lauf4: {
+        nebeneinander: true,
+        dateien: [{ name: 'Main.java', code: ['public class Main {', '    public static void main(String[] args) {', '        WaitingTicket t1 = new WaitingTicket();', '        WaitingTicket t2 = new WaitingTicket();',
+          '        WaitingTicket t3 = new WaitingTicket();', '        System.out.println(t1.getNumber());', '        System.out.println(t3.getNumber());', '    }', '}'] },
+          { name: 'WaitingTicket.java', code: TICKET4 }],
+        schritte: function () {
+          var a = Kurs.ablauf().datei('Main.java').statisch('WaitingTicket', 'count', 0);
+          for (var i = 1; i <= 3; i++) {
+            var id = String(i), m = MARKE[i];
+            a.objekt(id, 'WaitingTicket', [['number', 0]]).schritt(2 + i, '<code>new</code> baut die Marke ' + m + '.' + (i === 1 ? ' Ihr Attribut <code>number</code> hat den Standardwert 0. Der Zähler <code>count</code> steht auf der Karte der Klasse.' : ''));
+            a.bereich('WaitingTicket()', 'WaitingTicket.java').setze('this', { ref: id });
+            a.statisch('WaitingTicket', 'count', i).schritt(6, 'Der Konstruktor läuft für ' + m + '. <code>count++</code>: Der gemeinsame Zähler steigt auf ' + i + '.');
+            a.attr(id, 'number', i).schritt(7, '<code>number = count;</code> kopiert den aktuellen Stand ' + i + ' auf die Karte ' + m + '. <code>number</code> gehört nur diesem Objekt.');
+            a.verlasse().setze('t' + i, { ref: id }).schritt(2 + i, 'Zurück in <code>main</code>: <code>t' + i + '</code> zeigt auf ' + m + '.');
+          }
+          a.aus('1').schritt(6, '<code>t1.getNumber()</code> fragt die Marke ① nach ihrer eigenen Nummer: 1. Dass der Zähler inzwischen auf 3 steht, ändert daran nichts.');
+          a.aus('3').schritt(7, '<code>t3.getNumber()</code> fragt die Marke ③: 3.');
+          return a.schritte;
+        }
+      }
+    },
+
+    fehler: [
+      { titel: 'static-Methode liest ein normales Attribut', code: ['public class Appointment {', '    private int total;', '', '    public static int getTotal() {', '        return total;', '    }', '}'], rot: [5], quelle: 'VS Code',
+        meldung: 'Cannot make a static reference to the non-static field total',
+        text: '<p>„field“ heißt Attribut. Die Methode ist <code>static</code> und läuft ohne Objekt. Das Attribut <code>total</code> ist aber nicht <code>static</code>, es steht auf der Karte jedes einzelnen Objekts. Welches davon soll die Methode nehmen? Das kann Java nicht wissen.</p><p>Für einen Zähler ist die Lösung: Mach das Attribut <code>static</code>: <code>private static int total;</code></p>' },
+      { titel: 'this in einer static-Methode', code: ['public static int getTotal() {', '    return this.total;', '}'], rot: [2], quelle: 'VS Code',
+        meldung: 'Cannot use this in a static context',
+        text: '<p><code>this</code> heißt „das Objekt, um das es gerade geht“. In einer <code>static</code>-Methode gibt es so ein Objekt nicht. Schreib nur <code>total</code>, ohne <code>this.</code> davor.</p>' },
+      { titel: 'main ruft eine Methode ohne static auf', code: ['public class Main {', '    public static void main(String[] args) {', '        greet();', '    }', '', '    public void greet() {', '        System.out.println("Hallo");', '    }', '}'], rot: [3], quelle: 'VS Code',
+        meldung: 'Cannot make a static reference to the non-static method greet() from the type Main',
+        text: '<p><code>main</code> ist <code>static</code> und hat kein Objekt. <code>greet</code> ist eine normale Methode, die ein Objekt braucht. Wenn die Methode nicht mit Attributen eines Objekts arbeitet, schreib <code>static</code> dazu: <code>public static void greet()</code>. So hast du die Methoden in Kapitel 3 geschrieben.</p>' },
+      { titel: 'Klassenname vor einer normalen Methode', code: ['WaitingTicket t1 = new WaitingTicket();', 'System.out.println(WaitingTicket.getNumber());'], rot: [2], quelle: 'VS Code',
+        meldung: 'Cannot make a static reference to the non-static method getNumber() from the type WaitingTicket',
+        text: '<p>Das ist dieselbe Meldung wie bei <code>Bike.getBattery()</code> in Kapitel 5. <code>getNumber()</code> ist nicht <code>static</code>: Jede Marke hat ihre eigene Nummer. Also musst du eine bestimmte Marke fragen: <code>t1.getNumber()</code>. Den Klassennamen vor dem Punkt darfst du nur bei <code>static</code>-Methoden schreiben.</p>' }
+    ],
+
+    fragen: [
+      { art: 'wahl', frage: 'Hier ist total kein static-Attribut. Was gibt das Programm aus?',
+        code: ['// in Appointment.java:', 'private int total;', 'public Appointment() { total++; }', 'public int getTotal() { return total; }', '', '// in main:', 'Appointment a = new Appointment();', 'Appointment b = new Appointment();', 'Appointment c = new Appointment();', 'System.out.println(c.getTotal());'],
+        optionen: [
+          { t: '1', ok: true, warum: 'Richtig. Jedes Objekt hat sein eigenes total. Jeder Konstruktor erhöht nur das total seiner eigenen Karte von 0 auf 1.' },
+          { t: '3', warum: 'So wäre es mit static. Ohne static hat jedes Objekt seinen eigenen Zähler. Der Konstruktor zählt die Karte von c nur einmal hoch, nämlich bei ihrem eigenen new.' },
+          { t: '0', warum: 'Der Konstruktor läuft bei jedem new und erhöht total. Auf der Karte von c steht deshalb 1.' }
+        ] },
+      { art: 'wahl', frage: 'Jetzt ist total static. Was gibt das Programm aus?',
+        code: ['// in Appointment.java:', 'private static int total;', 'public Appointment() { total++; }', 'public static int getTotal() { return total; }', '', '// in main:', 'Appointment a = new Appointment();', 'Appointment b = new Appointment();', 'System.out.println(Appointment.getTotal());', 'Appointment c = new Appointment();'],
+        optionen: [
+          { t: '2', ok: true, warum: 'Richtig. Den Zähler gibt es nur einmal. Bei der Ausgabe existieren erst zwei Objekte, also steht er auf 2. Das dritte new kommt erst danach.' },
+          { t: '3', warum: 'Schau auf die Reihenfolge. Die Ausgabe steht vor dem dritten new. Zu diesem Zeitpunkt gibt es erst zwei Objekte.' },
+          { t: '1', warum: 'Mit static teilen alle Objekte denselben Zähler. Zwei Konstruktor-Aufrufe haben ihn erhöht, also steht er auf 2.' }
+        ] },
+      { art: 'zeile', frage: 'In dieser Klasse unterstreicht VS Code eine Zeile rot. Klick sie an.',
+        code: ['public class WaitingTicket {', '    private static int count;', '    private int number;', '', '    public WaitingTicket() {', '        count++;', '        number = count;', '    }', '', '    public static int getNumber() {', '        return number;', '    }', '}'],
+        ok: 11,
+        richtig: 'Richtig. getNumber ist static, aber number ist ein normales Attribut. VS Code meldet: „Cannot make a static reference to the non-static field number“. Lass static bei getNumber weg.',
+        falsch: 'Diese Zeile ist in Ordnung. Such eine static-Methode, die auf ein normales Attribut zugreift.',
+        warum: { 10: 'Hier steckt die Ursache: getNumber ist static. VS Code unterstreicht aber Zeile 11 rot, denn dort benutzt die Methode das normale Attribut number. Klick die rote Zeile an.', 7: 'Der Konstruktor ist nicht static. Er läuft für ein bestimmtes Objekt und darf dessen number setzen. Er darf auch das static-Attribut count lesen.', 6: 'Der Konstruktor darf das static-Attribut count benutzen. Das ist genau das Muster zum Mitzählen.' } },
+      { art: 'luecke', frage: 'Der Zähler soll der Klasse gehören. Was fehlt in der Lücke?',
+        code: ['private ___ int count;'], ok: ['static'], proben: ['final', 'Static', 'static'],
+        falschBei: { final: 'final heißt: Der Wert darf sich nicht mehr ändern. Ein Zähler muss sich aber ändern. Gesucht ist das Wort für „gehört der Klasse“.', Static: 'Fast. Java-Wörter schreibst du klein: static.' },
+        richtig: 'Richtig. private static int count; gibt es nur einmal, und alle Objekte teilen es.',
+        falsch: 'Das passt noch nicht. Gesucht ist das Wort, das ein Attribut zu einem Attribut der Klasse macht.' },
+      { art: 'wahl', frage: 'Was gibt dieses Programm aus? (WaitingTicket wie im vierten Lauf: count++; number = count;)',
+        code: ['WaitingTicket t1 = new WaitingTicket();', 'WaitingTicket t2 = new WaitingTicket();', 'WaitingTicket t3 = new WaitingTicket();', 'System.out.println(t2.getNumber());'],
+        optionen: [
+          { t: '2', ok: true, warum: 'Richtig. Beim Bau von t2 stand der Zähler auf 2. Der Konstruktor kopiert diesen Wert auf die Karte von t2. Danach ändert er sich nicht mehr.' },
+          { t: '3', warum: '3 ist der Stand des Zählers am Ende. Die Frage meint aber number, die eigene Nummer von t2. Der Konstruktor hat sie beim Bau von t2 gespeichert, als der Zähler auf 2 stand.' },
+          { t: '1', warum: 'Der Konstruktor zählt den Zähler vor number = count; hoch. Bei t2 steht er schon auf 2.' }
+        ] },
+      { art: 'zuordnen', frage: 'Was gilt wofür? Ordne zu.',
+        paare: [['private int number;', 'gibt es einmal pro Objekt', 'Ohne static steht das Attribut auf der Karte jedes Objekts.'],
+                ['private static int count;', 'gibt es nur einmal, alle teilen es', 'static heißt: gehört der Klasse.'],
+                ['public static int getCount()', 'aufrufen mit dem Klassennamen, ohne Objekt', 'Eine static-Methode gehört der Klasse: WaitingTicket.getCount().'],
+                ['public int getNumber()', 'aufrufen an einem Objekt, zum Beispiel t1', 'Ohne static braucht die Methode ein Objekt: t1.getNumber().']],
+        richtig: 'Alles richtig zugeordnet.', falsch: 'Noch nicht ganz. Rot markiert sind die Zeilen, die noch nicht passen:' }
+    ],
+
+    aufgaben: [
+      { titel: 'Aufgabe 1: Besucher zählen', datei: 'Visitor.java', befehl: './gradlew test --tests "*k06.VisitorTest"',
+        text: '<p>Jede Person, die ins Bürgeramt kommt, ist ein neues <code>Visitor</code>-Objekt. Die Klasse soll mitzählen, wie viele Objekte bisher entstanden sind. Im Moment steht dort ein normales Attribut <code>count</code>, wie beim ersten Versuch am Anfang dieses Kapitels. Noch zählt niemand es hoch, und <code>getCount()</code> gibt immer 0 zurück.</p><ol><li>Mach aus <code>count</code> einen Zähler, der der Klasse gehört.</li><li>Zähle ihn im Konstruktor um 1 hoch.</li><li>Lass <code>getCount()</code> den Zähler zurückgeben. Die Methode ist schon <code>static</code>, ihr Kopf bleibt unverändert.</li></ol><p>Danach gibt <code>Visitor.getCount()</code> nach drei <code>new Visitor()</code> den Wert 3 zurück.</p>',
+        tipps: ['Fang am besten mit Schritt 3 an und schreib <code>return count;</code>. Dann wird die Zeile rot, und VS Code meldet: <span class="meldung">Cannot make a static reference to the non-static field count</span>. Die <code>static</code>-Methode kommt nicht an ein normales Attribut. Schritt 1 behebt das.', 'Drei Änderungen: <code>private static int count;</code> oben, <code>count++;</code> im Konstruktor und <code>return count;</code> in <code>getCount()</code>.'],
+        loesung: ['private static int count;', '', 'public Visitor() {', '    count++;', '}', '', 'public static int getCount() {', '    return count;', '}'] },
+      { titel: 'Aufgabe 2: Anträge fortlaufend nummerieren', datei: 'Request.java', befehl: './gradlew test --tests "*k06.RequestTest"',
+        text: '<p>Jeder Antrag (<code>Request</code>) im Bürgeramt bekommt eine eigene Nummer. Der erste Antrag bekommt 1001, der zweite 1002 und so weiter. Diesmal legst du die Attribute selbst an:</p><table><tr><th>Teil</th><th>Beschreibung</th></tr><tr><td>Attribut <code>nextNumber</code></td><td><code>private static int</code> mit Startwert 1001: die nächste freie Nummer, gehört der Klasse</td></tr><tr><td>Attribut <code>number</code></td><td><code>private int</code>: die Nummer dieses Antrags</td></tr><tr><td>Konstruktor <code>Request()</code></td><td>gibt dem Antrag die nächste freie Nummer und zählt <code>nextNumber</code> um 1 hoch</td></tr><tr><td><code>int getNumber()</code></td><td>gibt die Nummer dieses Antrags zurück</td></tr></table><p>Die Köpfe von Konstruktor und <code>getNumber()</code> stehen schon da und bleiben unverändert.</p>',
+        tipps: ['Die beiden Attribute schreibst du an die Stelle des TODO-Kommentars oben in der Klasse: <code>private static int nextNumber = 1001;</code> und <code>private int number;</code>', 'Im Konstruktor kommt es auf die Reihenfolge an: erst <code>number = nextNumber;</code>, dann <code>nextNumber++;</code>. Andersherum bekäme der erste Antrag schon 1002.'],
+        loesung: ['private static int nextNumber = 1001;', 'private int number;', '', 'public Request() {', '    number = nextNumber;', '    nextNumber++;', '}', '', 'public int getNumber() {', '    return number;', '}'],
+        erklaerung: '<p>Das ist dasselbe Muster wie im vierten Lauf, nur mit anderem Startwert und anderer Reihenfolge. Dort zählt der Konstruktor erst hoch und kopiert dann, deshalb beginnt die Nummer bei 1. Hier kopiert er erst und zählt dann hoch. So bekommt der erste Antrag genau den Startwert 1001.</p>' }
+    ]
+  });
+})();
+</script>
+</body>
+</html>

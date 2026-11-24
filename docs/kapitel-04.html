@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 4: Klassen und Objekte – Java-Crashkurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kurs.css">
+<style>
+/* Nur in diesem Kapitel: nummerierte Reihenfolge unter dem Schaubild */
+.k04-ablauf { counter-reset: k04; list-style: none; padding-left: 0; }
+.k04-ablauf li { counter-increment: k04; position: relative; padding-left: 38px; margin-bottom: 10px; }
+.k04-ablauf li::before { content: counter(k04); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; border: 2px solid currentColor; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+</style>
+</head>
+<body>
+<main class="kurs">
+
+  <p class="vorwissen">Das solltest du schon kennen: Variablen (benannte Speicherplätze für Werte) und ihre Typen aus Kapitel 2, Methoden mit Parametern und <code>return</code> aus Kapitel 3.</p>
+
+  <p>In einer Bibliothek hat jedes Buch eine Karteikarte. Auf jeder Karte stehen dieselben Felder: Titel, Seitenzahl, ausgeliehen ja oder nein. Nur die Werte in den Feldern sind auf jeder Karte anders.</p>
+  <p>Mit dem, was du bisher kennst, bräuchtest du für jedes Buch drei eigene Variablen:</p>
+  <div class="code" data-legende="nein" data-code='String title1 = "Momo";
+int pages1 = 320;
+boolean borrowed1 = false;
+String title2 = "Krabat";
+int pages2 = 288;
+boolean borrowed2 = false;'></div>
+  <p>Bei 1000 Büchern wären das 3000 Variablen. Und nichts sagt Java, dass <code>title2</code> und <code>pages2</code> zum selben Buch gehören. Deshalb gibt es Klassen. Eine Klasse bündelt alles, was zusammengehört.</p>
+
+  <h2>Bauplan und Ding: Klasse und Objekt</h2>
+  <p>Eine <strong>Klasse</strong> ist ein Bauplan. Sie legt fest, welche Felder jede Karte hat. Werte enthält sie selbst noch keine. Sie ist wie der leere Vordruck einer Karteikarte.</p>
+  <p>Ein <strong>Objekt</strong> ist ein Ding, das nach dem Bauplan entsteht. Es ist wie eine ausgefüllte Karte. Aus einem Bauplan kannst du beliebig viele Objekte bauen. Jedes hat seine eigenen Werte.</p>
+  <p>So sieht der Bauplan für ein Buch in Java aus. Er steht in der Datei <code>Book.java</code>:</p>
+  <div class="code" data-code='public class Book {
+    private «typ:String» «pink:title»;
+    private «typ:int» «pink:pages»;
+    private «typ:boolean» «pink:borrowed»;
+}'></div>
+  <p>Die drei Zeilen in der Klasse heißen <strong>Attribute</strong>. Ein Attribut ist eine Variable, die zu einem Objekt gehört. Du schreibst es wie eine Variable aus Kapitel 2: erst der Typ, dann der Name. Attribute stehen direkt in der Klasse, außerhalb jeder Methode.</p>
+  <p>Neu ist das Wort <code>private</code>. Es heißt: Nur der Code in dieser Klasse darf das Attribut direkt lesen und ändern. Andere Klassen müssen das Objekt fragen. Wie das geht, zeigt der Abschnitt „Getter“ weiter unten. Schreib <code>private</code> vor jedes Attribut und lass es dabei.</p>
+
+  <h2>Der Konstruktor füllt ein neues Objekt</h2>
+  <p>Wenn ein neues Buch entsteht, sollen seine Attribute gleich die richtigen Werte bekommen. Das erledigt der <strong>Konstruktor</strong>. Ein Konstruktor ist ein Programmteil, der beim Bauen eines Objekts genau einmal läuft und die Attribute füllt. Er steht in der Klasse, meistens direkt unter den Attributen:</p>
+  <div class="code" data-code='public «pink:Book»(«tuerkis:String title, int pages») {
+    this.title = title;
+    this.pages = pages;
+}'></div>
+  <p>Ein Konstruktor sieht fast aus wie eine Methode aus Kapitel 3. Es gibt aber zwei Unterschiede, und beide sind wichtig:</p>
+  <div class="aufbau">
+    <div class="teil" data-farbe="pink"><span class="stueck">Book</span><span class="heisst"><b>Heißt wie die Klasse</b>Genau gleich geschrieben, mit großem Anfangsbuchstaben. Daran erkennt Java den Konstruktor.</span></div>
+    <div class="teil" data-farbe="typ"><span class="stueck">kein Typ</span><span class="heisst"><b>Kein Rückgabetyp</b>Vor dem Namen steht nur <code>public</code>. Kein <code>int</code>, kein <code>String</code>, auch kein <code>void</code>.</span></div>
+    <div class="teil" data-farbe="tuerkis"><span class="stueck">(String title, int pages)</span><span class="heisst"><b>Die Parameter</b>Die Werte, die der Konstruktor beim Bauen bekommt, wie bei einer Methode.</span></div>
+  </div>
+
+  <p>Das dritte Attribut, <code>borrowed</code>, kommt im Konstruktor nicht vor. Das ist Absicht: Ein neues Buch ist noch nicht ausgeliehen. Dafür reicht der Standardwert <code>false</code>, also der Startwert, den Java jedem neuen Objekt von selbst gibt. Als Parameter bekommt der Konstruktor nur Werte, die bei jedem Buch anders sind.</p>
+
+  <h2>this: links das Attribut, rechts der Parameter</h2>
+  <p>Im Konstruktor gibt es zwei Dinge mit dem Namen <code>title</code>: das Attribut des Objekts und den Parameter. Die Zeile <code>this.title = title;</code> unterscheidet sie:</p>
+  <div class="code" data-code='«violett:this».«pink:title» = «tuerkis:title»;'></div>
+  <p class="vorlesen">Speichere den <span class="t-tuerkis">Wert aus dem Parameter <code>title</code></span> im <span class="t-pink">Attribut <code>title</code></span> von <span class="t-violett">diesem Objekt</span>.</p>
+  <p><code>this</code> heißt „dieses Objekt“: das Objekt, um das es gerade geht. Im Konstruktor meint <code>this</code> das neue Objekt, das <code>new</code> gerade baut. <code>this.title</code> ist also das Attribut auf seiner Karte. <code>title</code> allein meint den Parameter. Wie immer bei einer Zuweisung mit <code>=</code> wandert der Wert von rechts nach links.</p>
+
+  <h2>Ein Objekt bauen mit new</h2>
+  <p>Ein Objekt baust du an einer anderen Stelle, zum Beispiel in <code>main</code>. Dafür schreibst du das Wort <code>new</code>. Diese eine Zeile hat vier Teile:</p>
+  <div class="aufbau">
+    <div class="teil" data-farbe="typ"><span class="stueck">Book</span><span class="heisst"><b>Der Typ</b>Was für ein Ding in der Variable steckt: ein Buch. Der Typ ist der Name der Klasse.</span></div>
+    <div class="teil" data-farbe="pink"><span class="stueck">b</span><span class="heisst"><b>Der Name</b>So heißt die Variable, über die du das Buch später erreichst.</span></div>
+    <div class="teil" data-farbe="violett"><span class="stueck">new Book</span><span class="heisst"><b>new</b>Baut ein neues Objekt nach dem Bauplan <code>Book</code>.</span></div>
+    <div class="teil" data-farbe="tuerkis"><span class="stueck">("Momo", 320)</span><span class="heisst"><b>Die Werte</b>Gehen an den Konstruktor, in derselben Reihenfolge wie seine Parameter.</span></div>
+  </div>
+  <div class="code" data-code='«typ:Book» «pink:b» = «violett:new Book»(«tuerkis:"Momo", 320»);'></div>
+  <p class="vorlesen">Leg eine Variable vom <span class="t-typ">Typ Book</span> mit dem <span class="t-pink">Namen b</span> an, <span class="t-violett">bau ein neues Buch</span> mit den <span class="t-tuerkis">Werten „Momo“ und 320</span> und lass <code>b</code> darauf zeigen.</p>
+  <p>Java arbeitet diese Zeile in vier Schritten ab, zuerst rechts vom <code>=</code>, dann links:</p>
+  <ol class="k04-ablauf">
+    <li><span class="t-violett"><code>new</code></span> baut ein neues, leeres Objekt: eine Karte im Speicher. Ihre Attribute bekommen zuerst Standardwerte: 0 für Zahlen, <code>false</code> für <code>boolean</code> und <code>null</code> für Text und Objekte. <code>null</code> heißt: Hier ist noch nichts. Standardwerte bekommen nur Attribute. Eine Variable in einer Methode hat ohne Zuweisung keinen Wert. Das kennst du als Fehler „ohne Wert benutzt“ aus Kapitel 2.</li>
+    <li>Java springt in den Konstruktor. Die <span class="t-tuerkis">Werte „Momo“ und 320</span> landen in seinen Parametern <code>title</code> und <code>pages</code>.</li>
+    <li>Der Konstruktor läuft Zeile für Zeile und schreibt die Werte auf die Karte.</li>
+    <li>Zurück in der Zeile mit <code>new</code>: Die Variable <span class="t-pink"><code>b</code></span> bekommt einen Pfeil auf die Karte. In <code>b</code> steckt also nicht das Buch selbst, sondern der Weg zu ihm.</li>
+  </ol>
+  <h2>Getter: ein Objekt nach einem Wert fragen</h2>
+  <p>Ist das Buch gebaut, kannst du Methoden an ihm aufrufen und es nach seinen Werten fragen, zum Beispiel nach seinem Titel. Das schreibst du so: <code>b.getTitle()</code>. Der Punkt heißt: Ruf diese Methode an dem Objekt auf, auf das <code>b</code> zeigt. <code>getTitle()</code> ist eine Methode in der Klasse <code>Book</code>. Sie gibt den Titel mit <code>return</code> zurück:</p>
+  <div class="code" data-code='public «typ:String» «pink:getTitle»() {
+    return title;
+}'></div>
+  <p>Eine Methode, die nur den Wert eines Attributs zurückgibt, heißt <strong>Getter</strong>. Ihr Name beginnt mit <code>get</code>, danach kommt der Name des Attributs mit großem Anfangsbuchstaben: <code>getTitle</code>, <code>getPages</code>. Bei <code>boolean</code>-Attributen beginnt der Name meistens mit <code>is</code>: <code>isBorrowed</code>. Weil die Attribute <code>private</code> sind, kommen andere Klassen nur über solche Methoden an die Werte.</p>
+  <p>Zwei Dinge sind anders als bei den Methoden in Kapitel 3:</p>
+  <ul>
+    <li>Vor dem Methodennamen fehlt <code>static</code>. Methoden, die mit den Attributen eines Objekts arbeiten, haben kein <code>static</code>. Lass <code>static</code> hier weg. Kapitel 6 erklärt den Unterschied.</li>
+    <li>In <code>getTitle</code> steht <code>title</code> ohne <code>this.</code> davor. Das geht, weil es dort keinen Parameter mit demselben Namen gibt. Java nimmt dann von selbst das Attribut des Objekts, an dem du die Methode aufrufst.</li>
+  </ul>
+  <h2>Alles zusammen, Schritt für Schritt</h2>
+  <p>Schau dir das jetzt Schritt für Schritt an. Links steht <code>Main.java</code> mit <code>main</code>, rechts der Bauplan <code>Book.java</code>. Achte bei jedem Schritt auf drei Dinge: welche Datei gerade gelb ist, was unter „Im Speicher“ bei den Variablen steht und was auf der Karte ① steht.</p>
+
+  <div id="lauf1"></div>
+
+  <p>Wähl im Lauf auch ein anderes Buch aus. Der Bauplan bleibt gleich, nur die Werte auf der Karte ändern sich.</p>
+
+  <h2>Zwei Objekte, zwei Karten</h2>
+  <p>Methoden dürfen Attribute auch ändern. Die Methode <code>borrow()</code> (ausleihen) setzt <code>borrowed</code> auf <code>true</code>:</p>
+  <div class="code" data-code='public void «pink:borrow»() {
+    borrowed = true;
+}'></div>
+  <p>Sie ändert nur das Objekt, an dem du sie aufrufst. Das zeigt der nächste Lauf mit zwei Büchern. Wähl im Lauf aus, welches Buch du ausleihst.</p>
+
+  <div id="lauf2"></div>
+
+  <p>Beide Bücher stammen aus demselben Bauplan, aber jedes hat seine eigene Karte. <code>b1.borrow()</code> ändert nur die Karte, auf die <code>b1</code> zeigt.</p>
+
+  <h2>Wenn this fehlt</h2>
+  <p>Ein Fehler passiert im Konstruktor besonders oft: <code>this.</code> fehlt. Dann steht da <code>title = title;</code>. VS Code unterstreicht das nicht rot, das Programm läuft. Trotzdem stimmt das Ergebnis nicht. Vergleich die beiden Fassungen.</p>
+
+  <div id="lauf3"></div>
+
+  <p>Ohne <code>this.</code> meint <code>title</code> auf beiden Seiten den Parameter. Der Parameter bekommt seinen eigenen Wert noch einmal. Das Attribut <code>title</code> auf der Karte bleibt <code>null</code>. Manchmal gibt ein Getter <code>null</code> oder 0 zurück, obwohl du bei <code>new</code> Werte mitgegeben hast. Schau dann zuerst in den Konstruktor.</p>
+
+  <div class="merke">
+    <h3>Sechs Regeln zum Merken</h3>
+    <ol>
+      <li>Eine Klasse ist ein Bauplan. Mit <code>new</code> baust du daraus ein Objekt. Aus einem Bauplan entstehen beliebig viele Objekte, jedes mit eigenen Werten.</li>
+      <li>Attribute stehen in der Klasse außerhalb jeder Methode, mit <code>private</code> davor: <code>private int pages;</code></li>
+      <li>Der Konstruktor heißt genau wie die Klasse und hat keinen Rückgabetyp, auch kein <code>void</code>.</li>
+      <li>Der Konstruktor läuft bei jedem <code>new</code> genau einmal und füllt die Attribute. Die Werte in <code>new Book("Momo", 320)</code> kommen in derselben Reihenfolge an wie seine Parameter.</li>
+      <li><code>this.title = title;</code> heißt: links das Attribut des Objekts, rechts der Parameter. Heißt der Parameter wie das Attribut, brauchst du <code>this.</code>. Fehlt es, behält das Attribut seinen Standardwert.</li>
+      <li><code>b.getTitle()</code> ruft die Methode an dem Objekt auf, auf das <code>b</code> zeigt. Ein Getter gibt den Wert eines Attributs zurück.</li>
+    </ol>
+  </div>
+
+  <h2>Fünf häufige Fehler verstehen und beheben</h2>
+  <p>Die ersten drei Fehler unterstreicht VS Code rot. Das Programm startet dann nicht. Beim vierten zeigt VS Code nur eine gelbe Warnung, und das Programm liefert ein falsches Ergebnis. Der fünfte Fehler bricht das Programm erst beim Laufen ab. Gerade die letzten beiden solltest du kennen.</p>
+  <div id="fehler"></div>
+
+  <h2>Kurz geprüft: Klassen und Objekte</h2>
+  <p>Sechs kurze Aufgaben zum Mitdenken. Geh den Code im Kopf durch. Stell dir dabei die Karten im Speicher vor, wie in den Läufen oben.</p>
+  <div id="fragen"></div>
+
+  <h2>Jetzt schreibst du selbst: drei Aufgaben im Projekt</h2>
+  <p>Die Aufgaben liegen im Übungsprojekt im Ordner <code>src/main/java/de/phl/crashkurs/k04</code>. Sie werden schwerer: In Aufgabe 1 füllst du einen Konstruktor, in Aufgabe 2 schreibst du Methoden, in Aufgabe 3 baust du eine ganze Klasse selbst.</p>
+  <p>Starte nach jeder Aufgabe ihren Test: Öffne die Testdatei im Ordner <code>src/test/java/de/phl/crashkurs/k04</code> und klick links neben dem Klassennamen auf den grünen Pfeil. Oder tippe den Befehl aus der Aufgabe ins Terminal (unter Windows <code>.\gradlew.bat</code> statt <code>./gradlew</code>). Ist ein Test rot, lies die Meldung. Sie sagt dir auf Deutsch, welcher Fall noch nicht stimmt.</p>
+  <div id="aufgaben"></div>
+
+</main>
+
+<script src="kurs.js"></script>
+<script>
+(function () {
+  function bookCode(mitThis) {
+    return ['public class Book {', '    private String title;', '    private int pages;', '',
+      '    public Book(String title, int pages) {', mitThis === false ? '        title = title;' : '        this.title = title;', '        this.pages = pages;', '    }', '',
+      '    public String getTitle() {', '        return title;', '    }', '}'];
+  }
+  function mainCode(zeile) {
+    return ['public class Main {', '    public static void main(String[] args) {', zeile, '        System.out.println(b.getTitle());', '    }', '}'];
+  }
+  var BUECHER = { 'Momo,320': ['"Momo"', 320], 'Krabat,288': ['"Krabat"', 288], 'Emil,128': ['"Emil"', 128] };
+
+  /* Schritte für: Book b = new Book(t, p); System.out.println(b.getTitle());  (mitThis: false = this. fehlt in Zeile 6) */
+  function bauen(t, p, mitThis, kurzGetter) {
+    var a = Kurs.ablauf();
+    var ohne = t.replace(/"/g, '');
+    a.datei('Main.java').objekt('1', 'Book', [['title', Kurs.NULL], ['pages', 0]])
+      .schritt(3, 'Java beginnt rechts vom <code>=</code>: <code>new</code> baut ein neues Objekt nach dem Bauplan <code>Book</code>. Unter „Objekte“ erscheint die Karte ①. Ihre Attribute haben noch Standardwerte: <code>null</code> (noch kein Text) und 0.');
+    a.bereich('Book(…)', 'Book.java').setze('this', { ref: '1' }).setze('title', t).setze('pages', p)
+      .schritt(5, 'Java springt in den Konstruktor in <code>Book.java</code>. Die Werte aus Zeile 3 landen in den Parametern: <code>title</code> ist ' + t + ', <code>pages</code> ist ' + p + '. Dazu kommt <code>this</code>: Es zeigt auf die Karte ①, also auf das neue Objekt, das <code>new</code> gerade baut. Zeile 3 in <code>Main.java</code> wartet so lange.');
+    if (mitThis === false) {
+      a.schritt(6, 'Hier fehlt <code>this.</code>. Deshalb meint <code>title</code> auf beiden Seiten den Parameter. Der Parameter bekommt seinen eigenen Wert ' + t + ' noch einmal. Auf der Karte ① ändert sich nichts: <code>title</code> bleibt <code>null</code>.');
+    } else {
+      a.attr('1', 'title', t).schritt(6, 'Links steht <code>this.title</code>: das Attribut auf der Karte ①. Rechts steht <code>title</code>: der Parameter mit dem Wert ' + t + '. Der Wert wandert von rechts nach links auf die Karte.');
+    }
+    a.attr('1', 'pages', p).schritt(7, 'Dasselbe für die Seitenzahl: <code>this.pages</code> auf der Karte bekommt den Wert ' + p + ' aus dem Parameter <code>pages</code>.');
+    a.verlasse().setze('b', { ref: '1' })
+      .schritt(3, 'Der Konstruktor ist fertig. Sein Bereich mit den Parametern verschwindet, die Karte ① bleibt. Java ist zurück in Zeile 3 und erledigt den linken Teil: Die Variable <code>b</code> bekommt einen Pfeil auf die Karte ①.');
+    var titel = mitThis === false ? 'null' : ohne;
+    if (kurzGetter) {
+      a.aus(titel).schritt(4, '<code>b.getTitle()</code> fragt das Objekt ① nach seinem Titel. Der Getter gibt das Attribut <code>title</code> zurück: ' + (mitThis === false ? '<code>null</code>. Auf der Karte steht noch kein Titel. <code>println</code> gibt das als „null“ aus.' : t + '. <code>println</code> gibt den Text aus.'));
+    } else {
+      a.schritt(4, '<code>b.getTitle()</code> heißt: Frag das Objekt, auf das <code>b</code> zeigt, nach seinem Titel. <code>b</code> zeigt auf die Karte ①.');
+      a.bereich('getTitle()', 'Book.java').setze('this', { ref: '1' })
+        .schritt(11, 'Java springt in die Methode <code>getTitle</code>. <code>this</code> zeigt auf ①, weil der Aufruf <code>b.getTitle()</code> hieß. <code>title</code> ist hier das Attribut auf dieser Karte. <code>return</code> gibt seinen Wert zurück.', { gibt: t });
+      a.verlasse().aus(ohne).schritt(4, 'Zurück in Zeile 4 von <code>Main.java</code>: Der Rückgabewert ' + t + ' kommt an. <code>println</code> gibt ihn aus.');
+    }
+    return a.schritte;
+  }
+
+  var BOOK2 = ['public class Book {', '    private String title;', '    private int pages;', '    private boolean borrowed;', '',
+    '    public Book(String title, int pages) {', '        this.title = title;', '        this.pages = pages;', '    }', '',
+    '    public void borrow() {', '        borrowed = true;', '    }', '',
+    '    public boolean isBorrowed() {', '        return borrowed;', '    }', '}'];
+
+  Kurs.start({
+    nr: 4,
+    legende: { typ: 'Typ', pink: 'Name', violett: 'new und this', tuerkis: 'Parameter, Werte für den Konstruktor' },
+
+    laeufe: {
+      lauf1: {
+        nebeneinander: true,
+        eingabe: { art: 'wahl', label: 'Buch', werte: [{ text: '"Momo", 320', wert: 'Momo,320' }, { text: '"Krabat", 288', wert: 'Krabat,288' }, { text: '"Emil", 128', wert: 'Emil,128' }] },
+        dateien: function (v) {
+          var b = BUECHER[v];
+          return [{ name: 'Main.java', code: mainCode('        «typ:Book» «pink:b» = «violett:new» Book(«tuerkis:' + b[0] + ', ' + b[1] + '»);') }, { name: 'Book.java', code: bookCode(true) }];
+        },
+        schritte: function (v) { var b = BUECHER[v]; return bauen(b[0], b[1], true, false); }
+      },
+      lauf2: {
+        nebeneinander: true,
+        eingabe: { art: 'wahl', label: 'Buch ausleihen', werte: [{ text: 'b1.borrow()', wert: 'b1' }, { text: 'b2.borrow()', wert: 'b2' }] },
+        dateien: function (v) {
+          return [{ name: 'Main.java', code: ['public class Main {', '    public static void main(String[] args) {', '        Book b1 = new Book("Momo", 320);', '        Book b2 = new Book("Krabat", 288);',
+            '        ' + v + '.borrow();', '        System.out.println(b1.isBorrowed());', '        System.out.println(b2.isBorrowed());', '    }', '}'] }, { name: 'Book.java', code: BOOK2 }];
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf(), id = v === 'b1' ? '1' : '2';
+          a.datei('Main.java').objekt('1', 'Book', [['title', '"Momo"'], ['pages', 320], ['borrowed', false]]).setze('b1', { ref: '1' })
+            .schritt(3, 'Das erste Buch entsteht. Der Konstruktor läuft genau wie im Lauf oben. Hier ist das in einem Schritt zusammengefasst. <code>borrowed</code> füllt der Konstruktor nicht, also bleibt der Standardwert <code>false</code>.');
+          a.objekt('2', 'Book', [['title', '"Krabat"'], ['pages', 288], ['borrowed', false]]).setze('b2', { ref: '2' })
+            .schritt(4, 'Das zweite Buch entsteht nach demselben Bauplan. Es bekommt seine eigene Karte ② mit eigenen Werten. <code>b2</code> zeigt auf ②.');
+          a.schritt(5, '<code>' + v + '.borrow()</code> ruft die Methode <code>borrow</code> an dem Objekt auf, auf das <code>' + v + '</code> zeigt. <code>' + v + '</code> zeigt auf die Karte ' + (id === '1' ? '①' : '②') + '.');
+          a.bereich('borrow()', 'Book.java').setze('this', { ref: id })
+            .schritt(11, 'Java springt in <code>borrow</code>. <code>this</code> zeigt auf ' + (id === '1' ? '①' : '②') + ', weil der Aufruf <code>' + v + '.borrow()</code> hieß.');
+          a.attr(id, 'borrowed', true).schritt(12, '<code>borrowed</code> ist das Attribut des Objekts, auf das <code>this</code> zeigt. Nur auf der Karte ' + (id === '1' ? '①' : '②') + ' steht jetzt <code>true</code>. Die andere Karte bleibt, wie sie war.');
+          a.verlasse().aus(String(id === '1')).schritt(6, 'Zurück in <code>main</code>. <code>b1.isBorrowed()</code> fragt die Karte ① und bekommt <code>' + (id === '1') + '</code> zurück. Den Sprung in den Getter zeigt dieser Lauf nicht.');
+          a.aus(String(id === '2')).schritt(7, '<code>b2.isBorrowed()</code> fragt die Karte ② und bekommt <code>' + (id === '2') + '</code> zurück. Jedes Objekt hat seine eigenen Attribute.');
+          return a.schritte;
+        }
+      },
+      lauf3: {
+        nebeneinander: true,
+        legende: { pink: 'Attribut', tuerkis: 'Parameter', violett: 'this' },
+        eingabe: { art: 'wahl', label: 'Konstruktor', werte: [{ text: 'mit this.', wert: 'mit' }, { text: 'ohne this.', wert: 'ohne' }] },
+        dateien: function (v) {
+          var b = bookCode(v === 'mit');
+          b[5] = v === 'mit' ? '        «violett:this».«pink:title» = «tuerkis:title»;' : '        «tuerkis:title» = «tuerkis:title»;';
+          return [{ name: 'Main.java', code: mainCode('        Book b = new Book("Momo", 320);') }, { name: 'Book.java', code: b }];
+        },
+        schritte: function (v) { return bauen('"Momo"', 320, v === 'mit', true); }
+      }
+    },
+
+    fehler: [
+      { titel: 'new vergessen', code: ['Book b = Book("Momo", 320);'], rot: [1], quelle: 'VS Code', meldung: 'The method Book(String, int) is undefined for the type Main',
+        text: '<p>Ohne <code>new</code> hält Java <code>Book(…)</code> für den Aufruf einer Methode mit dem Namen <code>Book</code>. So eine Methode gibt es nicht. Ein Objekt baust du immer mit <code>new</code>: <code>Book b = new Book("Momo", 320);</code></p>' },
+      { titel: 'Werte passen nicht zum Konstruktor', code: ['Book b = new Book(320, "Momo");'], rot: [1], quelle: 'VS Code', meldung: 'The constructor Book(int, String) is undefined',
+        text: '<p>Der Konstruktor erwartet zuerst einen Text, dann eine Zahl: <code>Book(String title, int pages)</code>. Hier stehen die Werte andersherum. Java sucht einen Konstruktor, der zuerst eine Zahl nimmt, und findet keinen. Genauso bei zu wenigen Werten: <code>new Book("Momo")</code> ergibt <span class="meldung">The constructor Book(String) is undefined</span>.</p><p>Schau in den Kopf des Konstruktors und gib die Werte in genau dieser Reihenfolge und Anzahl mit.</p>' },
+      { titel: 'void vor dem Konstruktor', code: ['// in Book.java:', 'public void Book(String title, int pages) {', '    this.title = title;', '    this.pages = pages;', '}', '', '// in Main.java:', 'Book b = new Book("Momo", 320);'], rot: [8], quelle: 'VS Code', meldung: 'The constructor Book(String, int) is undefined',
+        text: '<p>Mit <code>void</code> davor ist das kein Konstruktor mehr. Java hält es für eine Methode, die genauso heißt wie die Klasse. In <code>Book.java</code> zeigt VS Code dazu nur eine gelbe Warnung: <code>This method has a constructor name</code> („Diese Methode hat den Namen eines Konstruktors“). Rot unterstreicht VS Code erst Zeile 8 in <code>Main.java</code>, wo du <code>new Book("Momo", 320)</code> schreibst. Dort steht die Meldung oben.</p><p>Deshalb suchst du die Ursache leicht an der falschen Stelle. Lass <code>void</code> vor dem Konstruktor weg.</p>' },
+      { titel: 'this. vergessen', code: ['public Book(String title, int pages) {', '    title = title;', '    this.pages = pages;', '}'],
+        text: '<p>Kein roter Fehler, das Programm läuft. VS Code unterstreicht die Zeile 2 nur gelb, das ist eine Warnung: <code>The assignment to variable title has no effect</code> („Diese Zuweisung bewirkt nichts“). Das Attribut <code>title</code> bleibt <code>null</code>, wie der Lauf oben zeigt. Schreib <code>this.title = title;</code></p>' },
+      { titel: 'Variable ohne Objekt: NullPointerException', code: ['Book b = null;', 'System.out.println(b.getTitle());'], rot: [2], quelle: 'Programm',
+        meldung: 'Exception in thread "main" java.lang.NullPointerException: Cannot invoke "Book.getTitle()" because "b" is null',
+        text: '<p><code>null</code> heißt: Die Variable zeigt auf kein Objekt. Rufst du eine Methode an einem Objekt auf, das es nicht gibt, bricht Java mit einer Exception (einem Laufzeitfehler) ab. Das Programm stoppt genau in dieser Zeile. Kapitel 11 erklärt solche Abbrüche genauer.</p><p>So direkt schreibst du <code>null</code> selten hin. Der Fehler passiert meist, wenn ein Attribut vom Typ einer Klasse nie einen Wert bekommt. Dann behält es den Standardwert <code>null</code>. Sorg dafür, dass vor dem Punkt immer eine Variable steht, die mit <code>new</code> ein Objekt bekommen hat.</p>' }
+    ],
+
+    fragen: [
+      { art: 'wahl', frage: 'Was gibt dieses Programm aus?',
+        code: ['Book a = new Book("Momo", 320);', 'Book b = new Book("Krabat", 288);', 'b.borrow();', 'System.out.println(a.isBorrowed());'],
+        optionen: [
+          { t: 'false', ok: true, warum: 'Richtig. a und b zeigen auf zwei verschiedene Karten. borrow() hat nur die Karte von b geändert. Auf der Karte von a steht weiter false.' },
+          { t: 'true', warum: 'b.borrow() ändert nur das Objekt, auf das b zeigt. a zeigt auf eine andere Karte mit eigenen Attributen. Dort steht weiter der Standardwert false.' },
+          { t: 'Fehler, weil a nie ausgeliehen wurde', warum: 'Das ist kein Fehler. borrowed hat von Anfang an einen Wert: den Standardwert false. Den gibt isBorrowed() hier zurück.' }
+        ] },
+      { art: 'zeile', frage: 'Welche Zeile ist der Kopf des Konstruktors? Klick sie an.',
+        code: ['public class Book {', '    private int pages;', '', '    public int getPages() {', '        return pages;', '    }', '', '    public Book(int pages) {', '        this.pages = pages;', '    }', '}'],
+        ok: 8,
+        richtig: 'Richtig. Der Konstruktor heißt wie die Klasse und hat keinen Rückgabetyp. Er muss nicht als Erstes in der Klasse stehen.',
+        falsch: 'Das ist nicht der Konstruktor. Such die Zeile, in der der Name genau wie die Klasse lautet und kein Rückgabetyp davor steht.',
+        warum: { 1: 'Das ist der Kopf der Klasse, der Bauplan selbst. Der Konstruktor steht weiter unten in der Klasse.', 4: 'Das ist eine Methode, ein Getter. Vor dem Namen steht der Rückgabetyp int, und sie heißt getPages, nicht Book.' } },
+      { art: 'reihenfolge', frage: 'Was passiert bei der Zeile Book b = new Book("Momo", 320);? Bring die Schritte in die richtige Reihenfolge.',
+        zeilen: ['new baut eine leere Karte', 'Konstruktor bekommt die Werte', 'Konstruktor füllt die Karte', 'b zeigt auf die Karte'],
+        richtig: 'Richtig. Erst rechts vom = (bauen und füllen), dann links (die Variable b zeigt auf das fertige Objekt).',
+        falsch: 'Noch nicht ganz. Java arbeitet erst alles rechts vom = ab: bauen, dann füllen. Erst ganz am Ende bekommt die Variable links ihren Pfeil.' },
+      { art: 'luecke', frage: 'Der Konstruktor soll die Seitenzahl im Attribut speichern. Was gehört in die Lücke?',
+        code: ['public Book(String title, int pages) {', '    this.title = title;', '    this.___ = pages;', '}'], ok: ['pages'], proben: ['title', 'Pages', 'pages'],
+        falschBei: { title: 'title ist schon in Zeile 2 gefüllt. Hier soll die Seitenzahl auf die Karte. Das Attribut dafür heißt pages.', Pages: 'Fast. Java unterscheidet Groß- und Kleinbuchstaben. Das Attribut heißt pages, klein geschrieben.' },
+        richtig: 'Richtig. this.pages ist das Attribut auf der Karte, pages rechts ist der Parameter.',
+        falsch: 'Das passt noch nicht. Links vom = steht das Attribut, in dem du die Seitenzahl speicherst.' },
+      { art: 'wahl', frage: 'Im Konstruktor fehlt this. vor title. Dort steht nur title = title;. Was gibt das Programm aus?',
+        code: ['Book b = new Book("Momo", 320);', 'System.out.println(b.getTitle());'],
+        optionen: [
+          { t: 'Momo', warum: 'Das wäre richtig mit this. davor. Ohne this. meint title auf beiden Seiten den Parameter. Auf der Karte kommt nichts an.' },
+          { t: 'null', ok: true, warum: 'Richtig. Ohne this. bekommt der Parameter seinen eigenen Wert. Das Attribut behält seinen Standardwert null, und genau den gibt getTitle() zurück.' },
+          { t: 'Das Programm startet nicht, weil title rot unterstrichen ist', warum: 'title = title; ist für Java erlaubt. VS Code zeigt nur eine gelbe Warnung. Das Programm läuft und gibt null aus.' }
+        ] },
+      { art: 'zuordnen', frage: 'Welcher Begriff bedeutet was?', linksCode: false,
+        paare: [['Klasse', 'der Bauplan', 'Die Klasse legt nur fest, welche Attribute es gibt. Sie selbst hat noch keine Werte.'],
+                ['Objekt', 'ein Ding, das nach dem Bauplan entsteht', 'Ein Objekt entsteht mit new und hat eigene Werte.'],
+                ['Attribut', 'eine Variable, die zu einem Objekt gehört', 'Attribute wie title oder pages stehen auf der Karte jedes Objekts.'],
+                ['Konstruktor', 'läuft bei new einmal und füllt die Attribute', 'Der Konstruktor heißt wie die Klasse und läuft bei jedem new genau einmal.'],
+                ['this', 'das Objekt, um das es gerade geht', 'this zeigt im Konstruktor auf das neue Objekt, das new gerade baut.']],
+        richtig: 'Alles richtig zugeordnet.', falsch: 'Noch nicht ganz. Rot markiert sind die Zeilen, die noch nicht passen:' }
+    ],
+
+    aufgaben: [
+      { titel: 'Aufgabe 1: Den Konstruktor füllen', datei: 'Book.java, Konstruktor Book', befehl: './gradlew test --tests "*k04.BookTest"',
+        text: '<p>Die Klasse <code>Book</code> hat drei Attribute: <code>title</code>, <code>pages</code> und <code>borrowed</code>. Der Konstruktor bekommt einen Titel und eine Seitenzahl, aber er ist noch leer. Deshalb bleiben die Attribute bei ihren Standardwerten, und die Getter geben <code>null</code> und 0 zurück.</p><p>Schreib in den Konstruktor zwei Zeilen, die die beiden Parameter in den Attributen speichern. <code>borrowed</code> fasst du nicht an: Ein neues Buch ist nicht ausgeliehen, und der Standardwert <code>false</code> passt schon.</p><p>Die Zeile <code>public Book(String title, int pages) {</code> bleibt unverändert.</p>',
+        tipps: ['Für jedes Attribut eine Zeile. Links vom <code>=</code> steht das Attribut des Objekts, rechts der Parameter.', 'Die erste Zeile heißt <code>this.title = title;</code>. Die zweite schreibst du genauso für die Seitenzahl.'],
+        loesung: ['public Book(String title, int pages) {', '    this.title = title;', '    this.pages = pages;', '}'] },
+      { titel: 'Aufgabe 2: Getter und eine Methode, die zählt', datei: 'Library.java, Methoden getName, getBookCount, addBook', befehl: './gradlew test --tests "*k04.LibraryTest"',
+        text: '<p>Eine Bibliothek (<code>Library</code>) hat einen Namen (<code>name</code>) und zählt ihre Bücher (<code>bookCount</code>). Der Konstruktor ist schon fertig. Drei Methoden fehlen noch:</p><table><tr><th>Methode</th><th>soll</th></tr><tr><td><code>getName()</code></td><td>den Namen zurückgeben</td></tr><tr><td><code>getBookCount()</code></td><td>die Zahl der Bücher zurückgeben</td></tr><tr><td><code>addBook()</code></td><td><code>bookCount</code> um 1 erhöhen, nichts zurückgeben</td></tr></table><p>In den beiden Gettern steht noch ein <code>return</code> mit einem falschen Wert. Er ist nur ein Platzhalter, damit Java das Projekt ohne Fehler übersetzen (kompilieren) kann. Ersetze ihn. Die Zeilen mit den Methodenköpfen bleiben unverändert.</p>',
+        tipps: ['Ein Getter besteht aus einer einzigen Zeile: <code>return</code> und der Name des Attributs, zum Beispiel <code>return name;</code>', 'In <code>addBook()</code> änderst du das Attribut mit einer Zuweisung wie in Kapitel 2: <code>bookCount = bookCount + 1;</code> Die Methode hat <code>void</code>, also kein <code>return</code>.'],
+        loesung: ['public String getName() {', '    return name;', '}', '', 'public int getBookCount() {', '    return bookCount;', '}', '', 'public void addBook() {', '    bookCount = bookCount + 1;', '}'] },
+      { titel: 'Aufgabe 3: Eine Klasse nach Steckbrief', datei: 'neue Datei LibraryCard.java im Ordner k04', befehl: './gradlew test --tests "*k04.LibraryCardTest"',
+        text: '<p>Jetzt schreibst du eine ganze Klasse selbst: einen Leseausweis. Leg im Ordner <code>src/main/java/de/phl/crashkurs/k04</code> eine neue Klasse <code>LibraryCard</code> an, wie in Kapitel 1 (Rechtsklick auf den Ordner, „New Java File“, „Class“). Prüf, dass oben <code>package de.phl.crashkurs.k04;</code> steht.</p><p>Steckbrief der Klasse:</p><table><tr><th>Teil</th><th>Beschreibung</th></tr><tr><td>Attribut <code>owner</code></td><td>Typ <code>String</code>, <code>private</code>: wem der Ausweis gehört</td></tr><tr><td>Attribut <code>loans</code></td><td>Typ <code>int</code>, <code>private</code>: Zahl der ausgeliehenen Bücher</td></tr><tr><td>Konstruktor <code>LibraryCard(String owner)</code></td><td>speichert den Namen; <code>loans</code> beginnt bei 0</td></tr><tr><td><code>String getOwner()</code></td><td>gibt den Namen zurück</td></tr><tr><td><code>int getLoans()</code></td><td>gibt die Zahl der Ausleihen zurück</td></tr><tr><td><code>void addLoan()</code></td><td>erhöht <code>loans</code> um 1</td></tr></table><p>Vor jeder Methode und vor dem Konstruktor steht <code>public</code>. Der Test sucht die Klasse über ihren Namen. Solange es sie nicht gibt, sagt er dir das.</p>',
+        tipps: ['Bau die Klasse von oben nach unten: <code>package</code>-Zeile, <code>public class LibraryCard {</code>, die zwei Attribute, der Konstruktor, die drei Methoden, die schließende Klammer. Die Klasse <code>Book</code> aus Aufgabe 1 ist ein gutes Vorbild.', 'Der Konstruktor hat nur einen Parameter. Darin steht <code>this.owner = owner;</code>. Für <code>loans</code> brauchst du nichts zu tun: Der Standardwert ist schon 0. Du darfst aber auch <code>this.loans = 0;</code> schreiben.'],
+        loesung: [{ datei: 'LibraryCard.java', code: ['package de.phl.crashkurs.k04;', '', 'public class LibraryCard {', '', '    private String owner;', '    private int loans;', '',
+          '    public LibraryCard(String owner) {', '        this.owner = owner;', '        this.loans = 0;', '    }', '',
+          '    public String getOwner() {', '        return owner;', '    }', '', '    public int getLoans() {', '        return loans;', '    }', '',
+          '    public void addLoan() {', '        loans = loans + 1;', '    }', '}'] }] }
+    ]
+  });
+})();
+</script>
+</body>
+</html>

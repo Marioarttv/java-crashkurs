@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 10: Zählen mit for, Arrays und Listen – Java-Crashkurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kurs.css">
+</head>
+<body>
+<main class="kurs">
+
+  <p class="vorwissen">Das solltest du schon kennen: die <code>while</code>-Schleife aus Kapitel 9, Objekte mit <code>new</code> und Konstruktor aus Kapitel 4 und Methoden eines Objekts aufrufen aus Kapitel 5.</p>
+
+  <p>Du machst einen Sitzplan für eine Schulklasse. Für jeden Platz tust du dasselbe: Nummer aufschreiben, Namen dazuschreiben. Nur die Nummer ändert sich von Platz zu Platz. Bei 20 Plätzen willst du nicht 20-mal fast dieselbe Zeile schreiben.</p>
+  <p>Dafür gibt es eine Schleife mit eingebautem Zähler: <code>for</code>. Danach lernst du zwei Arten, viele Werte unter einem Namen zu speichern: das <strong>Array</strong> und die <strong>Liste</strong>. Am Ende baust du mit einer <code>for</code>-Schleife viele Objekte und sammelst sie in einer Liste. Dieses Muster kommt auch in der Präsenzübung vor.</p>
+  <p>Das Kapitel ist länger als die anderen. Nimm dir Zeit und mach zwischendurch eine Pause.</p>
+
+  <h2>for: eine Schleife mit Zähler</h2>
+  <p>Mit <code>while</code> aus Kapitel 9 kannst du schon zählen. Du brauchst dafür drei Dinge an drei Stellen: einen Zähler mit Startwert vor der Schleife, eine Bedingung und eine Änderung am Ende des Blocks.</p>
+  <div class="code" data-legende="nein" data-code='int i = 0;
+while (i < 3) {
+    System.out.println("i ist " + i);
+    i++;
+}'></div>
+  <p>Eine <code>for</code>-Schleife macht genau dasselbe. Sie schreibt die drei Dinge aber zusammen in eine Zeile, den Kopf der Schleife. Dort trennt je ein Semikolon die drei Teile:</p>
+  <div class="code" data-code='for («tuerkis:int i = 0»; «orange:i < 3»; «pink:i++») {
+    System.out.println("i ist " + i);
+}'></div>
+
+  <div class="aufbau">
+    <div class="teil" data-farbe="violett"><span class="stueck">for</span><span class="heisst"><b>Das Wort „für“</b>Damit fängt die Zählschleife an.</span></div>
+    <div class="teil" data-farbe="tuerkis"><span class="stueck">int i = 0</span><span class="heisst"><b>Der Start</b>Legt den Zähler <code>i</code> an. Läuft nur einmal, ganz am Anfang.</span></div>
+    <div class="teil" data-farbe="orange"><span class="stueck">i &lt; 3</span><span class="heisst"><b>Die Bedingung</b>Java prüft sie vor jedem Durchlauf, wie bei <code>while</code>.</span></div>
+    <div class="teil" data-farbe="pink"><span class="stueck">i++</span><span class="heisst"><b>Der Schritt</b>Läuft nach jedem Durchlauf des Blocks. Zählt <code>i</code> um 1 hoch.</span></div>
+  </div>
+  <p class="vorlesen"><span class="t-violett">Für</span> <span class="t-tuerkis"><code>i</code> ab 0</span>, solange <span class="t-orange"><code>i</code> kleiner als 3 ist</span>: <span class="t-blau">mach den Block</span>, und zähl danach <span class="t-pink"><code>i</code> um 1 hoch</span>.</p>
+  <p>Der Kopf steht in einer Zeile, aber Java führt seine drei Teile zu verschiedenen Zeiten aus. Klick dich durch und schau, welcher Teil des Kopfes gerade umrandet ist.</p>
+
+  <div id="lauf-for"></div>
+
+  <p>Die Reihenfolge ist immer dieselbe: einmal der <span class="t-tuerkis">Start</span>. Dann im Kreis: <span class="t-orange">Bedingung</span>, <span class="t-blau">Block</span>, <span class="t-pink">Schritt</span>, <span class="t-orange">Bedingung</span>, … bis die Bedingung falsch ist.</p>
+  <p>Der Zähler <code>i</code> gehört nur zur Schleife. Nach der Schleife gibt es ihn nicht mehr. Deshalb verschwindet er im Speicher.</p>
+
+  <h2>Ab 0 zählen: „genau 20-mal“ heißt i &lt; 20</h2>
+  <p>In Java zählst du fast immer ab 0. Gleich siehst du, warum: Die Fächer eines Arrays sind ab 0 nummeriert. Für die Zahl der Durchläufe gilt diese Regel: Start bei 0 und <code>&lt;</code> mit der gewünschten Zahl.</p>
+  <table class="zeichen">
+    <tr><th>Kopf</th><th>Werte von <code>i</code></th><th>Durchläufe</th></tr>
+    <tr><td><code>int i = 0; i &lt; 20; i++</code></td><td>0, 1, …, 19</td><td>genau 20</td></tr>
+    <tr><td><code>int i = 0; i &lt;= 20; i++</code></td><td>0, 1, …, 20</td><td>21, einer zu viel</td></tr>
+    <tr><td><code>int i = 1; i &lt; 20; i++</code></td><td>1, 2, …, 19</td><td>19, einer zu wenig</td></tr>
+  </table>
+  <p>Brauchst du Nummern ab 1, zum Beispiel für Sitzplätze, zählst du trotzdem ab 0 und rechnest <code>i + 1</code>.</p>
+
+  <h2>Ein Array: eine feste Reihe von Werten</h2>
+  <p>Ein <strong>Array</strong> ist eine Reihe von Werten mit fester Länge. Alle Werte haben denselben Typ und stehen unter einem gemeinsamen Namen. Die Namensliste einer Klasse sieht so aus:</p>
+  <div class="code" data-code='«typ:String[]» names = {"Ali", "Bea", "Cem"};'></div>
+  <p>Die eckigen Klammern hinter <code>String</code> heißen: eine Reihe von Texten. In den geschweiften Klammern stehen die Werte, getrennt durch Kommas. Eine Reihe von ganzen Zahlen wäre <code>int[] points = {62, 49, 80};</code>.</p>
+  <p>Stell dir das Array als Regal mit nummerierten Fächern vor. Die Nummer heißt Index und beginnt bei 0:</p>
+  <table class="zeichen">
+    <tr><th>Ausdruck</th><th>Wert</th><th>heißt</th></tr>
+    <tr><td><code>names[0]</code></td><td><code>"Ali"</code></td><td>das erste Fach</td></tr>
+    <tr><td><code>names[2]</code></td><td><code>"Cem"</code></td><td>das dritte und letzte Fach</td></tr>
+    <tr><td><code>names.length</code></td><td><code>3</code></td><td>die Länge, also die Zahl der Fächer (ohne runde Klammern)</td></tr>
+  </table>
+  <p>Das letzte Fach hat deshalb immer die Nummer <code>names.length - 1</code>. Ein Fach <code>names[3]</code> gibt es hier nicht.</p>
+  <p>Jetzt passen <code>for</code> und Array zusammen: Der Zähler <code>i</code> läuft von 0 bis zum letzten Fach. In jedem Durchlauf holt <code>names[i]</code> den nächsten Wert. Weil <code>i</code> dabei die Nummer des Fachs ist, sagen Aufgaben dazu oft „der aktuelle Index der Schleife“. Wähl oben im Kasten, ob das Array 3 oder 4 Namen hat. Die Schleife passt sich an, weil die Bedingung <code>names.length</code> benutzt.</p>
+
+  <div id="lauf-array"></div>
+
+  <h2>Eine Liste: wächst mit</h2>
+  <p>Ein Array hat eine feste Länge. Bei einer Anmeldeliste für eine AG weißt du vorher nicht, wie viele kommen. Dafür gibt es die <strong>Liste</strong>: eine Reihe von Werten, die mitwächst. In Java heißt sie <code>ArrayList</code>.</p>
+  <p>Die Liste gehört nicht zum Grundwortschatz von Java. Deshalb holst du sie mit einer <code>import</code>-Zeile in deine Datei. Sie steht oben, unter der <code>package</code>-Zeile (falls es eine gibt) und vor <code>public class</code>. Schreib diese Zeilen als feste Formel ab:</p>
+  <div class="code" data-legende="nein" data-code='import java.util.ArrayList;
+
+// in einer Methode:
+ArrayList<String> club = new ArrayList<>();'></div>
+  <p>In den spitzen Klammern steht, was in die Liste kommt: <code>&lt;String&gt;</code> für Texte, <code>&lt;Student&gt;</code> für Objekte der Klasse <code>Student</code>. <code>new ArrayList&lt;&gt;()</code> baut eine neue, leere Liste. Drei Methoden brauchst du:</p>
+  <table class="zeichen">
+    <tr><td><code>club.add("Bea")</code></td><td>hängt einen Wert hinten an die Liste an</td></tr>
+    <tr><td><code>club.get(0)</code></td><td>holt den Wert mit der Nummer 0, also den ersten</td></tr>
+    <tr><td><code>club.size()</code></td><td>gibt die Zahl der Werte zurück (mit runden Klammern)</td></tr>
+  </table>
+
+  <div id="lauf-liste"></div>
+
+  <p>In Vorgaben steht links oft <code>List&lt;Student&gt;</code> statt <code>ArrayList&lt;Student&gt;</code>, dazu oben eine zweite Zeile <code>import java.util.List;</code>. Du benutzt die Liste dann genauso, mit <code>add</code>, <code>get</code> und <code>size</code>.</p>
+
+  <h3>Array und Liste im Vergleich</h3>
+  <table class="zeichen">
+    <tr><th></th><th>Array</th><th>Liste</th></tr>
+    <tr><td>anlegen</td><td><code>String[] names = {"Ali", "Bea"};</code></td><td><code>ArrayList&lt;String&gt; club = new ArrayList&lt;&gt;();</code></td></tr>
+    <tr><td>Länge</td><td><code>names.length</code></td><td><code>club.size()</code></td></tr>
+    <tr><td>Wert Nummer i</td><td><code>names[i]</code></td><td><code>club.get(i)</code></td></tr>
+    <tr><td>Wert dazu</td><td>geht nicht, Länge ist fest</td><td><code>club.add("Cem")</code></td></tr>
+  </table>
+
+  <h3>Kurzform: jeden Wert einmal</h3>
+  <p>Brauchst du die Nummer <code>i</code> nicht, gibt es eine kürzere Schleife. Sie heißt for-each („für jeden“):</p>
+  <div class="code" data-legende="nein" data-code='for (String name : names) {
+    System.out.println(name);
+}'></div>
+  <p class="vorlesen"><span class="t-violett">Für jeden</span> Text <code>name</code> in <code>names</code>: <span class="t-blau">gib ihn aus</span>.</p>
+  <p>Das funktioniert mit Arrays und Listen. Es reicht, wenn du diese Form lesen kannst. In den Aufgaben brauchst du sie nicht. In Aufgabe 1 und 3 brauchst du die Nummer <code>i</code> zum Rechnen.</p>
+
+  <h2>Das Muster: in der Schleife Objekte bauen und sammeln</h2>
+  <p>Jetzt kommt alles zusammen. Für jede Person der Klasse soll ein Objekt der Klasse <code>Student</code> entstehen. Ihr Konstruktor braucht drei Werte:</p>
+  <div class="code" data-legende="nein" data-code='public class Student {
+    private String name;
+    private int seat;
+    private int locker;
+
+    public Student(String name, int seat, int locker) {
+        this.name = name;
+        this.seat = seat;
+        this.locker = locker;
+    }
+    // Getter: getName(), getSeat(), getLocker()
+}'></div>
+  <p>Die Schleife berechnet die Werte aus <code>i</code>. Die Person mit der Nummer <code>i</code> bekommt den Namen <code>names[i]</code>, den Sitzplatz <code>i + 1</code> und das Schließfach <code>100 + i * 2</code>. Die Schließfächer sind also 100, 102, 104 und so weiter. Für Rechnungen wie <code>100 + i * 2</code> gilt Punkt vor Strich, wie in Kapitel 2.</p>
+  <p>Jedes neue Objekt kommt mit <code>add</code> in die Liste. Die Liste legst du <strong>vor</strong> der Schleife an. Sonst gäbe es in jedem Durchlauf eine neue, leere Liste.</p>
+  <p>Klick dich zuerst mit <code>i &lt; 3</code> durch. Probier danach <code>i &lt;= 3</code>: Dann läuft die Schleife einmal zu oft.</p>
+
+  <div id="lauf-muster"></div>
+
+  <p>Mit <code>i &lt;= 3</code> fragt Java nach <code>names[3]</code>. Dieses Fach gibt es nicht. Java bricht das Programm deshalb mit einer Exception ab. Eine Exception ist ein Laufzeitfehler: Java stoppt das Programm und meldet die Ursache. Kapitel 11 erklärt das genauer. Hier heißt „Index 3 out of bounds for length 3“: Bei einer Länge von 3 gibt es kein Fach 3.</p>
+  <p>Die Zeilen 9 und 10 kannst du auch zu einer Zeile zusammenziehen. Dann baut Java das Objekt und gibt es direkt an <code>add</code> weiter:</p>
+  <div class="code" data-legende="nein" data-code='students.add(new Student(names[i], i + 1, 100 + i * 2));'></div>
+  <p>Beide Fassungen tun dasselbe. Nimm die zweizeilige, wenn dir die kurze zu unübersichtlich ist.</p>
+
+  <div class="merke">
+    <h3>Sechs Regeln zum Merken</h3>
+    <ol>
+      <li>Kopf einer <code>for</code>-Schleife: <code>for (int i = 0; i &lt; 20; i++)</code>. Semikolons trennen Start, Bedingung und Schritt.</li>
+      <li>Der Start läuft einmal. Danach immer: Bedingung, Block, Schritt, wieder Bedingung.</li>
+      <li>Ab 0 zählen. „Genau 20-mal“ heißt <code>i = 0</code> und <code>i &lt; 20</code>.</li>
+      <li>Array: feste Länge, Fächer ab 0, <code>names[i]</code>, Länge <code>names.length</code> ohne Klammern.</li>
+      <li>Liste: <code>import java.util.ArrayList;</code> oben unter <code>package</code>, <code>new ArrayList&lt;&gt;()</code>, dann <code>add</code>, <code>get(i)</code> und <code>size()</code> mit Klammern. Steht links <code>List&lt;…&gt;</code>, brauchst du zusätzlich <code>import java.util.List;</code>.</li>
+      <li>Muster: Leg die Liste vor der Schleife an. Bau in der Schleife mit <code>new</code> ein Objekt und leg es mit <code>add</code> in die Liste.</li>
+    </ol>
+  </div>
+
+  <h2>Fünf häufige Fehler verstehen und beheben</h2>
+  <p>Zwei dieser Fehler findet VS Code nicht. Das Programm läuft dann zu oft oder zu selten. Die anderen unterstreicht VS Code rot.</p>
+  <div id="fehler"></div>
+
+  <h2>Kurz geprüft: zählen, Fächer und Listen</h2>
+  <p>Geh die Schleifen im Kopf durch. Schreib dir bei Bedarf auf, welche Werte <code>i</code> nacheinander annimmt.</p>
+  <div id="fragen"></div>
+
+  <h2>Jetzt schreibst du selbst: drei Aufgaben im Projekt</h2>
+  <p>Die Aufgaben liegen im Ordner <code>src/main/java/de/phl/crashkurs/k10</code>. Die Klasse <code>Student</code> ist dort fertig. Geh bei jeder Aufgabe so vor:</p>
+  <ol class="schritte">
+    <li>Überleg, wie oft die Schleife laufen muss. Schreib den Kopf: Start bei 0, Bedingung mit <code>&lt;</code>, Schritt <code>i++</code>.</li>
+    <li>Schreib auf, was im Block mit <code>i</code> passieren soll. Rechne für <code>i = 0</code> und <code>i = 1</code> im Kopf nach, ob das Richtige herauskommt.</li>
+    <li>Starte den Test. Die Meldung nennt den Fall, der noch nicht stimmt, zum Beispiel das erste oder das letzte Objekt.</li>
+  </ol>
+  <p>Den Test startest du wie in den Kapiteln davor: Öffne die Testdatei und klick auf den grünen Pfeil neben dem Klassennamen. Oder tipp den Befehl aus der Aufgabe ins Terminal (unter Windows <code>.\gradlew.bat</code> statt <code>./gradlew</code>). Einzelne Tests können schon vor deiner Lösung grün sein.</p>
+  <div id="aufgaben"></div>
+
+</main>
+
+<script src="kurs.js"></script>
+<script>
+(function () {
+  var urteil = Kurs.urteil;
+  var KOPF = { tuerkis: 'Start', orange: 'Bedingung', pink: 'Schritt' };
+  var STUDENT = ['public class Student {', '    private String name;', '    private int seat;', '    private int locker;', '',
+    '    public Student(String name, int seat, int locker) {', '        this.name = name;', '        this.seat = seat;', '        this.locker = locker;', '    }', '',
+    '    public String getName() {', '        return name;', '    }', '', '    public int getLocker() {', '        return locker;', '    }', '}'];
+  var NAMEN = ['Ali', 'Bea', 'Cem', 'Dana'];
+  function q(s) { return '"' + s + '"'; }
+  function k10Rein(z) { return z.replace(/«[a-z]+:([^»]*)»/g, '$1'); }
+
+  var FOR = function (v) { return ['for («tuerkis:int i = 0»; «orange:i < ' + v + '»; «pink:i++») {', '    System.out.println("i ist " + i);', '}', 'System.out.println("fertig");']; };
+  var ARRAY = function (v) {
+    var n = NAMEN.slice(0, Number(v)).map(q).join(', ');
+    return ['String[] names = {' + n + '};', 'for («tuerkis:int i = 0»; «orange:i < names.length»; «pink:i++») {', '    System.out.println((i + 1) + ". " + names[i]);', '}'];
+  };
+  var LISTE = ['import java.util.ArrayList;', '', 'public class Main {', '    public static void main(String[] args) {', '        ArrayList<String> club = new ArrayList<>();', '        club.add("Bea");', '        club.add("Cem");', '        club.add("Ali");', '        System.out.println(club.size());',
+    '        for («tuerkis:int i = 0»; «orange:i < club.size()»; «pink:i++») {', '            System.out.println(club.get(i));', '        }', '    }', '}'];
+  var MUSTER = function (v) {
+    return ['import java.util.ArrayList;', 'import java.util.List;', '', 'public class Main {', '    public static void main(String[] args) {', '        String[] names = {"Ali", "Bea", "Cem"};', '        List<Student> students = new ArrayList<>();',
+      '        for («tuerkis:int i = 0»; «orange:i ' + v + ' 3»; «pink:i++») {', '            Student s = new Student(names[i], i + 1, 100 + i * 2);', '            students.add(s);', '        }',
+      '        Student last = students.get(2);', '        System.out.println(last.getName() + " " + last.getLocker());', '    }', '}'];
+  };
+
+  Kurs.start({
+    nr: 10,
+    legende: { violett: 'Schlüsselwort', tuerkis: 'Start', orange: 'Bedingung', pink: 'Schritt', blau: 'Block', typ: 'Typ' },
+
+    laeufe: {
+      'lauf-for': {
+        eingabe: { art: 'zahl', label: 'Zahl in der Bedingung', start: 3, proben: [3, 1, 0], min: 0, max: 6 },
+        legende: KOPF,
+        code: FOR,
+        schritte: function (v) {
+          var a = Kurs.ablauf(), i;
+          a.setze('i', 0).schritt(1, '<b>Start</b>: <code>int i = 0</code> legt den Zähler an. Dieser Teil läuft nur dieses eine Mal.', { teil: 'tuerkis' });
+          for (i = 0; i < v; i++) {
+            a.schritt(1, '<b>Bedingung</b>: ' + urteil(i + ' < ' + v, true) + '. Also läuft der Block.', { teil: 'orange' });
+            a.aus('i ist ' + i).schritt(2, 'Der Block gibt „i ist ' + i + '“ aus.');
+            a.setze('i', i + 1).schritt(1, '<b>Schritt</b>: Der Block ist fertig. Jetzt läuft <code>i++</code>, also ist <code>i</code> jetzt ' + (i + 1) + '.', { teil: 'pink' });
+          }
+          a.schritt(1, '<b>Bedingung</b>: ' + urteil(i + ' < ' + v, false) + '. ' + (v === 0 ? 'Die Bedingung ist schon beim ersten Mal falsch. Der Block läuft nicht.' : 'Die Schleife ist zu Ende.'), { teil: 'orange' });
+          a.loesche('i').aus('fertig').schritt(4, 'Hinter der Schleife geht es weiter. Der Block ist ' + (v === 1 ? 'einmal' : v === 0 ? 'keinmal' : v + '-mal') + ' gelaufen' + (v ? ', mit <code>i</code> von 0 bis ' + (v - 1) : '') + '. Den Zähler <code>i</code> gibt es jetzt nicht mehr.', { skip: [2] });
+          return a.schritte;
+        }
+      },
+
+      'lauf-array': {
+        eingabe: { art: 'wahl', label: 'Array', werte: [{ text: '3 Namen', wert: '3' }, { text: '4 Namen', wert: '4' }] },
+        legende: KOPF,
+        code: ARRAY,
+        schritte: function (v) {
+          var n = Number(v), werte = NAMEN.slice(0, n), a = Kurs.ablauf(), i;
+          a.setze('names', { array: werte.map(q) }).schritt(1, 'Das Array <code>names</code> entsteht mit ' + n + ' Fächern, nummeriert von 0 bis ' + (n - 1) + '. <code>names.length</code> ist ' + n + '.');
+          a.setze('i', 0).schritt(2, '<b>Start</b>: <code>i</code> bekommt 0.', { teil: 'tuerkis' });
+          for (i = 0; i < n; i++) {
+            a.schritt(2, '<b>Bedingung</b>: <code>names.length</code> ist ' + n + ', also ' + urteil(i + ' < ' + n, true) + '.', { teil: 'orange' });
+            a.aus((i + 1) + '. ' + werte[i]).schritt(3, '<code>names[' + i + ']</code> holt Fach ' + i + ': <code>"' + werte[i] + '"</code>. Davor steht <code>i + 1</code>, also ' + (i + 1) + '. So beginnt die Nummerierung bei 1, obwohl das Array bei 0 beginnt.');
+            a.setze('i', i + 1).schritt(2, '<b>Schritt</b>: <code>i</code> ist jetzt ' + (i + 1) + '.', { teil: 'pink' });
+          }
+          a.loesche('i').schritt(2, '<b>Bedingung</b>: ' + urteil(n + ' < ' + n, false) + '. Ein Fach ' + n + ' gibt es nicht, und die Schleife fragt auch nicht danach. Sie ist zu Ende. Der Zähler <code>i</code> verschwindet.', { teil: 'orange', skip: [3] });
+          return a.schritte;
+        }
+      },
+
+      'lauf-liste': {
+        legende: KOPF,
+        dateien: [{ name: 'Main.java', code: LISTE }],
+        java: function () { return { dateien: { 'Main.java': LISTE.map(k10Rein).join('\n') + '\n' }, main: 'Main' }; },
+        schritte: function () {
+          var a = Kurs.ablauf().datei('Main.java'), werte = ['"Bea"', '"Cem"', '"Ali"'], i;
+          a.reihe('L', 'ArrayList<String>', []).setze('club', { ref: 'L' }).schritt(5, 'Eine neue, leere Liste entsteht. Die Variable <code>club</code> zeigt auf sie (Marke L).');
+          a.fach('L', 0, werte[0]).schritt(6, '<code>add</code> hängt <code>"Bea"</code> an. Die Liste hat jetzt einen Wert mit der Nummer 0.');
+          a.fach('L', 1, werte[1]).schritt(7, '<code>"Cem"</code> kommt hinten dazu, mit der Nummer 1.');
+          a.fach('L', 2, werte[2]).schritt(8, '<code>"Ali"</code> kommt hinten dazu, mit der Nummer 2. Die Liste ist mitgewachsen. Sie behält die Reihenfolge der <code>add</code>-Aufrufe.');
+          a.aus('3').schritt(9, '<code>club.size()</code> gibt die Zahl der Werte zurück: 3.');
+          a.setze('i', 0).schritt(10, '<b>Start</b>: <code>i</code> bekommt 0.', { teil: 'tuerkis' });
+          for (i = 0; i < 3; i++) {
+            a.schritt(10, '<b>Bedingung</b>: <code>club.size()</code> ist 3, also ' + urteil(i + ' < 3', true) + '.', { teil: 'orange' });
+            a.aus(werte[i].replace(/"/g, '')).schritt(11, '<code>club.get(' + i + ')</code> holt den Wert mit der Nummer ' + i + ': <code>' + werte[i] + '</code>.');
+            a.setze('i', i + 1).schritt(10, '<b>Schritt</b>: <code>i</code> ist jetzt ' + (i + 1) + '.', { teil: 'pink' });
+          }
+          a.loesche('i').schritt(10, '<b>Bedingung</b>: ' + urteil('3 < 3', false) + '. Die Schleife ist zu Ende.', { teil: 'orange', skip: [11] });
+          return a.schritte;
+        }
+      },
+
+      'lauf-muster': {
+        eingabe: { art: 'wahl', label: 'Bedingung', werte: [{ text: 'i < 3', wert: '<' }, { text: 'i <= 3', wert: '<=' }] },
+        legende: KOPF,
+        dateien: function (v) { return [{ name: 'Main.java', code: MUSTER(v) }]; },
+        java: function (v) { return { dateien: { 'Main.java': MUSTER(v).map(k10Rein).join('\n') + '\n', 'Student.java': STUDENT.join('\n') + '\n' }, main: 'Main' }; },
+        schritte: function (v) {
+          var a = Kurs.ablauf().datei('Main.java'), namen = ['Ali', 'Bea', 'Cem'], i, ende = v === '<' ? 3 : 4;
+          a.setze('names', { array: namen.map(q) }).schritt(6, 'Java legt das Array mit den drei Namen an (Fächer 0 bis 2).');
+          a.reihe('L', 'ArrayList<Student>', []).setze('students', { ref: 'L' }).schritt(7, 'Vor der Schleife entsteht eine leere Liste für <code>Student</code>-Objekte. Links steht <code>List&lt;Student&gt;</code>, rechts <code>new ArrayList&lt;&gt;()</code>.');
+          a.setze('i', 0).schritt(8, '<b>Start</b>: <code>i</code> bekommt 0.', { teil: 'tuerkis' });
+          for (i = 0; i < ende; i++) {
+            a.schritt(8, '<b>Bedingung</b>: ' + urteil(i + ' ' + v + ' 3', true) + '.', { teil: 'orange' });
+            if (i === 3) {
+              a.ausRot('Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3')
+                .schritt(9, '<code>names[3]</code>: Das Array hat nur die Fächer 0, 1 und 2. Java bricht hier ab. Die Zeilen danach laufen nicht mehr.', { abbruch: true });
+              return a.schritte;
+            }
+            var id = String(i + 1);
+            a.objekt(id, 'Student', [['name', q(namen[i])], ['seat', i + 1], ['locker', 100 + i * 2]]).setze('s', { ref: id })
+              .schritt(9, 'Ein neues Objekt entsteht. Java setzt <code>i = ' + i + '</code> ein: <code>names[' + i + ']</code> ist <code>"' + namen[i] + '"</code>, <code>i + 1</code> ist ' + (i + 1) + ', <code>100 + i * 2</code> ist ' + (100 + i * 2) + '. Der Ablauf überspringt den Sprung in den Konstruktor.');
+            a.fach('L', i, { ref: id }).schritt(10, '<code>students.add(s)</code> legt das Objekt ' + ['①', '②', '③'][i] + ' in die Liste. Dort hat es die Nummer ' + i + '.');
+            a.loesche('s').setze('i', i + 1).schritt(8, '<b>Schritt</b>: <code>i</code> ist jetzt ' + (i + 1) + '. Die Variable <code>s</code> gehörte nur zu diesem Durchlauf und ist weg. Das Objekt bleibt, denn die Liste zeigt darauf.', { teil: 'pink' });
+          }
+          a.loesche('i').schritt(8, '<b>Bedingung</b>: ' + urteil('3 < 3', false) + '. Die Schleife ist zu Ende. In der Liste liegen drei Objekte.', { teil: 'orange', skip: [9, 10] });
+          a.setze('last', { ref: '3' }).schritt(12, '<code>students.get(2)</code> holt das Objekt mit der Nummer 2 aus der Liste: Cem.', { skip: [9, 10] });
+          a.aus('Cem 104').schritt(13, 'Java gibt Name und Schließfach aus: Cem hat Schließfach 104.', { skip: [9, 10] });
+          return a.schritte;
+        }
+      }
+    },
+
+    fehler: [
+      { titel: 'Kleiner-gleich statt kleiner', code: ['String[] names = {"Ali", "Bea", "Cem"};', 'for (int i = 0; i <= names.length; i++) {', '    System.out.println(names[i]);', '}'], rot: [2],
+        quelle: 'Programm', meldung: 'Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3',
+        text: '<p>Mit <code>&lt;=</code> läuft die Schleife auch noch für <code>i = 3</code>. Das Fach <code>names[3]</code> gibt es nicht, denn die Fächer heißen 0, 1 und 2. Das Programm gibt erst Ali, Bea und Cem aus und bricht dann in Zeile 3 ab. Die Ursache steht aber in Zeile 2. Kapitel 11 erklärt, wie du so eine Meldung liest. Behebung: <code>i &lt; names.length</code>.</p>' },
+      { titel: 'Start bei 1', code: ['for (int i = 1; i < names.length; i++) {', '    System.out.println(names[i]);', '}'], rot: [1],
+        text: '<p>Kein Rot, keine Meldung. Aber Ali fehlt in der Ausgabe, denn die Schleife holt <code>names[0]</code> nie. Fächer beginnen bei 0, also auch der Zähler: <code>int i = 0</code>.</p>' },
+      { titel: 'Komma statt Semikolon im Kopf', code: ['for (int i = 0, i < 3, i++) {'], rot: [1], meldung: 'Syntax error on token ",", . expected',
+        text: '<p>VS Code meldet hier drei Fehler in derselben Zeile, und der erste klingt seltsam. Gemeint ist: Du trennst die drei Teile des Kopfes mit Semikolons, nicht mit Kommas. Richtig ist <code>for (int i = 0; i &lt; 3; i++) {</code>.</p>' },
+      { titel: 'import vergessen', code: ['ArrayList<String> club = new ArrayList<>();'], rot: [1], meldung: 'ArrayList cannot be resolved to a type',
+        text: '<p>Das heißt: Java kennt den Namen <code>ArrayList</code> nicht. Es fehlt oben in der Datei, unter der <code>package</code>-Zeile, die Zeile <code>import java.util.ArrayList;</code> (bei <code>List</code> zusätzlich <code>import java.util.List;</code>). Fährst du in VS Code mit der Maus über das rote Wort, schlägt VS Code den passenden Import oft selbst vor.</p>' },
+      { titel: 'length und size() verwechselt', code: ['for (int i = 0; i < names.length(); i++) {', 'System.out.println(club.length);'], rot: [1, 2],
+        meldung: 'Cannot invoke length() on the array type String[]',
+        text: '<p>Das ist die Meldung zu Zeile 1. Zu Zeile 2 meldet VS Code <span class="meldung">length cannot be resolved or is not a field</span>. Du fragst ihre Länge verschieden ab: beim Array mit <code>names.length</code> ohne Klammern, bei der Liste mit <code>club.size()</code> mit Klammern.</p>' }
+    ],
+
+    fragen: [
+      { art: 'wahl', frage: 'Wie oft läuft der Block dieser Schleife?',
+        code: ['for (int i = 0; i < 20; i++) {', '    System.out.println(i);', '}'],
+        optionen: [
+          { t: '19-mal', warum: 'Zähl die Werte von i: 0, 1, 2, … bis 19. Das sind 20 Werte, denn die 0 zählt mit.' },
+          { t: '20-mal', ok: true, warum: 'Richtig. i nimmt die Werte 0 bis 19 an, das sind 20 Durchläufe. Bei i = 20 ist 20 < 20 falsch.' },
+          { t: '21-mal', warum: 'Bei i = 20 ist die Bedingung 20 < 20 schon falsch. Der Block läuft also nur für 0 bis 19: 20-mal. 21-mal wären es mit <=.' }
+        ] },
+      { art: 'luecke', frage: 'Die Schleife soll genau 20-mal laufen und bei 0 anfangen. Was gehört in die beiden Lücken?',
+        code: ['for (int i = ___; i ___ 20; i++) {'], ok: [['0'], ['<']],
+        richtig: 'Stimmt. Start bei 0, Bedingung i < 20: Das ergibt genau 20 Durchläufe.',
+        falsch: 'Das passt noch nicht. Der Zähler beginnt bei 0. Bei 20 soll die Schleife nicht mehr laufen. Welches Vergleichszeichen ist dann richtig?' },
+      { art: 'zeile', frage: 'VS Code unterstreicht hier etwas rot. Klick auf die Zeile, in der der Fehler steckt.',
+        code: ['String[] names = {"Ali", "Bea", "Cem"};', 'for (i = 0; i < names.length; i++) {', '    System.out.println(names[i]);', '}'],
+        ok: 2,
+        richtig: 'Richtig. Im Start fehlt der Typ: <code>int i = 0</code>. Ohne <code>int</code> gibt es keinen Zähler <code>i</code>. VS Code meldet: „i cannot be resolved to a variable“.',
+        falsch: 'Diese Zeile ist in Ordnung. Schau dir den Kopf der Schleife genau an: Legt er den Zähler richtig an?',
+        warum: { 3: 'VS Code unterstreicht hier zwar auch <code>i</code>, aber nur als Folge. Die Ursache steht im Kopf der Schleife, wo du <code>i</code> anlegen musst.' } },
+      { art: 'zuordnen', frage: 'Was bedeutet welcher Ausdruck? Dabei ist names ein Array und club eine Liste.',
+        paare: [['names.length', 'Zahl der Fächer im Array', 'Bei einem Array steht die Länge ohne Klammern: <code>names.length</code>.'],
+                ['club.size()', 'Zahl der Werte in der Liste', 'Bei einer Liste fragst du die Länge mit der Methode <code>size()</code> ab.'],
+                ['names[i]', 'Fach mit der Nummer i im Array', 'Eckige Klammern holen ein Fach aus einem Array.'],
+                ['club.get(i)', 'Wert mit der Nummer i in der Liste', 'Bei einer Liste holt <code>get(i)</code> den Wert mit der Nummer i.'],
+                ['club.add(x)', 'hängt x hinten an die Liste an', '<code>add</code> macht die Liste um einen Wert länger.']],
+        richtig: 'Alles richtig zugeordnet.', falsch: 'Noch nicht ganz.' },
+      { art: 'wahl', frage: 'Was gibt diese Schleife aus?',
+        code: ['String[] names = {"Ali", "Bea", "Cem"};', 'for (String name : names) {', '    System.out.println(name);', '}'],
+        optionen: [
+          { t: 'Ali Bea Cem', ok: true, warum: 'Richtig. Die for-each-Schleife nimmt jedes Fach einmal, der Reihe nach von vorn.' },
+          { t: 'Bea Cem', warum: 'Die for-each-Schleife beginnt beim ersten Fach, also bei Ali. Sie lässt keinen Wert aus.' },
+          { t: '0 1 2', warum: 'In <code>name</code> steckt nicht die Nummer, sondern der Wert aus dem Fach. Die Nummer kommt in dieser Schleife gar nicht vor.' }
+        ] },
+      { art: 'reihenfolge', frage: 'Bring die Zeilen in die richtige Reihenfolge: 20 Objekte bauen, sammeln und die Liste zurückgeben.',
+        zeilen: ['List<Student> students = new ArrayList<>();', 'for (int i = 0; i < 20; i++) {', '    Student s = new Student(names[i], i + 1, 100 + i * 2);', '    students.add(s);', '}', 'return students;'],
+        richtig: 'Richtig. Die Liste entsteht einmal vor der Schleife. In der Schleife baut der Code jedes Objekt und legt es gleich danach in die Liste. Nach der Schleife gibt <code>return</code> die volle Liste zurück.',
+        falsch: 'Die rot markierten Zeilen stehen noch am falschen Platz. Die Liste muss es schon vor der Schleife geben. Ein Objekt kannst du erst in die Liste legen, nachdem es gebaut ist. <code>return</code> beendet die Methode und gehört ans Ende.' }
+    ],
+
+    aufgaben: [
+      { titel: 'Aufgabe 1: Plätze ausgeben', datei: 'Seats.java, Methode printSeats', befehl: './gradlew test --tests "*k10.SeatsTest"',
+        text: '<p>Die Methode bekommt die Zahl der Plätze im Parameter <code>count</code>. Sie soll jeden Platz in einer eigenen Zeile ausgeben, beginnend bei 1. Für <code>count = 3</code> kommen drei Zeilen: <code>Platz 1</code>, <code>Platz 2</code> und <code>Platz 3</code>.</p><p>Benutze eine <code>for</code>-Schleife. Die Zeile <code>public static void printSeats(int count) {</code> bleibt unverändert.</p>',
+        tipps: ['Der Kopf ist <code>for (int i = 0; i &lt; count; i++)</code>. So läuft der Block genau <code>count</code>-mal.', 'Weil <code>i</code> bei 0 beginnt, gibst du <code>i + 1</code> aus: <code>System.out.println("Platz " + (i + 1));</code> Die Klammern um <code>i + 1</code> sind wichtig. Ohne sie hängt Java erst <code>i</code> und dann 1 an den Text an.'],
+        loesung: ['public static void printSeats(int count) {', '    for (int i = 0; i < count; i++) {', '        System.out.println("Platz " + (i + 1));', '    }', '}'] },
+      { titel: 'Aufgabe 2: Wie viele haben bestanden?', datei: 'Results.java, Methode countPassed', befehl: './gradlew test --tests "*k10.ResultsTest"',
+        text: '<p>Die Methode bekommt ein Array mit Punktzahlen: <code>int[] points</code>. Sie zählt, wie viele davon mindestens 50 sind, und gibt diese Zahl zurück. Bei <code>{62, 49, 50, 80}</code> ist das Ergebnis 3.</p><p>Das Array kann jede Länge haben. Die Zeile <code>public static int countPassed(int[] points) {</code> bleibt unverändert.</p>',
+        tipps: ['Leg vor der Schleife einen Zähler an: <code>int passed = 0;</code>. Am Ende steht <code>return passed;</code>.', 'Die Schleife geht durch alle Fächer: <code>for (int i = 0; i &lt; points.length; i++)</code>. Im Block steht ein <code>if</code> wie in Kapitel 7: Ist <code>points[i] &gt;= 50</code>, zählst du <code>passed++</code>.'],
+        loesung: ['public static int countPassed(int[] points) {', '    int passed = 0;', '    for (int i = 0; i < points.length; i++) {', '        if (points[i] >= 50) {', '            passed++;', '        }', '    }', '    return passed;', '}'] },
+      { titel: 'Aufgabe 3: Den Sitzplan füllen', datei: 'SeatingPlan.java, Methode createStudents', befehl: './gradlew test --tests "*k10.SeatingPlanTest"',
+        text: '<p>Diese Aufgabe ist so aufgebaut wie eine typische Aufgabe in der Präsenzübung. In der Klasse steht schon ein Array <code>names</code> mit 20 Namen. In der Methode stehen schon <code>List&lt;Student&gt; students = new ArrayList&lt;&gt;();</code> und <code>return students;</code>. Die Imports sind auch schon da.</p><p>Schreib dazwischen eine <code>for</code>-Schleife, die genau 20 Objekte der Klasse <code>Student</code> erzeugt und mit <code>students.add(...)</code> in die Liste legt. Für die Nummer <code>i</code> gilt:</p><table><tr><th>Wert</th><th>Rechnung</th></tr><tr><td>Name</td><td><code>names[i]</code></td></tr><tr><td>Sitzplatz</td><td><code>i + 1</code></td></tr><tr><td>Schließfach</td><td><code>100 + i * 2</code></td></tr></table><p>Ändere die vorgegebenen Zeilen nicht.</p>',
+        tipps: ['Der Kopf ist <code>for (int i = 0; i &lt; 20; i++)</code>. Genau 20-mal heißt Start bei 0 und <code>&lt; 20</code>.', 'Im Block stehen zwei Zeilen: <code>Student s = new Student(names[i], i + 1, 100 + i * 2);</code> und <code>students.add(s);</code> Prüf die Reihenfolge der Werte am Konstruktor in <code>Student.java</code>: Name, Sitzplatz, Schließfach.'],
+        loesung: ['public static List<Student> createStudents() {', '    List<Student> students = new ArrayList<>();', '    for (int i = 0; i < 20; i++) {', '        Student s = new Student(names[i], i + 1, 100 + i * 2);', '        students.add(s);', '    }', '    return students;', '}'] }
+    ]
+  });
+})();
+</script>
+</body>
+</html>

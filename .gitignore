@@ -1,0 +1,11 @@
+.gradle/
+build/
+bin/
+out/
+*.class
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.devcontainer/devcontainer-lock.json

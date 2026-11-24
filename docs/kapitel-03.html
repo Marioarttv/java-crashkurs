@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 3: Methoden – Java-Crashkurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kurs.css">
+<style>
+/* Nur in diesem Kapitel: Zielausgabe in den Aufgaben mit Abstand darunter. */
+.k03-ziel { margin: 0 0 14px; }
+</style>
+</head>
+<body>
+<main class="kurs">
+
+  <p class="vorwissen">Das solltest du schon kennen: den Aufbau einer Datei mit <code>main</code> aus Kapitel 1, Variablen, Typen und Rechnen aus Kapitel 2.</p>
+
+  <p>Ein Kuchenrezept ist für 4 Personen geschrieben. Du backst aber für 6. Also rechnest du jede Zutat um: Menge mal Personen, geteilt durch 4. Damit du nicht jedes Mal neu nachdenken musst, schreibst du die Regel einmal auf eine Karteikarte: „Umrechnen: Menge mal Personen, geteilt durch 4.“</p>
+  <p>Von da an nimmst du für jede Zutat die Karte, setzt Menge und Personen ein und bekommst die neue Menge. Dann machst du im Rezept genau dort weiter, wo du warst.</p>
+  <p>In Java heißt so eine Karteikarte <strong>Methode</strong>: ein benannter Programmteil. Du schreibst ihn einmal und benutzt ihn, so oft du willst. Eine Methode kennst du schon: <code>main</code>. Jetzt schreibst du eigene.</p>
+
+  <h2>Eine Methode schreiben</h2>
+  <p>So sieht die Karteikarte als Methode aus:</p>
+  <div class="code" data-code='public static «typ:int» «pink:scale»(«tuerkis:int grams, int persons») {
+    int result = grams * persons / 4;
+    return result;
+}'></div>
+  <p>Die erste Zeile heißt <strong>Methodenkopf</strong>. Er zeigt dir alles, was du über die Methode wissen musst. Er hat drei wichtige Teile:</p>
+  <div class="aufbau">
+    <div class="teil" data-farbe="typ"><span class="stueck">int</span><span class="heisst"><b>Der Rückgabetyp</b>Was für ein Ergebnis die Methode zurückgibt. Hier eine ganze Zahl.</span></div>
+    <div class="teil" data-farbe="pink"><span class="stueck">scale</span><span class="heisst"><b>Der Name der Methode</b>Mit diesem Namen rufst du sie auf. Klein anfangen, wie bei Variablen.</span></div>
+    <div class="teil" data-farbe="tuerkis"><span class="stueck">(int grams, int persons)</span><span class="heisst"><b>Die Parameter</b>Die Werte, die die Methode bekommt, jeweils mit Typ und Name. Mehrere trennst du mit Komma.</span></div>
+  </div>
+  <p class="vorlesen">Die Methode <span class="t-pink">scale</span> bekommt <span class="t-tuerkis">zwei ganze Zahlen, grams und persons</span>, und gibt <span class="t-typ">eine ganze Zahl</span> zurück.</p>
+  <p>Ein <strong>Parameter</strong> ist ein Wert, den eine Methode bekommt, wenn du sie aufrufst. Im Block der Methode benutzt du die Parameter wie Variablen. In der letzten Zeile steht <code>return</code>: Damit gibt die Methode ihr Ergebnis zurück. Dieses Ergebnis heißt <strong>Rückgabewert</strong>.</p>
+  <p>Die Wörter <code>public static</code> am Anfang lässt du in diesem Kapitel stehen. Kapitel 6 erklärt <code>static</code>. Die Methode steht im Block der Klasse, neben <code>main</code>, nicht darin.</p>
+
+  <h2>Eine Methode aufrufen</h2>
+  <p>Eine Methode zu schreiben heißt <strong>definieren</strong>. In Aufgaben steht dafür oft „deklarieren“, wie bei Variablen. Danach passiert noch nichts, genau wie bei der Karteikarte in der Schublade. Erst wenn du sie <strong>aufrufst</strong>, also startest, läuft sie. Dafür schreibst du ihren Namen und in runden Klammern die Werte:</p>
+  <div class="code" data-code='int flour = «pink:scale»(«tuerkis:500, 6»);'></div>
+  <p class="vorlesen">Ruf die Methode <span class="t-pink">scale</span> mit den <span class="t-tuerkis">Werten 500 und 6</span> auf und speichere das Ergebnis in <code>flour</code>.</p>
+  <p>Java verteilt die Werte der Reihe nach: Der erste Wert kommt in den ersten Parameter, der zweite in den zweiten. Hier bekommt <code>grams</code> 500 und <code>persons</code> 6. Beim Aufruf zählt nur die Reihenfolge, nicht der Name.</p>
+
+  <h2>Hinein und zurück</h2>
+  <p>Jetzt steht beides in einer Datei: oben <code>main</code> mit dem Aufruf, darunter die Methode. Klick dich durch und achte auf zwei Dinge. Erstens: Wohin springt die gelbe Zeile? Zweitens: Was passiert unten bei „Im Speicher“?</p>
+  <p>Stell danach im Kasten eine andere Zahl von Personen ein.</p>
+
+  <div id="lauf1"></div>
+
+  <p>Beim Aufruf springt Java in die Methode. Die Zeile mit dem Aufruf wartet so lange. Die Methode bekommt einen eigenen Bereich im Speicher, mit ihren Parametern und Variablen. Mit <code>return</code> springt Java zurück an genau die Stelle, die gewartet hat. Der Rückgabewert steht dann dort, wo vorher der Aufruf stand. Der Bereich der Methode verschwindet mit allen Variablen darin.</p>
+
+  <h2>Methoden ohne Rückgabewert: void</h2>
+  <p>Nicht jede Methode rechnet etwas aus. Manche erledigen nur eine Aufgabe, zum Beispiel eine Zeile ausgeben. Dann geben sie keinen Wert zurück. Statt eines Rückgabetyps steht vor dem Namen <code>void</code>. Das heißt „leer“: Die Methode gibt nichts zurück. Sie braucht deshalb auch kein <code>return</code>.</p>
+  <div class="code" data-code='public static «typ:void» «pink:printIngredient»(«tuerkis:String name, int grams») {
+    System.out.println(name + ": " + grams + " g");
+}'></div>
+  <p class="vorlesen">Die Methode <span class="t-pink">printIngredient</span> bekommt <span class="t-tuerkis">einen Text name und eine ganze Zahl grams</span> und gibt <span class="t-typ">nichts</span> zurück.</p>
+  <p>Im nächsten Beispiel steht die Methode über <code>main</code>. Achte darauf, wo Java anfängt. Das Programm ruft die Methode zweimal auf, mit verschiedenen Werten.</p>
+
+  <div id="lauf2"></div>
+
+  <p>Die Reihenfolge der Methoden in der Datei ist egal. Java beginnt immer bei <code>main</code>. Es springt erst in eine Methode, wenn ein Aufruf kommt. Bei jedem Aufruf bekommt sie einen neuen Bereich im Speicher mit neuen Werten.</p>
+
+  <h2>Was mit dem Rückgabewert passiert</h2>
+  <p>Gibt eine Methode etwas zurück, musst du damit etwas anfangen. Sonst ist der Wert sofort verloren. Vergleich die drei Fassungen im Kasten. Die Methode <code>scale</code> ist in allen gleich, nur Zeile 3 und 4 unterscheiden sich.</p>
+
+  <div id="lauf3"></div>
+
+  <p>Du kannst den Rückgabewert in einer Variable speichern oder direkt benutzen, zum Beispiel in <code>println</code>. Rufst du die Methode auf, ohne den Rückgabewert zu benutzen, meldet Java keinen Fehler. Der Wert geht trotzdem verloren.</p>
+
+  <h2>Den Methodenkopf lesen</h2>
+  <p>In der Präsenzübung bekommst du Methodenköpfe vorgegeben. Aus dem Kopf liest du ab, wie der Aufruf aussehen muss. In der Tabelle fehlt vorne jeweils <code>public static</code>, damit sie übersichtlich bleibt:</p>
+  <div class="tabelle-rahmen"><table class="tabelle">
+    <tr><th>Methodenkopf</th><th>bekommt</th><th>gibt zurück</th><th>passender Aufruf</th></tr>
+    <tr><td><code>int scale(int grams, int persons)</code></td><td>zwei ganze Zahlen</td><td>eine ganze Zahl</td><td><code>int flour = scale(500, 6);</code></td></tr>
+    <tr><td><code>void printIngredient(String name, int grams)</code></td><td>einen Text, dann eine Zahl</td><td>nichts</td><td><code>printIngredient("Mehl", 500);</code></td></tr>
+    <tr><td><code>String label(String name, int grams)</code></td><td>einen Text, dann eine Zahl</td><td>einen Text</td><td><code>String line = label("Mehl", 500);</code></td></tr>
+  </table></div>
+  <p>Auch <code>main</code> hat so einen Kopf: <code>public static void main(String[] args)</code>. <code>void</code> heißt: <code>main</code> gibt nichts zurück. In den Klammern steht ein Parameter mit dem Namen <code>args</code>. Den brauchst du nicht, er muss aber da stehen. Was die eckigen Klammern bedeuten, erklärt Kapitel 10.</p>
+
+  <div class="merke">
+    <h3>Sechs Regeln zum Merken</h3>
+    <ol>
+      <li>Eine Methode ist ein benannter Programmteil. Definieren heißt: Kopf und Block schreiben. Aufrufen heißt: Name und Werte in Klammern, zum Beispiel <code>scale(500, 6)</code>.</li>
+      <li>Der Methodenkopf nennt Rückgabetyp, Name und Parameter: <code>public static int scale(int grams, int persons)</code>.</li>
+      <li>Beim Aufruf springt Java in die Methode, die Aufrufzeile wartet. Danach geht es an genau dieser Stelle weiter.</li>
+      <li>Java verteilt die Werte beim Aufruf der Reihe nach auf die Parameter. Anzahl, Reihenfolge und Typ müssen passen.</li>
+      <li><code>return</code> gibt den Rückgabewert zurück und beendet die Methode. Eine <code>void</code>-Methode gibt nichts zurück und braucht kein <code>return</code>.</li>
+      <li>Den Rückgabewert speicherst du in einer Variable oder benutzt ihn direkt. Java beginnt immer bei <code>main</code>, egal wo die Methoden in der Datei stehen.</li>
+    </ol>
+  </div>
+
+  <h2>Fünf häufige Fehler verstehen und beheben</h2>
+  <p>Bei Methoden passen am häufigsten Methodenkopf und Aufruf nicht zusammen. Lies bei jeder Meldung zuerst, welche Methode gemeint ist. Vergleiche dann den Aufruf mit dem Methodenkopf.</p>
+  <div id="fehler"></div>
+
+  <h2>Kurz geprüft: Wohin springt Java?</h2>
+  <p>Geh bei jeder Aufgabe den Code im Kopf durch. Folge dabei jedem Aufruf in die Methode hinein und wieder zurück.</p>
+  <div id="fragen"></div>
+
+  <h2>Jetzt schreibst du selbst: drei Aufgaben im Projekt</h2>
+  <p>Die Aufgaben liegen im Ordner <code>src/main/java/de/phl/crashkurs/k03</code>. Die Methodenköpfe sind vorgegeben. Du schreibst nur den Inhalt der Blöcke. Geh bei jeder Aufgabe in diesen vier Schritten vor:</p>
+  <ol class="schritte">
+    <li>Lies den Methodenkopf: Welche Parameter bekommt die Methode? Was gibt sie zurück?</li>
+    <li>Sag auf Deutsch, was die Methode tun soll, zum Beispiel „Mehl plus Zucker plus Butter“.</li>
+    <li>Schreib es mit den Namen der Parameter in Java. Gibt die Methode etwas zurück, endet sie mit <code>return</code>.</li>
+    <li>Starte den Test. Ist er rot, lies die Meldung. Sie nennt den Aufruf, der noch nicht stimmt.</li>
+  </ol>
+  <p>In den Dateien steht schon <code>return 0;</code>. Diese Zeile ist nur da, damit vor deiner Lösung nichts rot unterstrichen ist. Du ersetzt sie.</p>
+  <div id="aufgaben"></div>
+
+</main>
+
+<script src="kurs.js"></script>
+<script>
+(function () {
+  Kurs.start({
+    nr: 3,
+    legende: { typ: 'Rückgabetyp', pink: 'Name der Methode', tuerkis: 'Parameter und Werte beim Aufruf' },
+
+    laeufe: {
+      lauf1: {
+        eingabe: { art: 'zahl', label: 'Personen', start: 6, proben: [2, 4, 6], min: 1, max: 40 },
+        dateien: function (v) {
+          return [{ name: 'Recipe.java', code: ['public class Recipe {', '    public static void main(String[] args) {', '        int flour = «pink:scale»(«tuerkis:500, ' + v + '»);', '        System.out.println("Mehl: " + flour + " g");', '    }', '',
+            '    public static «typ:int» «pink:scale»(«tuerkis:int grams, int persons») {', '        int result = grams * persons / 4;', '        return result;', '    }', '}'] }];
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf().datei('Recipe.java'), r = Math.floor(500 * v / 4);
+          a.schritt(2, 'Java beginnt wie immer bei <code>main</code>. Die Methode <code>scale</code> weiter unten ist nur aufgeschrieben. Sie läuft erst, wenn das Programm sie aufruft.', { skip: [8, 9] });
+          a.schritt(3, 'Rechts vom <code>=</code> steht ein Aufruf: <code>scale(500, ' + v + ')</code>. Bevor Java etwas in <code>flour</code> speichern kann, braucht es den Rückgabewert. Also springt es in die Methode.', { skip: [8, 9] });
+          a.bereich('scale(…)').setze('grams', 500).setze('persons', v)
+            .schritt(7, 'Java ist in der Methode <code>scale</code>. Im Speicher gibt es jetzt einen eigenen Bereich für sie. Die Werte aus dem Aufruf liegen in den Parametern, der Reihe nach: <code>grams</code> bekommt 500, <code>persons</code> bekommt ' + v + '. Zeile 3 wartet.');
+          a.setze('result', r).schritt(8, 'Java rechnet mit den Parametern: 500 * ' + v + ' / 4 = ' + r + '. Das Ergebnis speichert es in <code>result</code>.');
+          a.schritt(9, '<code>return</code> gibt den Wert von <code>result</code> zurück, also ' + r + '. Damit ist die Methode zu Ende.', { gibt: r });
+          a.verlasse().setze('flour', r).schritt(3, 'Java springt zurück in Zeile 3, an die Stelle, die gewartet hat. Der Aufruf liefert ' + r + '. Java speichert diesen Wert in <code>flour</code>. Der Bereich von <code>scale</code> verschwindet mit <code>grams</code>, <code>persons</code> und <code>result</code>.');
+          a.aus('Mehl: ' + r + ' g').schritt(4, 'Die Ausgabe verbindet Text, den Wert von <code>flour</code> und noch einen Text. Danach endet <code>main</code>, das Programm ist fertig.');
+          return a.schritte;
+        }
+      },
+      lauf2: {
+        eingabe: { art: 'zahl', label: 'Gramm Mehl', start: 500, proben: [250, 500, 750], min: 0, max: 5000 },
+        dateien: function (v) {
+          return [{ name: 'Recipe.java', code: ['public class Recipe {', '    public static «typ:void» «pink:printIngredient»(«tuerkis:String name, int grams») {', '        System.out.println(name + ": " + grams + " g");', '    }', '',
+            '    public static void main(String[] args) {', '        «pink:printIngredient»(«tuerkis:"Mehl", ' + v + '»);', '        «pink:printIngredient»(«tuerkis:"Zucker", 200»);', '    }', '}'] }];
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf().datei('Recipe.java');
+          a.schritt(6, 'Die Methode <code>printIngredient</code> steht oben in der Datei. Trotzdem beginnt Java bei <code>main</code>.', { skip: [3] });
+          a.schritt(7, 'Ein Aufruf mit zwei Werten: <code>"Mehl"</code> und ' + v + '. Java springt in die Methode.', { skip: [3] });
+          a.bereich('printIngredient(…)').setze('name', '"Mehl"').setze('grams', v)
+            .schritt(2, 'Java verteilt die Werte der Reihe nach: Der erste Wert <code>"Mehl"</code> kommt in den ersten Parameter <code>name</code>, der zweite Wert ' + v + ' in <code>grams</code>. Zeile 7 wartet.');
+          a.aus('Mehl: ' + v + ' g').schritt(3, 'Die Methode setzt die Zeile aus <code>name</code>, <code>": "</code>, <code>grams</code> und <code>" g"</code> zusammen und gibt sie aus.');
+          a.schritt(4, 'Der Block der Methode ist zu Ende. Sie ist <code>void</code>, gibt also nichts zurück. Java springt zurück zu Zeile 7.');
+          a.verlasse().schritt(8, 'Zeile 7 ist damit fertig, denn es kommt kein Wert zurück. Weiter mit Zeile 8: derselbe Aufruf, jetzt mit <code>"Zucker"</code> und 200.');
+          a.bereich('printIngredient(…)').setze('name', '"Zucker"').setze('grams', 200)
+            .schritt(2, 'Wieder in der Methode, aber mit einem neuen Bereich und neuen Werten. Vom ersten Aufruf ist nichts mehr übrig.');
+          a.aus('Zucker: 200 g').schritt(3, 'Dieselbe Anweisung wie eben, aber mit den neuen Werten.');
+          a.verlasse().schritt(9, 'Die Methode ist fertig, Java springt zurück nach <code>main</code>. In Zeile 8 ist nichts mehr zu tun. Der Block von <code>main</code> endet, das Programm ist fertig.');
+          return a.schritte;
+        }
+      },
+      lauf3: {
+        eingabe: { art: 'wahl', label: 'Fassung', werte: [{ text: 'Wert nicht benutzt', wert: 'weg' }, { text: 'direkt ausgeben', wert: 'direkt' }, { text: 'in Variable speichern', wert: 'variable' }] },
+        dateien: function (v) {
+          var zeilen = v === 'weg' ? ['        scale(500, 6);', '        System.out.println("fertig");']
+            : v === 'direkt' ? ['        System.out.println(scale(500, 6));', '        System.out.println("fertig");']
+            : ['        int flour = scale(500, 6);', '        System.out.println(flour);'];
+          return [{ name: 'Recipe.java', code: ['public class Recipe {', '    public static void main(String[] args) {'].concat(zeilen, ['    }', '', '    public static «typ:int» «pink:scale»(«tuerkis:int grams, int persons») {', '        return grams * persons / 4;', '    }', '}']) }];
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf().datei('Recipe.java');
+          a.schritt(3, 'Zeile 3 ruft <code>scale(500, 6)</code> auf. Java springt in die Methode.');
+          a.bereich('scale(…)').setze('grams', 500).setze('persons', 6)
+            .schritt(8, 'Java rechnet 500 * 6 / 4 = 750 und gibt 750 mit <code>return</code> zurück.', { gibt: 750 });
+          if (v === 'weg') {
+            a.verlasse().schritt(3, 'Zurück in Zeile 3. Der Rückgabewert 750 kommt hier an, aber nichts speichert oder benutzt ihn. Er geht sofort verloren. Java meldet dafür keinen Fehler.');
+            a.aus('fertig').schritt(4, 'Java gibt nur „fertig“ aus. Die 750 taucht nirgends auf. Die Methode hat umsonst gerechnet.');
+          } else if (v === 'direkt') {
+            a.verlasse().aus('750').schritt(3, 'Zurück in Zeile 3. Der Rückgabewert 750 steht jetzt dort, wo der Aufruf stand. <code>println</code> gibt ihn aus.');
+            a.aus('fertig').schritt(4, 'Die zweite Ausgabe. Den Wert 750 gibt es jetzt nicht mehr. Willst du ihn noch einmal benutzen, musst du ihn speichern.');
+          } else {
+            a.verlasse().setze('flour', 750).schritt(3, 'Zurück in Zeile 3. Java speichert den Rückgabewert 750 in <code>flour</code>.');
+            a.aus('750').schritt(4, 'Der Wert liegt in <code>flour</code>. Du kannst ihn ausgeben, so oft du willst.');
+          }
+          return a.schritte;
+        }
+      }
+    },
+
+    fehler: [
+      { titel: 'return fehlt', code: ['public static int scale(int grams, int persons) {', '    int result = grams * persons / 4;', '}'], rot: [1],
+        meldung: 'This method must return a result of type int', quelle: 'VS Code',
+        text: '<p>Das heißt: Die Methode muss ein Ergebnis vom Typ <code>int</code> zurückgeben. Im Kopf steht <code>int</code> als Rückgabetyp, aber im Block fehlt das <code>return</code>. VS Code unterstreicht dabei den Kopf der Methode. Im Terminal heißt es <span class="meldung">missing return statement</span>, dort zeigt die Meldung auf die schließende Klammer.</p><p>Schreib als letzte Zeile im Block <code>return result;</code></p>' },
+      { titel: 'Zu wenige Werte beim Aufruf', code: ['int flour = scale(500);'], rot: [1],
+        meldung: 'The method scale(int, int) in the type Recipe is not applicable for the arguments (int)', quelle: 'VS Code',
+        text: '<p>Lies die Meldung in zwei Teilen. Vorne steht, was die Methode verlangt: <code>scale(int, int)</code>, also zwei ganze Zahlen. Hinten in Klammern steht, was du ihr gibst: <code>(int)</code>, nur eine. „not applicable“ heißt: passt nicht.</p><p>Gib beim Aufruf so viele Werte an, wie der Methodenkopf Parameter hat: <code>scale(500, 6)</code>.</p>' },
+      { titel: 'Die falsche Art von Wert', code: ['int flour = scale("500", 6);'], rot: [1],
+        meldung: 'The method scale(int, int) in the type Recipe is not applicable for the arguments (String, int)', quelle: 'VS Code',
+        text: '<p>Dieselbe Meldung, aber hinten steht jetzt <code>(String, int)</code>. Der erste Wert ist ein Text, weil er in Anführungszeichen steht. Die Methode verlangt an dieser Stelle eine ganze Zahl.</p><p>Vergleich die Typen der Reihe nach mit dem Methodenkopf und lass die Anführungszeichen weg: <code>scale(500, 6)</code>. Dieselbe Art von Meldung kommt, wenn du Werte verschiedener Typen vertauschst, zum Beispiel <code>printIngredient(500, "Mehl")</code>. Haben beide Werte denselben Typ, merkt Java das Vertauschen nicht. Dann rechnet die Methode ohne Warnung mit den falschen Werten.</p>' },
+      { titel: 'Eine void-Methode in einer Variable speichern', code: ['int x = printIngredient("Mehl", 500);'], rot: [1],
+        meldung: 'Type mismatch: cannot convert from void to int', quelle: 'VS Code',
+        text: '<p>Das heißt: Die Methode gibt nichts zurück (<code>void</code>), aber du willst ihr Ergebnis in einer <code>int</code>-Variable speichern. Da ist nichts zum Speichern.</p><p>Eine <code>void</code>-Methode rufst du als eigene Anweisung auf: <code>printIngredient("Mehl", 500);</code></p>' },
+      { titel: 'Den Rückgabewert nicht benutzen', code: ['scale(500, 6);', 'System.out.println("Mehl: " + flour + " g");'], rot: [2],
+        meldung: 'flour cannot be resolved to a variable', quelle: 'VS Code',
+        text: '<p>Zeile 1 ist für Java kein Fehler. VS Code unterstreicht sie nicht. Aber der Rückgabewert geht verloren, und eine Variable <code>flour</code> gibt es gar nicht. Deshalb wird erst Zeile 2 rot. Die Meldung kennst du aus Kapitel 2: Java findet keine Variable mit diesem Namen.</p><p>Speichere den Rückgabewert in einer Variable: <code>int flour = scale(500, 6);</code></p>' }
+    ],
+
+    fragen: [
+      { art: 'wahl', frage: 'Diese Methode ist gegeben. Was gibt der Aufruf scale(200, 2) zurück?',
+        code: ['public static int scale(int grams, int persons) {', '    return grams * persons / 4;', '}'],
+        optionen: [
+          { t: '100', ok: true, warum: 'Richtig. grams bekommt 200, persons bekommt 2. Also 200 * 2 / 4 = 100.' },
+          { t: '400', warum: '200 * 2 ist 400, danach teilt Java noch durch 4. 400 / 4 = 100.' },
+          { t: '200', warum: 'Setz die Werte ein: grams ist 200, persons ist 2. Dann rechne 200 * 2 / 4.' },
+          { t: '50', warum: 'Mit 200 / 4 allein fehlt persons. Da persons 2 ist, rechnet Java 200 * 2 / 4 = 100.' }
+        ] },
+      { art: 'wahl', frage: 'Was steht nach dem Aufruf in portion?',
+        code: ['public static int share(int grams, int persons) {', '    return grams / persons;', '}', '', 'int portion = share(4, 400);'],
+        optionen: [
+          { t: '0', ok: true, warum: 'Richtig. Java verteilt die Werte der Reihe nach: grams bekommt 4, persons bekommt 400. 4 / 400 ist 0,01, und bei ganzen Zahlen schneidet Java ab. Gemeint war share(400, 4).' },
+          { t: '100', warum: 'Das wäre richtig für share(400, 4). Hier stehen die Werte aber andersherum. Java verteilt sie der Reihe nach: grams bekommt 4, persons bekommt 400.' },
+          { t: 'ein roter Fehler', warum: 'Beide Werte sind ganze Zahlen, und die Methode will zwei ganze Zahlen. Für Java passt das. Es merkt nicht, dass die Werte vertauscht sind.' }
+        ] },
+      { art: 'reihenfolge', frage: 'In welcher Reihenfolge erscheinen die Ausgaben dieses Programms? Bring sie mit den Pfeilen in die richtige Reihenfolge.',
+        text: Kurs.code(['public static void bake(String item, int minutes) {', '    System.out.println(item + " rein");', '    System.out.println(item + " raus nach " + minutes + " min");', '}', '',
+          'public static void main(String[] args) {', '    System.out.println("Ofen an");', '    bake("Kekse", 12);', '    bake("Brot", 40);', '    System.out.println("Ofen aus");', '}']).outerHTML,
+        zeilen: ['Ofen an', 'Kekse rein', 'Kekse raus nach 12 min', 'Brot rein', 'Brot raus nach 40 min', 'Ofen aus'],
+        richtig: 'Richtig. Java beginnt bei main. Bei jedem Aufruf von bake springt es hinein, gibt beide Zeilen aus und kommt zurück. Erst dann geht es in main weiter.',
+        falsch: 'Die rot markierten Zeilen stehen noch am falschen Platz. Fang bei main an, nicht oben in der Datei. Bei jedem Aufruf läuft der ganze Block von bake, bevor main weitermacht.' },
+      { art: 'zuordnen', frage: 'Was bedeutet welcher Teil?',
+        paare: [
+          ['int (vor dem Namen der Methode)', 'Rückgabetyp: die Art des Ergebnisses', 'Der Typ vor dem Methodennamen sagt, was zurückkommt.'],
+          ['scale', 'Name der Methode', 'Mit dem Namen rufst du die Methode auf.'],
+          ['(int grams, int persons)', 'Parameter: Werte, die die Methode beim Aufruf bekommt', 'In den Klammern des Kopfs stehen die Parameter mit Typ und Name.'],
+          ['void', 'Die Methode gibt nichts zurück.', 'void heißt „leer“: kein Rückgabewert.'],
+          ['return result;', 'gibt das Ergebnis zurück und beendet die Methode', 'Mit return liefert die Methode ihren Rückgabewert.']
+        ],
+        richtig: 'Alles richtig zugeordnet.', falsch: 'Noch nicht ganz. Zu den rot markierten Zeilen:' },
+      { art: 'zeile', frage: 'Hier unterstreicht VS Code eine Stelle rot. Klick auf die Zeile.',
+        code: ['public static int total(int flour, int sugar) {', '    int sum = flour + sugar;', '}'],
+        ok: 1,
+        richtig: 'Richtig. Im Kopf steht int als Rückgabetyp, aber es gibt kein return. VS Code unterstreicht deshalb den Kopf: „This method must return a result of type int“. Es fehlt return sum; nach Zeile 2, vor der schließenden Klammer.',
+        falsch: 'An dieser Zeile ist nichts falsch geschrieben. Frag dich: Was verspricht der Kopf der Methode, und hält der Block das Versprechen?' },
+      { art: 'luecke', frage: 'Diese Methode gibt nur eine Zeile aus und liefert nichts zurück. Was gehört in die Lücke?',
+        code: ['public static ___ printTitle(String title) {', '    System.out.println("Rezept: " + title);', '}'], ok: ['void'], proben: ['String', 'int', 'void'],
+        falschBei: { 'String': 'Die Methode bekommt zwar einen String, aber sie gibt keinen zurück. Es gibt kein return. Der Rückgabetyp sagt, was zurückkommt.' },
+        richtig: 'Stimmt. Die Methode gibt nichts zurück, also void.',
+        falsch: 'Das passt noch nicht. Schau, ob im Block ein return steht. Welches Wort steht vor dem Namen, wenn nichts zurückkommt?' }
+    ],
+
+    aufgaben: [
+      { titel: 'Aufgabe 1: Wie schwer ist der Teig?', datei: 'Dough.java, Methode totalWeight', befehl: './gradlew test --tests "*k03.DoughTest"',
+        text: '<p>Die Methode bekommt drei Mengen in Gramm: Mehl (<code>flour</code>), Zucker (<code>sugar</code>) und Butter (<code>butter</code>). Sie soll das Gewicht aller drei zusammen zurückgeben.</p><p>Beispiel: <code>totalWeight(500, 200, 250)</code> gibt 950 zurück.</p><p>Die Zeile <code>public static int totalWeight(int flour, int sugar, int butter) {</code> bleibt unverändert.</p>',
+        tipps: ['Rechne mit den Namen der Parameter, nicht mit Zahlen: <code>flour + sugar + butter</code>. Die Zahlen kommen erst beim Aufruf hinein.', 'Ersetze <code>return 0;</code> durch <code>return</code> mit deiner Rechnung. Du kannst das Ergebnis auch erst in einer Variable speichern und dann die Variable zurückgeben.'],
+        loesung: ['public static int totalWeight(int flour, int sugar, int butter) {', '    return flour + sugar + butter;', '}'] },
+      { titel: 'Aufgabe 2: Das Rezept umrechnen', datei: 'Recipe.java, Methode scale', befehl: './gradlew test --tests "*k03.RecipeTest"',
+        text: '<p>Das Rezept ist für 4 Personen. Die Methode bekommt eine Menge aus dem Rezept (<code>grams</code>) und die Zahl der Personen, für die du backst (<code>persons</code>). Sie gibt die umgerechnete Menge zurück: Menge mal Personen, geteilt durch 4.</p><table><tr><th>Aufruf</th><th>Rückgabewert</th></tr><tr><td><code>scale(500, 4)</code></td><td>500</td></tr><tr><td><code>scale(500, 2)</code></td><td>250</td></tr><tr><td><code>scale(200, 6)</code></td><td>300</td></tr></table><p>Die Zeile mit dem Methodenkopf bleibt unverändert.</p>',
+        tipps: ['Es ist die Methode aus dem ersten Beispiel dieser Seite. Schreib die Rechnung zuerst auf Deutsch und ersetze dann die Wörter durch die Namen der Parameter.', 'Rechne in dieser Reihenfolge: <code>grams * persons / 4</code>. Gib das Ergebnis mit <code>return</code> zurück.'],
+        loesung: ['public static int scale(int grams, int persons) {', '    return grams * persons / 4;', '}'] },
+      { titel: 'Aufgabe 3: Die Einkaufsliste', datei: 'Recipe.java, Methode printShoppingList und main', befehl: './gradlew test --tests "*k03.ShoppingListTest"',
+        text: '<p>Diese Aufgabe benutzt <code>scale</code> aus Aufgabe 2. Löse also zuerst Aufgabe 2.</p><p>Im Rezept für 4 Personen stehen 500 g Mehl und 200 g Zucker. Die Methode <code>printShoppingList</code> bekommt die Zahl der Personen und gibt aus, wie viel Mehl und Zucker du dafür brauchst. Für 6 Personen sieht das so aus:</p><div class="konsole k03-ziel">Mehl: 750 g\nZucker: 300 g</div><ol><li>Rechne in <code>printShoppingList</code> beide Mengen mit <code>scale</code> um. Rechne nicht selbst, ruf <code>scale</code> auf.</li><li>Gib die zwei Zeilen genau in dieser Form aus.</li><li>Ruf in <code>main</code> die Methode <code>printShoppingList</code> für 6 Personen auf.</li></ol><p>Starte zum Schluss das Programm mit „Run“. Dann siehst du die Einkaufsliste für 6 Personen.</p>',
+        tipps: ['<code>scale(500, persons)</code> liefert die Menge Mehl. Speichere den Rückgabewert in einer Variable, zum Beispiel <code>int flour = scale(500, persons);</code> Genauso für Zucker mit 200.', 'Die Ausgabe ist Text, Variable und Text: <code>System.out.println("Mehl: " + flour + " g");</code> In <code>main</code> steht nur der Aufruf <code>printShoppingList(6);</code>, denn die Methode ist <code>void</code>.'],
+        loesung: ['public static void main(String[] args) {', '    printShoppingList(6);', '}', '', 'public static void printShoppingList(int persons) {', '    int flour = scale(500, persons);', '    int sugar = scale(200, persons);', '    System.out.println("Mehl: " + flour + " g");', '    System.out.println("Zucker: " + sugar + " g");', '}'] }
+    ]
+  });
+})();
+</script>
+</body>
+</html>

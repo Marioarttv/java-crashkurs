@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 5: Objekte benutzen – Java-Crashkurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kurs.css">
+<style>
+/* Nur in diesem Kapitel: Beschreibung im Stil einer Aufgabenstellung */
+.k05-beschreibung { border: 1px solid var(--k-line); border-left: 4px solid var(--k-muted); border-radius: var(--k-radius); padding: 14px 18px 4px; margin: 16px 0 20px; background: var(--k-surface); }
+.k05-beschreibung h4 { margin: 0 0 8px; font-size: 17px; }
+.k05-beschreibung ul { padding-left: 20px; }
+.k05-beschreibung li { margin-bottom: 6px; }
+.k05-tabelle td:first-child, .k05-tabelle td:last-child { font-family: var(--k-mono); font-size: 14px; }
+</style>
+</head>
+<body>
+<main class="kurs">
+
+  <p class="vorwissen">Das solltest du schon kennen: Klasse, Objekt, Konstruktor, <code>new</code> und Getter aus Kapitel 4, Rückgabewerte aus Kapitel 3.</p>
+
+  <p>In Kapitel 4 hast du Klassen selbst geschrieben. Oft ist es umgekehrt: Die Klassen gibt es schon, jemand anderes hat sie geschrieben. Du bekommst eine Beschreibung und sollst die Klassen in <code>main</code> benutzen. Genau so ist Übung 2 in der Präsenzübung aufgebaut.</p>
+  <p>Das ist wie bei einem Fahrradverleih-Automaten. Du musst nicht wissen, wie er innen funktioniert. Du musst nur wissen, welche Knöpfe es gibt, was du eingeben musst und was herauskommt. Die Beschreibung einer Klasse ist so eine Bedienungsanleitung.</p>
+  <p>Das Thema in diesem Kapitel ist ein Verleih für E-Bikes. Es gibt drei Klassen: <code>Bike</code> (ein Rad), <code>Station</code> (der Platz, an dem Räder stehen) und <code>Rider</code> (eine Person, die fährt). Du lernst sie nacheinander kennen.</p>
+
+  <h2>Eine Beschreibung lesen</h2>
+  <p>So eine Beschreibung sieht zum Beispiel so aus. Lies sie einmal ganz durch:</p>
+  <div class="k05-beschreibung">
+    <h4>Klasse <code>Bike</code></h4>
+    <p>Die Klasse <code>Bike</code> repräsentiert ein E-Bike mit den Attributen Nummer (<code>number</code>) und Akkustand in Prozent (<code>battery</code>). Sie besitzt die folgenden Methoden:</p>
+    <ul>
+      <li><code>Bike(final String number, final int battery)</code>: Ein Konstruktor, um ein neues Bike-Objekt mit der gegebenen Nummer und dem gegebenen Akkustand zu erzeugen.</li>
+      <li><code>String getNumber()</code>: Gibt die Nummer des Rads zurück.</li>
+      <li><code>int getBattery()</code>: Gibt den Akkustand zurück.</li>
+      <li><code>void drive(final int minutes)</code>: Das Rad fährt. Der Akkustand sinkt um 1 Prozent pro Minute.</li>
+      <li><code>String getInfo()</code>: Gibt einen Text mit der Nummer und dem Akkustand zurück.</li>
+    </ul>
+  </div>
+  <p>Das Wichtigste steht in den Zeilen mit Code. Du liest sie wie einen Steckbrief. Fang mit dem Konstruktor an. Du erkennst ihn daran, dass er wie die Klasse heißt:</p>
+  <div class="aufbau">
+    <div class="teil" data-farbe="pink"><span class="stueck">Bike</span><span class="heisst"><b>Name wie die Klasse</b>Also ein Konstruktor. Du benutzt ihn mit <code>new Bike(…)</code>.</span></div>
+    <div class="teil" data-farbe="tuerkis"><span class="stueck">(String …, int …)</span><span class="heisst"><b>Was er braucht</b>Erst einen Text (die Nummer), dann eine Zahl (den Akkustand). Genau in dieser Reihenfolge.</span></div>
+    <div class="teil" data-farbe="violett"><span class="stueck">final</span><span class="heisst"><b>Darfst du überlesen</b>Es heißt nur: Der Konstruktor ändert diesen Parameter nicht. Für dich ändert sich nichts.</span></div>
+  </div>
+  <p class="vorlesen">Der <span class="t-pink">Konstruktor von Bike</span> braucht <span class="t-tuerkis">einen Text und dann eine Zahl</span>. Also schreibst du: <code>new Bike("B-12", 80)</code>.</p>
+  <p>Bei den Methoden steht vorn der Rückgabetyp. Er sagt dir, was zurückkommt:</p>
+  <div class="aufbau">
+    <div class="teil" data-farbe="typ"><span class="stueck">int</span><span class="heisst"><b>Was zurückkommt</b>Eine Zahl. Steht hier <code>void</code>, kommt nichts zurück.</span></div>
+    <div class="teil" data-farbe="pink"><span class="stueck">getBattery</span><span class="heisst"><b>Der Name</b>Genau so schreibst du ihn, auch Groß- und Kleinbuchstaben.</span></div>
+    <div class="teil" data-farbe="tuerkis"><span class="stueck">()</span><span class="heisst"><b>Was sie bekommt</b>Hier nichts. Die Klammern schreibst du trotzdem.</span></div>
+  </div>
+  <p>Aus der Beschreibung wird so eine Zeile in <code>main</code>:</p>
+  <div class="tabelle-rahmen"><table class="k05-tabelle">
+    <tr><th>In der Beschreibung</th><th>heißt</th><th>In <code>main</code> schreibst du</th></tr>
+    <tr><td>Bike(final String number, final int battery)</td><td>ein Konstruktor: Text, dann Zahl</td><td>Bike bike = new Bike("B-12", 80);</td></tr>
+    <tr><td>int getBattery()</td><td>gibt eine Zahl zurück, bekommt nichts</td><td>int before = bike.getBattery();</td></tr>
+    <tr><td>void drive(final int minutes)</td><td>gibt nichts zurück, bekommt eine Zahl</td><td>bike.drive(10);</td></tr>
+    <tr><td>String getInfo()</td><td>gibt einen Text zurück</td><td>System.out.println(bike.getInfo());</td></tr>
+  </table></div>
+
+  <h2>objekt.methode(werte): Methoden am Objekt aufrufen</h2>
+  <p>Die Methoden aus einer Beschreibung rufst du an einem Objekt auf. Vor den Punkt kommt die Variable, die auf das Objekt zeigt. Der Punkt heißt: Dieses Objekt soll die Methode ausführen.</p>
+  <div class="aufbau">
+    <div class="teil" data-farbe="pink"><span class="stueck">bike</span><span class="heisst"><b>Das Objekt</b>Die Variable, die auf das Rad zeigt. Nicht der Klassenname <code>Bike</code>.</span></div>
+    <div class="teil"><span class="stueck">.drive</span><span class="heisst"><b>Punkt und Methode</b>Was das Objekt tun soll.</span></div>
+    <div class="teil" data-farbe="tuerkis"><span class="stueck">(10)</span><span class="heisst"><b>Die Werte</b>Was die Methode bekommt, in der Reihenfolge aus der Beschreibung.</span></div>
+  </div>
+  <div class="code" data-code='«pink:bike».drive(«tuerkis:10»);'></div>
+  <p class="vorlesen">Lass das <span class="t-pink">Rad <code>bike</code></span> fahren (<code>.drive</code>), und zwar <span class="t-tuerkis">10 Minuten</span>.</p>
+  <p>Gibt die Methode etwas zurück, musst du mit dem Rückgabewert etwas tun: ihn ausgeben oder in einer Variable speichern. Sonst verpufft er. Das zeigt der erste Lauf. In den Läufen steht der Code der Klassen ohne <code>final</code>, damit er kürzer ist.</p>
+
+  <div id="lauf1"></div>
+
+  <p>Zeile 4 läuft zwar, aber niemand fängt den Text auf. Erst Zeile 5 gibt ihn aus. Gibt dein Programm nichts aus, obwohl du eine Methode aufgerufen hast? Schau dann nach, ob <code>System.out.println(…)</code> drumherum fehlt.</p>
+
+  <h2>Ein Objekt an ein anderes übergeben</h2>
+  <p>Jetzt kommt die zweite Klasse dazu. Die Station hat einen Namen und eine Zahl von Plätzen. Ihre Methode <code>addBike</code> bekommt als Wert keinen Text und keine Zahl, sondern ein ganzes Rad:</p>
+  <div class="k05-beschreibung">
+    <h4>Klasse <code>Station</code> (Ausschnitt)</h4>
+    <ul>
+      <li><code>Station(final String name, final int capacity)</code>: Ein Konstruktor, um eine neue, leere Station mit dem gegebenen Namen und der gegebenen Zahl von Plätzen zu erzeugen.</li>
+      <li><code>void addBike(final Bike bike)</code>: Stellt ein Rad an die Station.</li>
+      <li><code>String getInfo()</code>: Gibt einen Text mit dem Namen und der Zahl der belegten Plätze zurück.</li>
+    </ul>
+  </div>
+  <p>Bei <code>addBike(final Bike bike)</code> ist der Typ des Parameters <code>Bike</code>. Also schreibst du in die Klammern eine Variable, die auf ein Rad zeigt: <code>station.addBike(bike);</code>. Die Methode bekommt dabei keine Kopie des Rads, sondern einen Pfeil auf dieselbe Karte. Wähl im Lauf aus, ob ein Rad oder zwei Räder dazukommen.</p>
+
+  <div id="lauf2"></div>
+
+  <p>Achte im Lauf auf die Karte der Station. Ihr Attribut <code>lastBike</code> zeigt am Ende auf ein Rad. Ein Objekt kann also über ein Attribut auf ein anderes Objekt zeigen.</p>
+
+  <h2>Vorher, nachher und die Differenz</h2>
+  <p>Eine typische Aufgabe lautet: Lass etwas passieren und gib aus, wie stark sich ein Wert dabei geändert hat. Dafür kommt die dritte Klasse dazu:</p>
+  <div class="k05-beschreibung">
+    <h4>Klasse <code>Rider</code> (Ausschnitt)</h4>
+    <ul>
+      <li><code>Rider(final String name, final int credit)</code>: Ein Konstruktor, um eine neue Person mit dem gegebenen Namen und Guthaben in Cent zu erzeugen.</li>
+      <li><code>void ride(final Bike bike, final int minutes)</code>: Fährt mit dem gegebenen Rad. Das Rad verliert 1 Prozent Akku pro Minute, das Guthaben sinkt um 10 Cent pro Minute.</li>
+    </ul>
+  </div>
+  <p>Der Trick: Java merkt sich alte Werte nicht von selbst. Wenn du den Akkustand vor der Fahrt brauchst, musst du ihn vor der Fahrt in einer Variable speichern. Das Muster hat immer vier Schritte:</p>
+  <ol class="schritte">
+    <li>Vorher-Wert mit dem Getter holen und in einer Variable speichern: <code>int before = bike.getBattery();</code></li>
+    <li>Die Aktion ausführen: <code>rider.ride(bike, 12);</code></li>
+    <li>Nachher-Wert holen: <code>int after = bike.getBattery();</code></li>
+    <li>Differenz rechnen und mit Text ausgeben: <code>int used = before - after;</code> und dann <code>System.out.println("Akkuverbrauch: " + used);</code></li>
+  </ol>
+  <p>Vergleich im Lauf zwei Fassungen: Einmal speicherst du <code>before</code> vor der Fahrt, einmal erst danach. Achte auch darauf, wo sich der Akku ändert. <code>ride</code> läuft in <code>Rider.java</code>, aber es ändert die Karte des Rads, und <code>main</code> sieht die Änderung.</p>
+
+  <div id="lauf3"></div>
+
+  <p>In der falschen Fassung haben <code>before</code> und <code>after</code> denselben Wert. Die Differenz ist 0, obwohl das Rad gefahren ist. Gibt dein Programm bei einer Differenz 0 aus? Prüf dann zuerst die Reihenfolge.</p>
+
+  <div class="merke">
+    <h3>Sechs Regeln zum Merken</h3>
+    <ol>
+      <li>Lies zuerst die Beschreibung: Was braucht der Konstruktor, in welcher Reihenfolge? <code>final</code> überliest du.</li>
+      <li>Ein Objekt erzeugst du mit <code>Typ name = new Typ(werte);</code>. Die Werte kommen in der Reihenfolge der Parameter.</li>
+      <li>Die Methoden aus einer Beschreibung rufst du am Objekt auf: <code>bike.getBattery()</code>. Vor den Punkt gehört die Variable, nicht der Klassenname.</li>
+      <li>Steht vor der Methode ein Typ, kommt ein Wert zurück. Speichere ihn (<code>int x = …;</code>) oder gib ihn aus (<code>System.out.println(…);</code>). Bei <code>void</code> kommt nichts zurück.</li>
+      <li>Übergibst du ein Objekt, bekommt die Methode einen Pfeil auf dieselbe Karte. Ändert sie das Objekt, sieht <code>main</code> die Änderung.</li>
+      <li>Vorher merken, Aktion, nachher holen, Differenz rechnen. Genau in dieser Reihenfolge.</li>
+    </ol>
+  </div>
+
+  <h2>Fünf häufige Fehler verstehen und beheben</h2>
+  <p>Die ersten vier Fehler unterstreicht VS Code rot. Beim fünften läuft das Programm, aber der Test findet den Fehler.</p>
+  <div id="fehler"></div>
+
+  <h2>Kurz geprüft: Objekte benutzen</h2>
+  <p>Sechs kurze Aufgaben zum Mitdenken. Halte dich an die Beschreibungen oben.</p>
+  <div id="fragen"></div>
+
+  <h2>Jetzt schreibst du selbst: drei Aufgaben im Projekt</h2>
+  <p>Diese drei Aufgaben sind genauso aufgebaut wie Übung 2 der Präsenzübung. Die Klassen <code>Bike</code>, <code>Station</code> und <code>Rider</code> liegen fertig im Ordner <code>src/main/java/de/phl/crashkurs/k05</code>. Du änderst sie nicht. Du schreibst nur in die <code>main</code>-Methode der Klasse <code>BikeRentalApp</code>, Aufgabe für Aufgabe untereinander.</p>
+  <p>Hier ist die vollständige Beschreibung. Lies sie, bevor du anfängst. In der Präsenzübung bekommst du eine ähnliche Beschreibung.</p>
+  <div class="k05-beschreibung">
+    <h4>Klasse <code>Bike</code></h4>
+    <p>Die Klasse <code>Bike</code> repräsentiert ein E-Bike mit den Attributen Nummer (<code>number</code>) und Akkustand in Prozent (<code>battery</code>).</p>
+    <ul>
+      <li><code>Bike(final String number, final int battery)</code>: Ein Konstruktor, um ein neues Bike-Objekt mit der gegebenen Nummer und dem gegebenen Akkustand zu erzeugen.</li>
+      <li><code>String getNumber()</code>: Gibt die Nummer des Rads zurück.</li>
+      <li><code>int getBattery()</code>: Gibt den Akkustand zurück.</li>
+      <li><code>void drive(final int minutes)</code>: Das Rad fährt. Der Akkustand sinkt um 1 Prozent pro Minute.</li>
+      <li><code>String getInfo()</code>: Gibt einen Text mit der Nummer und dem Akkustand zurück.</li>
+    </ul>
+    <h4>Klasse <code>Station</code></h4>
+    <p>Die Klasse <code>Station</code> repräsentiert eine Station mit den Attributen Name (<code>name</code>), Zahl der Plätze (<code>capacity</code>), Zahl der abgestellten Räder (<code>bikeCount</code>) und zuletzt abgestelltes Rad (<code>lastBike</code>).</p>
+    <ul>
+      <li><code>Station(final String name, final int capacity)</code>: Ein Konstruktor, um eine neue, leere Station mit dem gegebenen Namen und der gegebenen Zahl von Plätzen zu erzeugen.</li>
+      <li><code>void addBike(final Bike bike)</code>: Stellt ein Rad an die Station.</li>
+      <li><code>int getBikeCount()</code>: Gibt zurück, wie viele Räder an der Station stehen.</li>
+      <li><code>Bike getLastBike()</code>: Gibt das zuletzt abgestellte Rad zurück (Attribut <code>lastBike</code>).</li>
+      <li><code>String getInfo()</code>: Gibt einen Text mit dem Namen und der Zahl der belegten Plätze zurück.</li>
+    </ul>
+    <h4>Klasse <code>Rider</code></h4>
+    <p>Die Klasse <code>Rider</code> repräsentiert eine Person mit den Attributen Name (<code>name</code>) und Guthaben in Cent (<code>credit</code>).</p>
+    <ul>
+      <li><code>Rider(final String name, final int credit)</code>: Ein Konstruktor, um eine neue Person mit dem gegebenen Namen und Guthaben zu erzeugen.</li>
+      <li><code>String getName()</code>: Gibt den Namen zurück.</li>
+      <li><code>int getCredit()</code>: Gibt das Guthaben in Cent zurück.</li>
+      <li><code>void ride(final Bike bike, final int minutes)</code>: Fährt mit dem gegebenen Rad. Das Rad verliert 1 Prozent Akku pro Minute, das Guthaben sinkt um 10 Cent pro Minute.</li>
+      <li><code>String getInfo()</code>: Gibt einen Text mit dem Namen und dem Guthaben zurück.</li>
+    </ul>
+  </div>
+  <p>Alle drei Aufgaben haben einen eigenen Test. Jeder Test startet deine <code>main</code>-Methode und prüft, ob bestimmte Zeilen in der Ausgabe stehen. Starte ihn nach jedem Schritt. Ist er rot, zeigt dir die Meldung auch, was dein Programm bisher ausgibt.</p>
+  <div id="aufgaben"></div>
+
+</main>
+
+<script src="kurs.js"></script>
+<script>
+(function () {
+  var BIKE_JAVA = 'public class Bike {\n    private String number;\n    private int battery;\n\n    public Bike(String number, int battery) {\n        this.number = number;\n        this.battery = battery;\n    }\n\n' +
+    '    public String getNumber() {\n        return number;\n    }\n\n    public int getBattery() {\n        return battery;\n    }\n\n' +
+    '    public void drive(int minutes) {\n        battery = battery - minutes;\n    }\n\n    public String getInfo() {\n        return "Rad " + number + ", Akku " + battery + " Prozent";\n    }\n}\n';
+  function main(zeilen) { return ['public class Main {', '    public static void main(String[] args) {'].concat(zeilen.map(function (z) { return '        ' + z; })).concat(['    }', '}']); }
+  function quellen(dateien) {
+    var q = { 'Bike.java': BIKE_JAVA };
+    dateien.forEach(function (d) { q[d.name] = d.code.map(function (z) { return z.replace(/«[a-z]+:([^»]*)»/g, '$1'); }).join('\n') + '\n'; });
+    return { dateien: q, main: 'Main' };
+  }
+
+  var BIKE_KURZ = ['public class Bike {', '    private String number;', '    private int battery;', '',
+    '    public Bike(String number, int battery) {', '        this.number = number;', '        this.battery = battery;', '    }', '',
+    '    public String getInfo() {', '        return "Rad " + number + ", Akku " + battery + " Prozent";', '    }', '}'];
+  var STATION = ['public class Station {', '    private String name;', '    private int capacity;', '    private int bikeCount;', '    private Bike lastBike;', '',
+    '    public Station(String name, int capacity) {', '        this.name = name;', '        this.capacity = capacity;', '    }', '',
+    '    public void addBike(Bike bike) {', '        lastBike = bike;', '        bikeCount = bikeCount + 1;', '    }', '',
+    '    public String getInfo() {', '        return "Station " + name + ": " + bikeCount + " von " + capacity + " Plätzen belegt";', '    }', '}'];
+  var RIDER = ['public class Rider {', '    private String name;', '    private int credit;', '',
+    '    public Rider(String name, int credit) {', '        this.name = name;', '        this.credit = credit;', '    }', '',
+    '    public void ride(Bike bike, int minutes) {', '        bike.drive(minutes);', '        credit = credit - minutes * 10;', '    }', '}'];
+
+  function lauf2Dateien(v) {
+    var zeilen = v === 'eins'
+      ? ['Station station = new Station("Schlossplatz", 4);', 'Bike bike = new Bike("B-12", 80);', '«pink:station».addBike(«tuerkis:bike»);', 'System.out.println(station.getInfo());']
+      : ['Station station = new Station("Schlossplatz", 4);', 'Bike b12 = new Bike("B-12", 80);', 'Bike b7 = new Bike("B-7", 55);', '«pink:station».addBike(«tuerkis:b12»);', '«pink:station».addBike(«tuerkis:b7»);', 'System.out.println(station.getInfo());'];
+    return [{ name: 'Main.java', code: main(zeilen) }, { name: 'Station.java', code: STATION }];
+  }
+  function lauf3Dateien(v) {
+    var mitte = v === 'richtig'
+      ? ['int before = bike.getBattery();', 'rider.ride(bike, 12);']
+      : ['rider.ride(bike, 12);', 'int before = bike.getBattery();'];
+    var z = ['Bike bike = new Bike("B-12", 80);', 'Rider rider = new Rider("Lena", 500);'].concat(mitte).concat(['int after = bike.getBattery();', 'int used = before - after;', 'System.out.println("Akkuverbrauch " + bike.getNumber() + ": " + used + " Prozent");']);
+    return [{ name: 'Main.java', code: main(z) }, { name: 'Rider.java', code: RIDER }];
+  }
+
+  Kurs.start({
+    nr: 5,
+    legende: { pink: 'Name (Objekt, Methode)', tuerkis: 'Werte, die hineingehen', typ: 'Rückgabetyp' },
+
+    laeufe: {
+      lauf1: {
+        nebeneinander: true,
+        eingabe: { art: 'zahl', label: 'Akku', start: 80, proben: [30, 80, 100], min: 0, max: 100 },
+        dateien: function (v) {
+          return [{ name: 'Main.java', code: main(['Bike bike = new Bike("B-12", ' + v + ');', 'bike.getInfo();', 'System.out.println(bike.getInfo());']) }, { name: 'Bike.java', code: BIKE_KURZ }];
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf(), info = 'Rad B-12, Akku ' + v + ' Prozent';
+          a.datei('Main.java').objekt('1', 'Bike', [['number', '"B-12"'], ['battery', v]]).setze('bike', { ref: '1' })
+            .schritt(3, 'Zeile 3 baut ein Rad. Den Sprung in den Konstruktor kennst du aus Kapitel 4, hier ist er in einem Schritt zusammengefasst. <code>bike</code> zeigt auf die Karte ①.');
+          a.bereich('getInfo()', 'Bike.java').setze('this', { ref: '1' })
+            .schritt(11, '<code>bike.getInfo()</code>: Java ruft <code>getInfo</code> am Objekt ① auf und springt in die Methode. Sie baut aus den Attributen einen Text und gibt ihn mit <code>return</code> zurück.', { gibt: '"' + info + '"' });
+          a.verlasse().schritt(4, 'Zurück in Zeile 4. Der Rückgabewert ist angekommen, aber in Zeile 4 steht nichts, was ihn auffängt. Er verpufft. Unter „Ausgabe“ steht weiter nichts.');
+          a.bereich('getInfo()', 'Bike.java').setze('this', { ref: '1' })
+            .schritt(11, 'Zeile 5 ruft <code>getInfo</code> am Objekt ① noch einmal auf. Wieder springt Java in die Methode und gibt denselben Text zurück.', { gibt: '"' + info + '"' });
+          a.verlasse().aus(info).schritt(5, 'Diesmal steht der Aufruf in <code>System.out.println(…)</code>. Java gibt den Rückgabewert aus.');
+          return a.schritte;
+        },
+        java: function (v) { return quellen([{ name: 'Main.java', code: main(['Bike bike = new Bike("B-12", ' + v + ');', 'bike.getInfo();', 'System.out.println(bike.getInfo());']) }]); }
+      },
+      lauf2: {
+        nebeneinander: true,
+        eingabe: { art: 'wahl', label: 'Räder', werte: [{ text: 'ein Rad', wert: 'eins' }, { text: 'zwei Räder', wert: 'zwei' }] },
+        dateien: lauf2Dateien,
+        schritte: function (v) {
+          var a = Kurs.ablauf().datei('Main.java'), zwei = v === 'zwei';
+          a.objekt('1', 'Station', [['name', '"Schlossplatz"'], ['capacity', 4], ['bikeCount', 0], ['lastBike', Kurs.NULL]]).setze('station', { ref: '1' })
+            .schritt(3, 'Die Station entsteht als Karte ①. <code>bikeCount</code> und <code>lastBike</code> füllt der Konstruktor nicht. Sie behalten ihre Standardwerte 0 und <code>null</code>.');
+          a.objekt('2', 'Bike', [['number', '"B-12"'], ['battery', 80]]).setze(zwei ? 'b12' : 'bike', { ref: '2' })
+            .schritt(4, 'Das Rad B-12 entsteht als Karte ②.');
+          if (zwei) a.objekt('3', 'Bike', [['number', '"B-7"'], ['battery', 55]]).setze('b7', { ref: '3' }).schritt(5, 'Das Rad B-7 entsteht als Karte ③.');
+          var rad = function (nr, id, z, name) {
+            a.schritt(z, '<code>station.addBike(' + name + ')</code>: Ruf <code>addBike</code> an der Station ① auf. In die Klammern kommt <code>' + name + '</code>, also der Pfeil auf die Karte ' + id + '.');
+            a.bereich('addBike(…)', 'Station.java').setze('this', { ref: '1' }).setze('bike', { ref: nr })
+              .schritt(12, 'Java springt in <code>addBike</code>. <code>this</code> zeigt auf die Station ①. Der Parameter <code>bike</code> zeigt auf dieselbe Karte ' + id + ' wie <code>' + name + '</code> in <code>main</code>. Es gibt keine Kopie des Rads.');
+            a.attr('1', 'lastBike', { ref: nr }).schritt(13, 'Die Station merkt sich das Rad: Ihr Attribut <code>lastBike</code> zeigt jetzt auch auf die Karte ' + id + '.');
+            a.attr('1', 'bikeCount', nr === '2' ? 1 : 2).schritt(14, '<code>bikeCount</code> auf der Karte der Station steigt auf ' + (nr === '2' ? 1 : 2) + '.');
+            a.verlasse();
+          };
+          rad('2', '②', zwei ? 6 : 5, zwei ? 'b12' : 'bike');
+          if (zwei) rad('3', '③', 7, 'b7');
+          var n = zwei ? 2 : 1;
+          a.aus('Station Schlossplatz: ' + n + ' von 4 Plätzen belegt')
+            .schritt(zwei ? 8 : 6, 'Zurück in <code>main</code>. <code>station.getInfo()</code> baut den Text aus den Attributen der Karte ① (den Sprung in <code>getInfo</code> zeigt dieser Lauf nicht). <code>println</code> gibt ihn aus.');
+          return a.schritte;
+        },
+        java: function (v) { return quellen(lauf2Dateien(v)); }
+      },
+      lauf3: {
+        nebeneinander: true,
+        legende: { pink: 'Objekt', tuerkis: 'Werte, die hineingehen' },
+        eingabe: { art: 'wahl', label: 'Fassung', werte: [{ text: 'before vor der Fahrt', wert: 'richtig' }, { text: 'before nach der Fahrt', wert: 'spaet' }] },
+        dateien: lauf3Dateien,
+        schritte: function (v) {
+          var a = Kurs.ablauf().datei('Main.java'), ok = v === 'richtig';
+          a.objekt('1', 'Bike', [['number', '"B-12"'], ['battery', 80]]).setze('bike', { ref: '1' }).schritt(3, 'Das Rad B-12 entsteht als Karte ① mit 80 Prozent Akku.');
+          a.objekt('2', 'Rider', [['name', '"Lena"'], ['credit', 500]]).setze('rider', { ref: '2' }).schritt(4, 'Lena entsteht als Karte ② mit 500 Cent Guthaben.');
+          if (ok) a.setze('before', 80).schritt(5, 'Vorher merken: <code>bike.getBattery()</code> fragt die Karte ① und gibt 80 zurück. Du speicherst den Wert in <code>before</code>, bevor die Fahrt beginnt.');
+          var z = ok ? 6 : 5;
+          a.schritt(z, '<code>rider.ride(bike, 12)</code>: Ruf <code>ride</code> bei Lena (Karte ②) auf. Mit in die Klammern kommen der Pfeil auf das Rad ① und die Zahl 12.');
+          a.bereich('ride(…)', 'Rider.java').setze('this', { ref: '2' }).setze('bike', { ref: '1' }).setze('minutes', 12)
+            .schritt(10, 'Java springt in <code>ride</code> in <code>Rider.java</code>. <code>this</code> zeigt auf Lena ②. Der Parameter <code>bike</code> zeigt auf dieselbe Karte ① wie <code>bike</code> in <code>main</code>.');
+          a.attr('1', 'battery', 68).schritt(11, '<code>bike.drive(minutes)</code> ruft <code>drive</code> am Rad ① auf. Das Rad fährt 12 Minuten. Den Sprung nach <code>Bike.java</code> zeigt dieser Lauf nicht: Der Akku auf der Karte ① sinkt um 12 auf 68.');
+          a.attr('2', 'credit', 380).schritt(12, 'Lenas Guthaben sinkt um 12 · 10 = 120 Cent auf 380. <code>credit</code> ist das Attribut der Karte ②, auf die <code>this</code> zeigt.');
+          a.verlasse();
+          if (!ok) a.setze('before', 68).schritt(6, 'Erst jetzt speichert Java <code>before</code>. Aber die Fahrt ist schon vorbei: <code>bike.getBattery()</code> gibt 68 zurück, nicht 80. Der alte Wert ist verloren.');
+          a.setze('after', 68).schritt(7, (ok ? 'Zurück in <code>main</code>. ' : '') + 'Nachher holen: <code>bike.getBattery()</code> fragt die Karte ① und bekommt 68. Die Fahrt in <code>Rider.java</code> hat genau diese Karte geändert, deshalb sieht <code>main</code> den neuen Wert.');
+          var used = ok ? 12 : 0;
+          a.setze('used', used).schritt(8, 'Die Differenz: ' + (ok ? 80 : 68) + ' - 68 = ' + used + '.' + (ok ? '' : ' Das ist falsch. Das Rad ist 12 Minuten gefahren.'));
+          a.aus('Akkuverbrauch B-12: ' + used + ' Prozent').schritt(9, 'Die Ausgabe setzt Text, die Nummer aus <code>bike.getNumber()</code> und die Differenz mit <code>+</code> zusammen.');
+          return a.schritte;
+        },
+        java: function (v) {
+          var d = lauf3Dateien(v);
+          d[1].code = RIDER;
+          return quellen(d);
+        }
+      }
+    },
+
+    fehler: [
+      { titel: 'Methode an der Klasse statt am Objekt', code: ['Bike bike = new Bike("B-12", 80);', 'int before = Bike.getBattery();'], rot: [2], quelle: 'VS Code',
+        meldung: 'Cannot make a static reference to the non-static method getBattery() from the type Bike',
+        text: '<p>Vor dem Punkt steht <code>Bike</code> mit großem B, also der Name der Klasse. Die Klasse ist nur der Bauplan. Sie hat keinen Akkustand. Gemeint ist das Rad, auf das die Variable <code>bike</code> zeigt: <code>bike.getBattery()</code>.</p><p>Die Meldung spricht von „static“. Was das heißt, erklärt Kapitel 6. Merk dir bis dahin: Taucht diese Meldung auf, steht vor dem Punkt der Klassenname statt der Variable.</p>' },
+      { titel: 'Tippfehler im Methodennamen', code: ['int before = bike.getBaterry();'], rot: [1], quelle: 'VS Code',
+        meldung: 'The method getBaterry() is undefined for the type Bike',
+        text: '<p>Die Methode heißt <code>getBattery</code> mit zwei t und einem r. Java sucht den Namen Buchstabe für Buchstabe, auch Groß- und Kleinbuchstaben. Schreib den Namen genau wie in der Beschreibung. In VS Code hilft dir die Vorschlagsliste: Tippe <code>bike.</code> und warte kurz. Dann zeigt VS Code alle Methoden des Objekts.</p>' },
+      { titel: 'Werte in der falschen Reihenfolge', code: ['rider.ride(12, bike);'], rot: [1], quelle: 'VS Code',
+        meldung: 'The method ride(Bike, int) in the type Rider is not applicable for the arguments (int, Bike)',
+        text: '<p>Die Meldung zeigt beides nebeneinander: Die Methode erwartet <code>(Bike, int)</code>, bekommen hat sie <code>(int, Bike)</code>. Die Werte müssen in der Reihenfolge der Beschreibung stehen: <code>rider.ride(bike, 12);</code></p>' },
+      { titel: 'Rechnen mitten im Text ohne Klammern', code: ['System.out.println("Verbrauch: " + before - after);'], rot: [1], quelle: 'VS Code',
+        meldung: 'The operator - is undefined for the argument type(s) String, int',
+        text: '<p>Java rechnet von links nach rechts. Zuerst hängt es <code>before</code> an den Text. Dann soll es von einem Text eine Zahl abziehen, und das geht nicht. Rechne die Differenz vorher in einer eigenen Variable aus (<code>int used = before - after;</code>) und gib dann <code>used</code> aus. Oder setz Klammern: <code>"Verbrauch: " + (before - after)</code>.</p>' },
+      { titel: 'Vorher-Wert zu spät gemerkt', code: ['lena.ride(b12, 15);', 'int batteryBefore = b12.getBattery();', 'int batteryAfter = b12.getBattery();'], quelle: 'Test',
+        meldung: 'In der Ausgabe fehlt die Zeile "Akkuverbrauch B-12: 15 Prozent". Dein Programm gibt 0 Prozent aus. Merkst du dir den Akkustand erst nach dem Fahren? Der Vorher-Wert muss vor lena.ride(...) gespeichert werden.',
+        text: '<p>Das Programm startet ohne roten Fehler. Aber beide Variablen bekommen den Wert nach der Fahrt, die Differenz ist 0. Diese Meldung kommt vom Test zu Aufgabe 3. Speichere den Vorher-Wert immer vor der Aktion, wie im dritten Lauf oben.</p>' }
+    ],
+
+    fragen: [
+      { art: 'wahl', frage: 'Die Beschreibung sagt: Rider(final String name, final int credit). Welche Zeile erzeugt Lena mit 500 Cent Guthaben?',
+        optionen: [
+          { t: 'Rider lena = new Rider("Lena", 500);', ok: true, warum: 'Richtig. Erst der Text, dann die Zahl, genau wie in der Beschreibung. final überliest du.' },
+          { t: 'Rider lena = new Rider(500, "Lena");', warum: 'Die Reihenfolge stimmt nicht. Der Konstruktor erwartet zuerst den Namen (String), dann das Guthaben (int). VS Code würde diese Zeile rot unterstreichen.' },
+          { t: 'Rider lena = new Rider(final "Lena", final 500);', warum: 'final steht nur in der Beschreibung des Konstruktors. Beim Aufruf schreibst du nur die Werte.' },
+          { t: 'Rider lena = Rider("Lena", 500);', warum: 'Hier fehlt new. Ohne new baut Java kein Objekt, sondern sucht eine Methode mit dem Namen Rider.' }
+        ], mono: true },
+      { art: 'wahl', frage: 'Was gibt dieses Programm aus? (ride senkt den Akku um 1 Prozent pro Minute.)',
+        code: ['Bike bike = new Bike("B-7", 55);', 'Rider rider = new Rider("Tom", 300);', 'rider.ride(bike, 10);', 'int before = bike.getBattery();', 'int after = bike.getBattery();', 'System.out.println(before - after);'],
+        optionen: [
+          { t: '10', warum: 'Das Rad ist zwar 10 Minuten gefahren. Aber Zeile 4 speichert before erst nach der Fahrt. Beide Variablen bekommen 45.' },
+          { t: '0', ok: true, warum: 'Richtig. Das Programm holt before und after beide erst nach der Fahrt. Beide sind 45, die Differenz ist 0. before gehört vor Zeile 3.' },
+          { t: '45', warum: '45 ist der Akkustand nach der Fahrt. Das Programm gibt aber die Differenz before - after aus. Da beide 45 sind, ist sie 0.' }
+        ] },
+      { art: 'zeile', frage: 'Welche Zeile ruft eine Methode an der Klasse statt am Objekt auf? Klick sie an.',
+        code: ['Station station = new Station("Schlossplatz", 4);', 'Bike bike = new Bike("B-12", 80);', 'station.addBike(bike);', 'System.out.println(Station.getInfo());'],
+        ok: 4,
+        richtig: 'Richtig. Station mit großem S ist der Bauplan. Ruf die Methode am Objekt auf: station.getInfo().',
+        falsch: 'Diese Zeile ist in Ordnung. Such die Zeile, in der vor dem Punkt der Klassenname mit großem Anfangsbuchstaben steht.',
+        warum: { 1: 'Hier baut new ein Objekt. Der Klassenname steht richtig hinter new.', 2: 'Hier baut new ein Rad. Der Klassenname steht richtig hinter new.' } },
+      { art: 'reihenfolge', frage: 'Gib aus, wie viel Akku eine Fahrt kostet. Bring die Zeilen in die richtige Reihenfolge. (rider gibt es schon.)',
+        zeilen: ['Bike bike = new Bike("B-12", 80);', 'int before = bike.getBattery();', 'rider.ride(bike, 10);', 'int after = bike.getBattery();', 'int used = before - after;', 'System.out.println("Verbrauch: " + used);'],
+        richtig: 'Richtig. Erst das Objekt, dann vorher merken, die Aktion, nachher holen, rechnen, ausgeben.',
+        falsch: 'Noch nicht ganz. Denk an die vier Schritte: vorher merken, Aktion, nachher holen, Differenz. Und eine Variable kannst du erst benutzen, wenn sie einen Wert hat.' },
+      { art: 'luecke', frage: 'Die Station soll das Rad b7 aufnehmen. Was gehört in die Lücke?',
+        code: ['station.___(b7);'], ok: ['addBike'], proben: ['add', 'addbike', 'addBike'],
+        falschBei: { add: 'Die Methode heißt in der Beschreibung addBike, nicht add. Java kennt nur genau diesen Namen.', addbike: 'Fast. Java unterscheidet Groß- und Kleinbuchstaben: addBike mit großem B.' },
+        richtig: 'Richtig. station.addBike(b7) ruft addBike an der Station auf und übergibt das Rad b7.',
+        falsch: 'Das passt noch nicht. Schau in die Beschreibung der Klasse Station: Welche Methode bekommt ein Bike?' },
+      { art: 'zuordnen', frage: 'Was sagt dir die Beschreibung? Ordne zu.',
+        paare: [['void drive(final int minutes)', 'gibt nichts zurück, bekommt eine Zahl', 'void heißt: Es kommt nichts zurück. In den Klammern steht, was die Methode bekommt: eine Zahl.'],
+                ['int getBattery()', 'gibt eine Zahl zurück, bekommt nichts', 'int vorn ist der Rückgabetyp. Die Klammern sind leer, also bekommt die Methode nichts.'],
+                ['void addBike(final Bike bike)', 'gibt nichts zurück, bekommt ein Rad', 'Der Parameter hat den Typ Bike. Also gibst du ein Objekt der Klasse Bike mit.'],
+                ['Bike(final String number, final int battery)', 'ein Konstruktor: erst Text, dann Zahl', 'Der Name ist gleich dem Klassennamen und es fehlt der Rückgabetyp. Also ist es ein Konstruktor.']],
+        richtig: 'Alles richtig zugeordnet.', falsch: 'Noch nicht ganz. Rot markiert sind die Zeilen, die noch nicht passen:' }
+    ],
+
+    aufgaben: [
+      { titel: 'Aufgabe 1: Station und Räder erzeugen', datei: 'BikeRentalApp.java, Methode main', befehl: './gradlew test --tests "*k05.BikeRentalApp1Test"',
+        text: '<p>Schreib in die <code>main</code>-Methode unter <code>// TODO Aufgabe 1</code>:</p><ol><li>Erzeuge eine Station mit dem Namen <code>"Schlossplatz"</code> und 4 Plätzen. Gib ihre Informationen mit <code>getInfo()</code> aus.</li><li>Erzeuge zwei Räder: Nummer <code>"B-12"</code> mit Akkustand 80 und Nummer <code>"B-7"</code> mit Akkustand 55.</li><li>Gib die Informationen beider Räder mit <code>getInfo()</code> aus.</li></ol><p>Die Ausgabe enthält danach diese drei Zeilen:</p><pre class="konsole">Station Schlossplatz: 0 von 4 Plätzen belegt\nRad B-12, Akku 80 Prozent\nRad B-7, Akku 55 Prozent</pre>',
+        tipps: ['Für jedes Objekt eine Zeile mit <code>new</code>. Gib jeder Variable einen eigenen Namen, zum Beispiel <code>b12</code> und <code>b7</code>. Die Werte kommen in der Reihenfolge der Beschreibung: <code>new Bike("B-12", 80)</code>.', 'Den Text von <code>getInfo()</code> gibst du mit <code>System.out.println(station.getInfo());</code> aus. Für die Räder genauso.'],
+        loesung: ['Station station = new Station("Schlossplatz", 4);', 'System.out.println(station.getInfo());', 'Bike b12 = new Bike("B-12", 80);', 'Bike b7 = new Bike("B-7", 55);', 'System.out.println(b12.getInfo());', 'System.out.println(b7.getInfo());'] },
+      { titel: 'Aufgabe 2: Räder zur Station hinzufügen', datei: 'BikeRentalApp.java, Methode main', befehl: './gradlew test --tests "*k05.BikeRentalApp2Test"',
+        text: '<p>Schreib unter <code>// TODO Aufgabe 2</code>:</p><ol><li>Stelle beide Räder mit der Methode <code>addBike</code> an die Station.</li><li>Gib danach noch einmal die Informationen der Station mit <code>getInfo()</code> aus.</li></ol><p>Die Ausgabe enthält danach zusätzlich:</p><pre class="konsole">Station Schlossplatz: 2 von 4 Plätzen belegt</pre>',
+        tipps: ['<code>addBike</code> ist eine Methode der Station. Also steht vor dem Punkt die Station: <code>station.addBike(…)</code>.', 'In die Klammern kommt die Variable eines Rads: <code>station.addBike(b12);</code> Für das zweite Rad schreibst du eine zweite Zeile.'],
+        loesung: ['station.addBike(b12);', 'station.addBike(b7);', 'System.out.println(station.getInfo());'] },
+      { titel: 'Aufgabe 3: Vorher und nachher vergleichen', datei: 'BikeRentalApp.java, Methode main', befehl: './gradlew test --tests "*k05.BikeRentalApp3Test"',
+        text: '<p>Schreib unter <code>// TODO Aufgabe 3</code>:</p><ol><li>Erzeuge eine Person mit dem Namen <code>"Lena"</code> und 500 Cent Guthaben.</li><li>Lass Lena mit dem Rad B-12 genau 15 Minuten fahren. Benutze dafür die Methode <code>ride</code>.</li><li>Berechne, wie viel Akku das Rad verbraucht hat und wie viel Guthaben Lena bezahlt hat. Vergleiche dafür die Werte vor und nach der Fahrt.</li><li>Gib beides so aus: <code>Akkuverbrauch B-12: 15 Prozent</code> und <code>Kosten Lena: 150 Cent</code>.</li></ol><p><strong>Wichtig:</strong> Nimm die Nummer des Rads aus <code>getNumber()</code> und den Namen aus <code>getName()</code>. Die Werte vorher und nachher holst du mit <code>getBattery()</code> und <code>getCredit()</code>. Schreib die Ergebnisse nicht von Hand in den Text. Der Test prüft, dass diese Getter im Code vorkommen und dass die Zahlen 15 und 150 nicht fest im Text stehen.</p>',
+        tipps: ['Du brauchst vier Variablen für die Werte: zwei vor der Fahrt, zwei danach. Die beiden Vorher-Werte musst du vor <code>lena.ride(b12, 15);</code> speichern, zum Beispiel <code>int batteryBefore = b12.getBattery();</code>', 'Rechne die Differenzen in eigenen Variablen aus, zum Beispiel <code>int cost = creditBefore - creditAfter;</code> Dann setzt du die Ausgabe zusammen: <code>"Kosten " + lena.getName() + ": " + cost + " Cent"</code>.'],
+        loesung: ['Rider lena = new Rider("Lena", 500);', 'int batteryBefore = b12.getBattery();', 'int creditBefore = lena.getCredit();', 'lena.ride(b12, 15);', 'int batteryAfter = b12.getBattery();', 'int creditAfter = lena.getCredit();',
+          'int batteryUsed = batteryBefore - batteryAfter;', 'int cost = creditBefore - creditAfter;', 'System.out.println("Akkuverbrauch " + b12.getNumber() + ": " + batteryUsed + " Prozent");', 'System.out.println("Kosten " + lena.getName() + ": " + cost + " Cent");'],
+        erklaerung: '<p>Die Reihenfolge entscheidet: Erst merken, dann fahren, dann noch einmal fragen. <code>b12</code> zeigt auf dasselbe Rad, mit dem Lena gefahren ist. Deshalb gibt <code>b12.getBattery()</code> nach der Fahrt den neuen Wert zurück.</p>' }
+    ]
+  });
+})();
+</script>
+</body>
+</html>

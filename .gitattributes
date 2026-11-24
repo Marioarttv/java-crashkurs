@@ -1,0 +1,4 @@
+# gradlew muss Unix-Zeilenenden behalten, sonst startet es im Dev Container nicht.
+gradlew text eol=lf
+*.bat text eol=crlf
+*.java text

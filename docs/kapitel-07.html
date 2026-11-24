@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 7: Entscheiden mit if und else – Java-Crashkurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kurs.css">
+<style>
+/* Nur in diesem Kapitel: Vergleiche ausprobieren */
+.k07-tester { border: 1px solid var(--k-line); border-radius: var(--k-radius); padding: 16px; margin: 16px 0 24px; }
+.k07-tester .k07-reihe { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+.k07-tester input[type=number] { font: inherit; font-family: var(--k-mono); width: 84px; padding: 6px 8px; border: 1px solid var(--k-line); border-radius: 8px; background: transparent; color: inherit; }
+.k07-tester .k07-ergebnis { font-size: 19px; margin: 0; }
+</style>
+</head>
+<body>
+<main class="kurs">
+
+  <p class="vorwissen">Das solltest du schon kennen: Variablen (benannte Speicherplätze für Werte) aus Kapitel 2, <code>System.out.println</code> (Text ausgeben) aus Kapitel 1, Methoden mit <code>return</code> aus Kapitel 3, Attribute (Variablen, die zu einem Objekt gehören) aus Kapitel 4 und <code>static</code> aus Kapitel 6.</p>
+
+  <p>Im Alltag entscheidest du ständig so: <em>Wenn es regnet, nehme ich den Schirm mit.</em> Regnet es nicht, lässt du ihn zu Hause. Genau das kann ein Programm auch. Es prüft eine Frage mit der Antwort Ja oder Nein. Nur bei Ja führt es die zugehörigen Anweisungen aus.</p>
+  <p>In Java heißt „wenn“ <code>if</code>. So eine Entscheidung besteht immer aus drei Teilen:</p>
+
+  <div class="aufbau">
+    <div class="teil" data-farbe="violett"><span class="stueck">if</span><span class="heisst"><b>Das Wort „wenn“</b>Damit fängt jede Entscheidung an.</span></div>
+    <div class="teil" data-farbe="orange"><span class="stueck">(points &gt;= 50)</span><span class="heisst"><b>Die Bedingung</b>Eine Frage in runden Klammern. Die Antwort ist immer Ja oder Nein. Java sagt dazu wahr und falsch.</span></div>
+    <div class="teil" data-farbe="blau"><span class="stueck">{ ... }</span><span class="heisst"><b>Der Block</b>Alles zwischen den geschweiften Klammern. Dieser Teil läuft nur, wenn die Bedingung wahr ist (Antwort Ja).</span></div>
+  </div>
+
+  <p>Lies dir so eine Zeile am besten laut als deutschen Satz vor:</p>
+  <p class="vorlesen"><span class="t-violett">Wenn</span> <span class="t-orange"><code>points</code> mindestens 50 ist</span>, dann <span class="t-blau">mach das, was im Block steht</span>.</p>
+  <p>Die Farben bleiben auf der ganzen Seite gleich: <span class="t-violett">violett</span> für <code>if</code> und <code>else</code>, <span class="t-orange">orange</span> für die Bedingung, <span class="t-blau">blau</span> für den Block.</p>
+
+  <h2>Ein if allein: einen Block ausführen oder überspringen</h2>
+  <p>Ein Programm läuft Zeile für Zeile von oben nach unten. Das Beispiel unten prüft eine Punktzahl. Klick auf „Nächster Schritt“ und schau auf die gelb markierte Zeile. Das ist die Zeile, die Java gerade ausführt.</p>
+  <p>Stell danach im Kasten 49 Punkte ein und klick dich noch einmal durch. Schau dabei auf Zeile 3: Was passiert mit ihr?</p>
+
+  <div id="lauf0"></div>
+
+  <p>Ist die Bedingung falsch (Antwort Nein), überspringt Java den ganzen Block. Die Zeile nach der schließenden geschweiften Klammer läuft in jedem Fall.</p>
+
+  <h2>Werte in einer Bedingung vergleichen</h2>
+  <p>In einer Bedingung vergleichst du meistens zwei Werte. Dafür gibt es sechs Vergleichszeichen:</p>
+  <table class="zeichen">
+    <tr><td><code>&gt;</code></td><td>größer als</td><td><code>&lt;</code></td><td>kleiner als</td></tr>
+    <tr><td><code>&gt;=</code></td><td>größer oder gleich („mindestens“)</td><td><code>&lt;=</code></td><td>kleiner oder gleich („höchstens“)</td></tr>
+    <tr><td><code>==</code></td><td>gleich</td><td><code>!=</code></td><td>ungleich</td></tr>
+  </table>
+  <p>Viele Fehler passieren genau an der Grenze: Zählt die 50 noch mit oder nicht? Probier es unten aus, bevor du weiterliest. Klick bei 50 und 50 einmal auf <code>&gt;</code> und einmal auf <code>&gt;=</code>.</p>
+
+  <div class="k07-tester" id="tester"></div>
+
+  <p>Wichtig bei „gleich“: Zum Vergleichen brauchst du zwei Gleichheitszeichen, also <code>==</code>. Ein einzelnes <code>=</code> ist eine Zuweisung. Es speichert einen Wert in einer Variable, wie in <code>int points = 62;</code>.</p>
+
+  <h2>Entweder oder: if und else</h2>
+  <p>Oft soll in beiden Fällen etwas passieren: ein Block für wahr (Ja), ein anderer für falsch (Nein). Dafür hängst du <code>else</code> an. Das heißt „sonst“ und bekommt einen eigenen Block.</p>
+  <p class="vorlesen"><span class="t-violett">Wenn</span> <span class="t-orange"><code>points</code> mindestens 50 ist</span>, <span class="t-blau">gib „bestanden“ aus</span>. <span class="t-violett">Sonst</span> <span class="t-blau">gib „nicht bestanden“ aus</span>.</p>
+
+  <div id="lauf1"></div>
+
+  <p>Von diesen beiden Blöcken läuft immer genau einer. Nie beide, nie keiner.</p>
+
+  <h2>Drei Fälle unterscheiden: if, else if und else</h2>
+  <p>Manchmal reichen zwei Fälle nicht. Dann baust du eine Kette mit <code>else if</code> („sonst, wenn“) für eine zweite Bedingung. Java prüft die Bedingungen von oben nach unten. Sobald eine Bedingung wahr ist (Antwort Ja), läuft genau dieser Block. Alle weiteren Bedingungen darunter prüft Java gar nicht mehr. War keine Bedingung wahr, läuft der <code>else</code>-Block.</p>
+  <p>Ein Beispiel: Auf einer Prepaid-Karte sind 10 Euro. Davon zieht das Programm einen Betrag ab. Danach gibt es den neuen Status der Karte aus, also ihren Zustand: noch Geld drauf (ACTIVE), genau leer (EMPTY) oder überzogen (OVERDRAWN). Probier im Kasten die Beträge 4, 10 und 15 Euro aus.</p>
+
+  <div id="lauf2"></div>
+
+  <h2>Zwei Bedingungen verbinden: und, oder, nicht</h2>
+  <p>Manchmal hängt eine Entscheidung von zwei Fragen ab: <em>Wenn es warm ist und ich mindestens zwei Stunden Zeit habe, gehe ich ins Freibad.</em> Ist eine der beiden Antworten Nein, bleibst du zu Hause.</p>
+  <p>Dafür verbindest du zwei Bedingungen zu einer. Java hat drei Zeichen dafür:</p>
+  <table class="zeichen">
+    <tr><td><code>&amp;&amp;</code></td><td>und</td><td>Nur wahr, wenn <strong>beide</strong> Bedingungen wahr sind.</td></tr>
+    <tr><td><code>||</code></td><td>oder</td><td>Wahr, wenn <strong>mindestens eine</strong> der beiden wahr ist.</td></tr>
+    <tr><td><code>!</code></td><td>nicht</td><td>Dreht das Ergebnis um: Aus wahr wird falsch, aus falsch wird wahr.</td></tr>
+  </table>
+  <p>Die ganze Verbindung steht in den runden Klammern hinter <code>if</code>. Sie ist eine einzige Bedingung mit der Antwort wahr oder falsch. Probier die drei Fälle im Kasten aus.</p>
+
+  <div id="lauf3"></div>
+
+  <p>Für <code>||</code> tippst du zweimal einen senkrechten Strich. Auf einer deutschen Tastatur bekommst du ihn am Mac mit <kbd>Alt</kbd> + <kbd>7</kbd>, unter Windows mit <kbd>Alt Gr</kbd> + <kbd>&lt;</kbd>. Das Zeichen <code>!</code> steht direkt vor dem, was es umdreht. <code>!(points &gt;= 50)</code> heißt also „<code>points</code> ist nicht mindestens 50“.</p>
+
+  <div class="merke">
+    <h3>Sechs Regeln zum Merken</h3>
+    <ol>
+      <li><code>if</code> heißt „wenn“, <code>else if</code> heißt „sonst, wenn“, <code>else</code> heißt „sonst“.</li>
+      <li>Jede Bedingung steht in runden Klammern. Ihr Ergebnis ist immer wahr (Ja) oder falsch (Nein).</li>
+      <li>Zu jeder Bedingung gehört ein Block in geschweiften Klammern.</li>
+      <li>Von allen Blöcken einer Kette läuft höchstens einer: der erste, dessen Bedingung wahr ist. Gibt es am Ende ein <code>else</code>, läuft sein Block, wenn keine Bedingung wahr war.</li>
+      <li>Zwei Werte vergleichst du mit <code>==</code>. Ein einzelnes <code>=</code> ist eine Zuweisung und speichert einen Wert.</li>
+      <li>Mit <code>&amp;&amp;</code> (und) müssen beide Bedingungen wahr sein, mit <code>||</code> (oder) reicht eine. <code>!</code> (nicht) dreht wahr und falsch um.</li>
+    </ol>
+  </div>
+
+  <h2>Drei häufige Fehler verstehen und beheben</h2>
+  <p>Wenn VS Code etwas rot unterstreicht, ist nichts kaputt. Java versteht eine Stelle im Code noch nicht und zeigt sie dir. Diese drei Fehler passieren am Anfang fast allen.</p>
+  <div id="fehler"></div>
+
+  <h2>Kurz geprüft: Code im Kopf durchgehen</h2>
+  <p>Hier warten fünf kurze Aufgaben zum Mitdenken. Rate nicht. Geh den Code im Kopf Zeile für Zeile durch, genau wie in den Beispielen oben. Klick erst danach auf deine Antwort.</p>
+  <div id="fragen"></div>
+
+  <h2>In den Aufgaben: ein Ergebnis zurückgeben</h2>
+  <p>In den Beispielen oben hat das Programm sein Ergebnis mit <code>System.out.println</code> ausgegeben. In den Aufgaben steht dein Code in einer Methode. Wie in Kapitel 3 gibt die Methode ihr Ergebnis mit <code>return</code> zurück. Das <code>return</code> steht dann in den Blöcken des <code>if</code>:</p>
+  <div class="code" data-code='public static boolean isAdult(int age) {
+    if (age >= 18) {
+        return true;
+    } else {
+        return false;
+    }
+}'></div>
+  <p class="vorlesen"><span class="t-violett">Wenn</span> <span class="t-orange"><code>age</code> mindestens 18 ist</span>, <span class="t-blau">gib <code>true</code> zurück</span>. <span class="t-violett">Sonst</span> <span class="t-blau">gib <code>false</code> zurück</span>.</p>
+  <p>Mit <code>return</code> ist die Methode sofort zu Ende. Die Wörter <code>public static</code> am Anfang lässt du in den Aufgaben stehen. Was <code>static</code> heißt, steht in Kapitel 6.</p>
+
+  <h2>Jetzt schreibst du selbst: drei Aufgaben im Projekt</h2>
+  <p>Vom Lesen und Klicken allein lernst du das Programmieren noch nicht. Jetzt schreibst du deinen eigenen Code. Geh bei jeder Aufgabe in diesen vier Schritten vor:</p>
+  <ol class="schritte">
+    <li>Lies die Aufgabe und zähl die Fälle. Wie viele verschiedene Ergebnisse gibt es?</li>
+    <li>Formuliere zu jedem Fall die Bedingung: erst als Ja-Nein-Frage auf Deutsch, dann mit Vergleichszeichen.</li>
+    <li>Schreib den Code: für den ersten Fall <code>if</code>, für weitere Fälle <code>else if</code>, für den letzten Fall <code>else</code>.</li>
+    <li>Starte den Test, also das Prüfprogramm zu deiner Aufgabe. Ist ein Test rot, lies die Meldung. Sie sagt dir auf Deutsch, welcher Fall noch nicht stimmt.</li>
+  </ol>
+  <p>Öffne das Übungsprojekt in VS Code. Die drei Aufgaben liegen im Ordner <code>src/main/java/de/phl/crashkurs/k07</code>. In jeder Datei wartet eine vorbereitete Methode auf dich. Zu jeder Aufgabe gibt es einen Test, der deinen Code mit Beispielen prüft.</p>
+  <p>So startest du den Test: Öffne die Testdatei und klick links neben dem Klassennamen auf den grünen Pfeil. Oder tippe den Befehl aus der Aufgabe ins Terminal (unter Windows <code>.\gradlew.bat</code> statt <code>./gradlew</code>).</p>
+  <p>Am Anfang sind fast alle Tests rot. Das ist normal, denn die Aufgaben sind noch nicht gelöst. Einzelne Tests können schon grün sein, bevor du etwas geschrieben hast.</p>
+  <div id="aufgaben"></div>
+
+</main>
+
+<script src="kurs.js"></script>
+<script>
+(function () {
+  var urteil = Kurs.urteil;
+
+  /* ---------- Vergleiche ausprobieren (nur in diesem Kapitel) ---------- */
+  var ZEICHEN = [['>', 'größer als'], ['>=', 'größer oder gleich'], ['<', 'kleiner als'], ['<=', 'kleiner oder gleich'], ['==', 'gleich'], ['!=', 'ungleich']];
+  function tester() {
+    var box = document.getElementById('tester'), el = Kurs.el, op = '>';
+    var reihe = el('div', 'k07-reihe');
+    function zahl(id, wert, name) {
+      var i = document.createElement('input'); i.type = 'number'; i.id = id; i.value = wert; i.setAttribute('aria-label', name); i.oninput = zeige; return i;
+    }
+    var a = zahl('tester-a', 50, 'Linke Zahl'), b = zahl('tester-b', 50, 'Rechte Zahl');
+    var chips = el('span', 'k07-reihe'); chips.style.margin = '0';
+    ZEICHEN.forEach(function (z) {
+      var c = Kurs.knopf('chip', Kurs.esc(z[0]), function () { op = z[0]; zeige(); }); c.setAttribute('aria-label', z[1]);
+      chips.appendChild(c);
+    });
+    reihe.appendChild(a); reihe.appendChild(chips); reihe.appendChild(b);
+    var ergebnis = el('p', 'k07-ergebnis'); ergebnis.setAttribute('aria-live', 'polite');
+    box.appendChild(reihe); box.appendChild(ergebnis);
+    function zeige() {
+      var x = Number(a.value), y = Number(b.value), wort, wert;
+      ZEICHEN.forEach(function (z, i) {
+        chips.children[i].classList.toggle('an', z[0] === op);
+        chips.children[i].setAttribute('aria-pressed', z[0] === op ? 'true' : 'false');
+        if (z[0] === op) wort = z[1];
+      });
+      wert = op === '>' ? x > y : op === '>=' ? x >= y : op === '<' ? x < y : op === '<=' ? x <= y : op === '==' ? x === y : x !== y;
+      ergebnis.innerHTML = 'Ist ' + x + ' ' + wort + ' ' + y + '? ' + (wert ? 'Ja' : 'Nein') + '. Also: ' + urteil(x + ' ' + op + ' ' + y, wert) + '.';
+    }
+    zeige();
+  }
+
+  Kurs.start({
+    nr: 7,
+    legende: { violett: 'if und else', orange: 'Bedingung', blau: 'Block' },
+
+    laeufe: {
+      lauf0: {
+        eingabe: { art: 'zahl', label: 'Punkte', start: 62, proben: [49, 50, 62], min: 0, max: 100 },
+        code: function (v) {
+          return ['int points = ' + v + ';', 'if (points >= 50) {', '    System.out.println("bestanden");', '}', 'System.out.println("fertig");'];
+        },
+        schritte: function (v) {
+          var ja = v >= 50, s = [], vars = [['points', v]];
+          s.push({ z: 1, vars: vars, sagt: 'Die Variable <code>points</code> bekommt den Wert ' + v + '. Unter dem Code siehst du bei „Im Speicher“, welchen Wert sich das Programm gerade merkt.' });
+          s.push({ z: 2, vars: vars, sagt: 'Jetzt prüft Java die Bedingung. Es setzt ' + v + ' für <code>points</code> ein: ' + urteil(v + ' >= 50', ja) + '.' });
+          if (ja) {
+            s.push({ z: 3, vars: vars, aus: ['bestanden'], sagt: 'Die Bedingung war wahr (Antwort Ja). Deshalb läuft der Block. Unter dem Code erscheint bei „Ausgabe“ das Wort „bestanden“.' });
+            s.push({ z: 5, vars: vars, aus: ['bestanden', 'fertig'], sagt: 'Der Block ist zu Ende. Java macht mit Zeile 5 weiter und gibt „fertig“ aus.' });
+          } else {
+            s.push({ z: 5, skip: [3], vars: vars, aus: ['fertig'], sagt: 'Die Bedingung war falsch (Antwort Nein). Java überspringt den Block in Zeile 3 und macht in Zeile 5 weiter. In der Ausgabe steht nur „fertig“.' });
+          }
+          return s;
+        }
+      },
+      lauf1: {
+        eingabe: { art: 'zahl', label: 'Punkte', start: 62, proben: [49, 50, 62], min: 0, max: 100 },
+        code: function (v) {
+          return ['int points = ' + v + ';', 'if (points >= 50) {', '    System.out.println("bestanden");', '} else {', '    System.out.println("nicht bestanden");', '}', 'System.out.println("fertig");'];
+        },
+        schritte: function (v) {
+          var ja = v >= 50, text = ja ? 'bestanden' : 'nicht bestanden', s = [], vars = [['points', v]];
+          s.push({ z: 1, vars: vars, sagt: 'Die Variable <code>points</code> bekommt den Wert ' + v + '.' });
+          s.push({ z: 2, vars: vars, sagt: 'Java prüft die Bedingung: ' + urteil(v + ' >= 50', ja) + '.' });
+          if (ja) s.push({ z: 3, skip: [5], vars: vars, aus: [text], sagt: 'Die Bedingung war wahr (Antwort Ja). Der <code>if</code>-Block in Zeile 3 läuft. Java überspringt den <code>else</code>-Block in Zeile 5.' });
+          else s.push({ z: 5, skip: [3], vars: vars, aus: [text], sagt: 'Die Bedingung war falsch (Antwort Nein). Java überspringt den <code>if</code>-Block in Zeile 3. Stattdessen läuft der <code>else</code>-Block in Zeile 5.' });
+          s.push({ z: 7, skip: ja ? [5] : [3], vars: vars, aus: [text, 'fertig'], sagt: 'Genau einer der beiden Blöcke ist gelaufen. Danach macht Java in Zeile 7 weiter und gibt „fertig“ aus.' });
+          return s;
+        }
+      },
+      lauf2: {
+        eingabe: { art: 'zahl', label: 'Betrag', start: 4, proben: [4, 10, 15], min: 0, max: 99 },
+        code: function (v) {
+          return ['int balance = 10;', 'int amount = ' + v + ';', 'balance = balance - amount;', 'if (balance > 0) {', '    System.out.println("ACTIVE");', '} else if (balance == 0) {', '    System.out.println("EMPTY");', '} else {', '    System.out.println("OVERDRAWN");', '}'];
+        },
+        schritte: function (v) {
+          var b = 10 - v, s = [], nach = [['balance', b], ['amount', v]];
+          s.push({ z: 1, vars: [['balance', 10]], sagt: 'Die Variable <code>balance</code> (das Guthaben) bekommt den Wert 10.' });
+          s.push({ z: 2, vars: [['balance', 10], ['amount', v]], sagt: 'Die Variable <code>amount</code> (der Betrag) bekommt den Wert ' + v + '.' });
+          s.push({ z: 3, vars: nach, sagt: 'Zuweisung mit <code>=</code>: Java rechnet zuerst rechts aus, also 10 - ' + v + ' = ' + b + '. Das Ergebnis speichert es in <code>balance</code>. Der alte Wert 10 ist damit weg.' });
+          s.push({ z: 4, vars: nach, sagt: 'Erste Bedingung: ' + urteil(b + ' > 0', b > 0) + '.' });
+          if (b > 0) {
+            s.push({ z: 5, skip: [6, 7, 8, 9], vars: nach, aus: ['ACTIVE'], sagt: 'Die erste Bedingung war wahr (Antwort Ja). Deshalb läuft Zeile 5 und gibt „ACTIVE“ aus. Die Bedingungen darunter prüft Java gar nicht mehr.' });
+          } else {
+            s.push({ z: 6, skip: [5], vars: nach, sagt: 'Die erste Bedingung war falsch (Antwort Nein). Deshalb prüft Java die zweite Bedingung: ' + urteil(b + ' == 0', b === 0) + '.' });
+            if (b === 0) s.push({ z: 7, skip: [5, 8, 9], vars: nach, aus: ['EMPTY'], sagt: 'Die zweite Bedingung war wahr (Antwort Ja). Zeile 7 läuft und gibt „EMPTY“ aus. Java überspringt den <code>else</code>-Block.' });
+            else s.push({ z: 9, skip: [5, 7], vars: nach, aus: ['OVERDRAWN'], sagt: 'Beide Bedingungen waren falsch (Antwort Nein). Deshalb läuft der <code>else</code>-Block in Zeile 9 und gibt „OVERDRAWN“ aus.' });
+          }
+          return s;
+        }
+      },
+      lauf3: {
+        eingabe: { art: 'wahl', label: 'Wetter und Zeit', werte: [
+          { text: '28 Grad, 3 Stunden', wert: '28,3' }, { text: '28 Grad, 1 Stunde', wert: '28,1' }, { text: '20 Grad, 3 Stunden', wert: '20,3' }] },
+        code: function (v) {
+          var t = v.split(',');
+          return ['int temp = ' + t[0] + ';', 'int hours = ' + t[1] + ';', 'if (temp >= 25 && hours >= 2) {', '    System.out.println("ab ins Freibad");', '} else {', '    System.out.println("lieber zu Hause");', '}'];
+        },
+        schritte: function (v) {
+          var t = Number(v.split(',')[0]), h = Number(v.split(',')[1]), warm = t >= 25, zeit = h >= 2, ja = warm && zeit;
+          var a = Kurs.ablauf();
+          a.setze('temp', t).schritt(1, 'Die Variable <code>temp</code> (die Temperatur) bekommt den Wert ' + t + '.');
+          a.setze('hours', h).schritt(2, 'Die Variable <code>hours</code> (die freien Stunden) bekommt den Wert ' + h + '.');
+          if (!warm) {
+            a.schritt(3, 'Java prüft zuerst die linke Bedingung: ' + urteil(t + ' >= 25', false) + '. Damit steht das Ergebnis schon fest. Bei <code>&amp;&amp;</code> müssen beide Seiten wahr sein, also ist die ganze Bedingung falsch. Die rechte Seite schaut Java gar nicht mehr an.');
+          } else {
+            a.schritt(3, 'Java prüft zuerst die linke Bedingung: ' + urteil(t + ' >= 25', true) + '. Dann prüft es die rechte: ' + urteil(h + ' >= 2', zeit) + '. ' +
+              (zeit ? 'Beide Seiten sind wahr. Also ist die ganze Bedingung wahr.' : 'Eine Seite ist falsch. Bei <code>&amp;&amp;</code> müssen beide wahr sein, also ist die ganze Bedingung falsch.'));
+          }
+          if (ja) a.aus('ab ins Freibad').schritt(4, 'Die Bedingung war wahr (Antwort Ja). Der <code>if</code>-Block läuft und gibt „ab ins Freibad“ aus. Java überspringt den <code>else</code>-Block.', { skip: [6] });
+          else a.aus('lieber zu Hause').schritt(6, 'Die Bedingung war falsch (Antwort Nein). Java überspringt den <code>if</code>-Block. Der <code>else</code>-Block läuft und gibt „lieber zu Hause“ aus.', { skip: [4] });
+          return a.schritte;
+        }
+      }
+    },
+
+    fehler: [
+      { titel: 'Ein Gleichheitszeichen statt zwei', code: ['if (balance = 0) {'], meldung: 'Type mismatch: cannot convert from int to boolean',
+        text: '<p>Das heißt: In den Klammern steht keine Bedingung, sondern eine Zuweisung. Mit „boolean“ meint Java eine Bedingung mit wahr oder falsch. Richtig ist <code>if (balance == 0) {</code>.</p>' },
+      { titel: 'Ein Semikolon direkt hinter der Bedingung', code: ['if (points >= 50); {'],
+        text: '<p>Hier unterstreicht VS Code nichts rot. Das macht diesen Fehler tückisch. Das Semikolon beendet das <code>if</code> sofort. Der Block dahinter gehört nicht mehr zum <code>if</code> und läuft deshalb immer. Hinter die runde Klammer der Bedingung gehört kein Semikolon.</p>' },
+      { titel: 'Eine geschweifte Klammer fehlt', code: ['if (points >= 50) {', '    System.out.println("bestanden");', 'System.out.println("fertig");'],
+        meldung: 'Syntax error, insert "}" to complete ClassBody',
+        text: '<p>Nach Zeile 2 fehlt die schließende Klammer. Der blaue Streifen zeigt, was Java daraus macht: Der Block hört nicht mehr auf. VS Code unterstreicht deshalb oft erst die letzte Klammer ganz unten in der Datei, nicht die Stelle, an der die Klammer fehlt.</p><p>Jede öffnende geschweifte Klammer <code>{</code> braucht eine schließende <code>}</code>. Klick in VS Code direkt neben eine Klammer. Dann markiert VS Code die passende Gegenklammer. So siehst du sofort, wo eine Klammer fehlt.</p>' }
+    ],
+
+    fragen: [
+      { art: 'wahl', frage: 'Was gibt dieses Programm aus?',
+        code: ['int age = 18;', 'if (age > 18) {', '    System.out.println("A");', '} else {', '    System.out.println("B");', '}'],
+        optionen: [
+          { t: 'A', warum: 'Schau auf die Grenze in Zeile 2: 18 > 18 ist falsch, denn 18 ist nicht größer als 18. Deshalb überspringt Java den if-Block und führt den else-Block aus.' },
+          { t: 'B', ok: true, warum: 'Richtig. 18 > 18 ist falsch, deshalb läuft der else-Block. Soll 18 mitzählen, brauchst du >= statt >.' },
+          { t: 'A und B', warum: 'Bei if und else läuft immer nur einer der beiden Blöcke, nie beide. Da 18 > 18 falsch ist, läuft nur der else-Block und gibt „B“ aus.' }
+        ] },
+      { art: 'wahl', frage: 'Was gibt diese if-Kette aus?',
+        code: ['int temp = 30;', 'if (temp > 10) {', '    System.out.println("warm");', '} else if (temp > 25) {', '    System.out.println("heiß");', '} else {', '    System.out.println("kalt");', '}'],
+        optionen: [
+          { t: 'warm', ok: true, warum: 'Richtig. Schon die erste Bedingung (30 > 10) ist wahr. Deshalb läuft dieser Block und Java überspringt den Rest. „heiß“ kann in diesem Code nie erscheinen. Die strengere Bedingung (temp > 25) gehört nach oben.' },
+          { t: 'heiß', warum: '30 > 25 ist zwar wahr, aber so weit kommt Java gar nicht. Java prüft von oben nach unten. Schon die erste Bedingung (30 > 10) ist wahr. Danach überspringt Java die restlichen Blöcke.' },
+          { t: 'warm und heiß', warum: 'In einer Kette aus if, else if und else läuft immer nur ein einziger Block. Weil 30 > 10 schon wahr ist, läuft nur der erste Block und gibt „warm“ aus.' }
+        ] },
+      { art: 'zeile', frage: 'In diesem Code steckt ein Fehler, den VS Code rot unterstreicht. Klick auf die fehlerhafte Zeile.',
+        code: ['int balance = 0;', 'if (balance = 0) {', '    System.out.println("leer");', '}'],
+        ok: 2,
+        richtig: 'Richtig. Ein einzelnes = ist eine Zuweisung und speichert einen Wert. Zum Vergleichen brauchst du ==. VS Code meldet hier: „Type mismatch: cannot convert from int to boolean“.',
+        falsch: 'Diese Zeile ist in Ordnung. Schau auf die Zeile mit der Bedingung: Dort vergleichst du zwei Werte.' },
+      { art: 'luecke', frage: 'Der Status soll OVERDRAWN werden, wenn das Guthaben kleiner als 0 ist. Welches Vergleichszeichen fehlt in der Lücke?',
+        code: ['if (balance ___ 0) {'], ok: ['<'], proben: ['>', '<=', '<'],
+        richtig: 'Stimmt. „kleiner als“ ist das Zeichen <.',
+        falsch: 'Das passt noch nicht. Gesucht ist das Vergleichszeichen für „kleiner als“. Bei genau 0 soll die Bedingung falsch sein.' },
+      { art: 'wahl', frage: 'Was gibt dieses Programm aus?',
+        code: ['int day = 7;', 'if (day == 6 || day == 7) {', '    System.out.println("Wochenende");', '} else {', '    System.out.println("Werktag");', '}'],
+        optionen: [
+          { t: 'Wochenende', ok: true, warum: 'Richtig. day == 6 ist falsch, aber day == 7 ist wahr. Bei || (oder) reicht eine wahre Seite. Also ist die ganze Bedingung wahr.' },
+          { t: 'Werktag', warum: 'Schau dir beide Seiten einzeln an: day == 6 ist falsch, day == 7 ist wahr. Bei || (oder) reicht schon eine wahre Seite. Die ganze Bedingung ist also wahr, und der if-Block läuft.' },
+          { t: 'nichts', warum: 'Bei if und else läuft immer genau einer der beiden Blöcke. Das Programm gibt also auf jeden Fall etwas aus. Hier ist day == 7 wahr, und bei || reicht eine wahre Seite.' }
+        ] }
+    ],
+
+    aufgaben: [
+      { titel: 'Aufgabe 1: Bestanden oder nicht', datei: 'Exam.java, Methode hasPassed', befehl: './gradlew test --tests "*k07.ExamTest"',
+        text: '<p>Die Methode bekommt eine Punktzahl in der Variable <code>points</code>. Ab 50 Punkten ist die Klausur bestanden (50 zählt schon mit). Die Methode soll dann <code>true</code> (wahr) zurückgeben, sonst <code>false</code> (falsch).</p>',
+        tipps: ['Du brauchst ein <code>if</code> mit einem <code>else</code>. In beiden Blöcken steht ein <code>return</code>. Mit <code>return</code> gibt die Methode ihr Ergebnis zurück, zum Beispiel <code>return true;</code>.', 'Die Bedingung heißt <code>points &gt;= 50</code>. Mit <code>&gt;</code> allein wäre genau 50 nicht bestanden.'],
+        loesung: ['public static boolean hasPassed(int points) {', '    if (points >= 50) {', '        return true;', '    } else {', '        return false;', '    }', '}'] },
+      { titel: 'Aufgabe 2: Eintrittspreis', datei: 'Ticket.java, Methode price', befehl: './gradlew test --tests "*k07.TicketTest"',
+        text: '<p>Die Methode bekommt ein Alter in der Variable <code>age</code> und gibt den Eintrittspreis in Euro zurück.</p><table><tr><th>Alter</th><th>Preis</th></tr><tr><td>unter 6</td><td>0</td></tr><tr><td>6 bis 17</td><td>5</td></tr><tr><td>ab 18</td><td>9</td></tr></table>',
+        tipps: ['Für drei Fälle brauchst du eine Kette aus <code>if</code>, <code>else if</code> und <code>else</code>. In jedem Block gibst du den passenden Preis mit <code>return</code> zurück.', 'Fang mit den Jüngsten an: <code>age &lt; 6</code>. Ist diese Bedingung falsch, ist das Alter automatisch mindestens 6. Für die zweite Bedingung reicht deshalb <code>age &lt; 18</code>.'],
+        loesung: ['public static int price(int age) {', '    if (age < 6) {', '        return 0;', '    } else if (age < 18) {', '        return 5;', '    } else {', '        return 9;', '    }', '}'] },
+      { titel: 'Aufgabe 3: Mit der Karte bezahlen', datei: 'PrepaidCard.java, Methode pay', befehl: './gradlew test --tests "*k07.PrepaidCardTest"',
+        text: '<p>Neu in dieser Aufgabe: Die Methode gibt nichts zurück und schreibt nichts in die Ausgabe. Stattdessen ändert sie die Attribute der Karte (ihre Variablen, Kapitel 4).</p><p>Die Karte hat zwei Attribute: ihr Guthaben (<code>balance</code>) und ihren Status (<code>status</code>). Beim Bezahlen ziehst du zuerst den Betrag (<code>amount</code>) vom Guthaben ab. Danach setzt du den neuen Status:</p><table><tr><th>Guthaben danach</th><th>Status</th></tr><tr><td>größer als 0</td><td>ACTIVE</td></tr><tr><td>genau 0</td><td>EMPTY</td></tr><tr><td>kleiner als 0</td><td>OVERDRAWN</td></tr></table><p>Ändere nur den Inhalt zwischen den geschweiften Klammern. Die Zeile <code>public void pay(int amount) {</code> bleibt unverändert.</p>',
+        tipps: ['Erster Schritt, noch vor dem <code>if</code>: Ziehe den Betrag mit einer Zuweisung ab: <code>balance = balance - amount;</code>', 'Danach folgt dieselbe Kette aus <code>if</code>, <code>else if</code> und <code>else</code> wie im Prepaid-Beispiel oben. Statt etwas auszugeben, speicherst du den neuen Status im Attribut <code>status</code>. Vor den Namen des Status schreibst du immer <code>CardStatus.</code>, denn dort sind die drei erlaubten Werte festgelegt (Kapitel 8 erklärt das genauer). Beispiel: <code>status = CardStatus.EMPTY;</code>'],
+        loesung: ['public void pay(int amount) {', '    balance = balance - amount;', '    if (balance > 0) {', '        status = CardStatus.ACTIVE;', '    } else if (balance == 0) {', '        status = CardStatus.EMPTY;', '    } else {', '        status = CardStatus.OVERDRAWN;', '    }', '}'] }
+    ],
+
+    selbsttest: function (log) {
+      var te = document.getElementById('tester');
+      te.querySelectorAll('.chip').forEach(function (c) { c.click(); log('T ' + te.querySelector('.k07-ergebnis').textContent); });
+      var a = document.getElementById('tester-a'); a.value = 49; a.oninput(); log('T ' + te.querySelector('.k07-ergebnis').textContent);
+    }
+  });
+  tester();
+})();
+</script>
+</body>
+</html>

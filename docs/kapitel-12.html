@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 12: Wenn es rot wird – Java-Crashkurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kurs.css">
+<style>
+/* Nur in diesem Kapitel: Ausgaben aus Terminal und Test, die drei Arten von Rot, die Nachschlagetabelle. */
+.k12-aus { font-family: var(--k-mono); font-size: 13.5px; line-height: 1.55; background: #16213D; color: #E8ECF5; border-radius: var(--k-radius); padding: 12px 14px; margin: 10px 0 16px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.k12-aus .k12-rot { color: #FF8A80; }
+.k12-aus .k12-hier { color: #FFE066; font-weight: 700; }
+.k12-aus .k12-blass { color: #8C97B0; }
+.k12-aus .k12-gut { color: #7EE2B0; font-weight: 700; }
+.k12-art { border: 1px solid var(--k-line); border-left: 6px solid var(--k-stop); border-radius: 0 var(--k-radius) var(--k-radius) 0; padding: 4px 16px 6px; margin: 0 0 16px; }
+.k12-art h3 { margin-top: 12px; }
+.k12-art dl { margin: 0 0 8px; }
+.k12-art dt { font-weight: 700; margin-top: 8px; }
+.k12-art dd { margin: 2px 0 0; max-width: 62ch; }
+.k12-welle { text-decoration: underline wavy var(--k-stop); text-underline-offset: 4px; font-family: var(--k-mono); }
+.k12-tab { width: 100%; border-collapse: collapse; margin: 6px 0 22px; font-size: 16px; }
+.k12-tab th, .k12-tab td { text-align: left; vertical-align: top; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--k-line); }
+.k12-tab th { font-size: 14px; color: var(--k-muted); }
+.k12-tab td:first-child { width: 42%; }
+.k12-tab .meldung { font-size: 13.5px; overflow-wrap: anywhere; display: block; }
+.k12-tab small { display: block; font-family: var(--k-mono); font-size: 12.5px; color: var(--k-muted); margin-top: 4px; overflow-wrap: anywhere; }
+.k12-tab .k12-kap { color: var(--k-muted); font-size: 14px; white-space: nowrap; }
+@media (max-width: 600px) {
+  .k12-tab tr { display: block; border-bottom: 1px solid var(--k-line); padding: 8px 0; }
+  .k12-tab th { display: none; }
+  .k12-tab td { display: block; border: 0; padding: 2px 0; width: auto !important; }
+  .k12-tab td:nth-child(2)::before { content: "Heißt: "; font-weight: 700; }
+  .k12-tab td:nth-child(3)::before { content: "Tun: "; font-weight: 700; }
+}
+.k12-teile { display: flex; flex-wrap: wrap; gap: 10px 16px; margin: 12px 0 16px; }
+.k12-teile > div { flex: 1 1 200px; border: 1px solid var(--k-line); border-radius: var(--k-radius); padding: 10px 12px; }
+.k12-teile b { display: block; margin-bottom: 4px; }
+.k12-teile code { overflow-wrap: anywhere; }
+.k12-rahmen { overflow-x: auto; }
+.k12-gut-t { color: var(--k-go); font-weight: 700; }
+.k12-rot-t { color: var(--k-stop); font-weight: 700; }
+</style>
+</head>
+<body>
+<main class="kurs">
+
+  <p class="vorwissen">Das solltest du schon kennen: alles aus den Kapiteln 1 bis 11, vor allem Exceptions und den Stacktrace aus Kapitel 11.</p>
+
+  <p>Eine Wetterstation misst jeden Tag die Temperatur und rechnet daraus Werte aus: den Höchstwert, die Frosttage, eine Warnung bei Sturm. Dieses Kapitel benutzt sie als Beispiel. Es geht aber um etwas anderes: Was tust du, wenn etwas rot wird?</p>
+  <p>Beim Programmieren ist Rot normal. Es heißt nicht, dass du etwas kaputt gemacht hast. Es heißt: Java zeigt dir eine Stelle, die noch nicht stimmt. Entscheidend ist, welche Art von Rot du vor dir hast. Jede Art bedeutet etwas anderes. Bei jeder gehst du anders vor.</p>
+
+  <h2>Drei Arten von Rot</h2>
+
+  <div class="k12-art">
+    <h3>1. Rot unterstrichen: Java versteht den Code nicht</h3>
+    <dl>
+      <dt>Woran du es erkennst</dt>
+      <dd>VS Code unterstreicht eine Stelle mit einer roten Wellenlinie, zum Beispiel <span class="k12-welle">return max</span>. Fährst du mit der Maus darüber, erscheint die Meldung. Alle Meldungen auf einmal stehen in der Ansicht „Problems“ unten im Fenster.</dd>
+      <dt>Was das heißt</dt>
+      <dd>Der Code ist kein gültiges Java, zum Beispiel weil ein Semikolon fehlt. Java kann ihn nicht übersetzen. Das heißt: Der Code kompiliert nicht.</dd>
+      <dt>Was dann läuft</dt>
+      <dd><strong>Nichts.</strong> Bewertet nach der Präsenzübung ein Programm deine Tests, übersetzt es in der Regel zuerst das ganze Projekt, genau wie <code>./gradlew</code> im Terminal. Scheitert das an einer einzigen Stelle, läuft kein einziger Test. Auch die Tests von Aufgaben, die stimmen, laufen dann nicht. So sieht das im Terminal aus, wenn du einen Test aus Kapitel 7 startest, der Fehler aber in Kapitel 12 steckt (Pfad gekürzt):</dd>
+    </dl>
+    <pre class="k12-aus">&gt; Task :compileJava <span class="k12-rot">FAILED</span>
+…/src/main/java/de/phl/crashkurs/k12/WeatherStation.java:23: <span class="k12-rot">error: ';' expected</span>
+        return max
+                  ^
+1 error
+FAILURE: Build failed with an exception.</pre>
+    <p>Startest du in VS Code einen Test, während etwas rot unterstrichen ist, fragt VS Code: <span class="meldung">Build failed, do you want to continue?</span> (Das Übersetzen ist gescheitert, willst du trotzdem weitermachen?) Zur Wahl stehen „Continue“, „Always Continue“ und „Fix...“. Klick nicht auf „Continue“. VS Code startet die Tests dann trotzdem, und manche werden bei dir sogar grün. Bei einer Bewertung mit <code>./gradlew</code> zählen sie aber nicht, weil dort nichts läuft. Behebe zuerst die rote Stelle.</p>
+  </div>
+
+  <div class="k12-art">
+    <h3>2. Roter Test: Der Code läuft, aber das Ergebnis stimmt nicht</h3>
+    <dl>
+      <dt>Woran du es erkennst</dt>
+      <dd>Nichts ist rot unterstrichen. Der Test startet, aber neben ihm erscheint ein rotes Kreuz statt eines grünen Hakens.</dd>
+      <dt>Was das heißt</dt>
+      <dd>Java versteht deinen Code und führt ihn aus. Nur liefert er für mindestens ein Beispiel nicht das, was der Test erwartet. Das ist ein Denkfehler, kein Schreibfehler.</dd>
+      <dt>Was dann läuft</dt>
+      <dd>Alle Tests. Die anderen Tests können grün sein und bringen ihre Punkte.</dd>
+    </dl>
+  </div>
+
+  <div class="k12-art">
+    <h3>3. Exception: Java bricht beim Laufen ab</h3>
+    <dl>
+      <dt>Woran du es erkennst</dt>
+      <dd>Eine rote Meldung mit dem Wort <code>Exception</code> und darunter Zeilen mit <code>at</code>. Im Test ist der Test rot, und in seiner Meldung steht die Exception.</dd>
+      <dt>Was das heißt</dt>
+      <dd>Java versteht den Code, aber mit diesen Werten geht etwas nicht, zum Beispiel ein Fach, das es nicht gibt (Kapitel 11).</dd>
+      <dt>Was dann läuft</dt>
+      <dd>Alles bis zu der Zeile aus der Meldung. In einem Test wird nur dieser eine Test rot. Die anderen Tests laufen weiter.</dd>
+    </dl>
+  </div>
+
+  <h2>So gehst du vor</h2>
+  <p>Egal welche Art von Rot: Geh immer in derselben Reihenfolge vor. Das spart dir in der Präsenzübung die meiste Zeit.</p>
+  <ol class="schritte">
+    <li><strong>Welche Art von Rot ist es?</strong> Ist irgendwo etwas rot unterstrichen, kümmerst du dich zuerst darum. Sonst läuft bei der Bewertung kein einziger Test.</li>
+    <li><strong>Die oberste Meldung zuerst.</strong> Ein einziger Fehler kann mehrere Meldungen auslösen. Die späteren verschwinden oft von selbst, wenn du den ersten behebst.</li>
+    <li><strong>Geh zur Datei und Zeile.</strong> In der Ansicht „Problems“ springt VS Code mit einem Klick auf die Meldung an die Stelle. Bei einer Exception steht die Zeile in der Klammer hinter <code>at</code>.</li>
+    <li><strong>Lies die Zeile und die Zeile davor.</strong> Oft liegt die Ursache eine Zeile höher. Ein fehlendes Zeichen fällt Java manchmal erst in der nächsten Zeile auf. Und bei einer Exception entsteht der falsche Wert oft eine Zeile, bevor Java abbricht.</li>
+    <li><strong>Ändere eine Sache, speichere, teste neu.</strong> Nicht drei Dinge auf einmal. Sonst weißt du nicht, was geholfen hat.</li>
+  </ol>
+
+  <h2>Ein roter Test: den Ablauf im Kopf verfolgen</h2>
+  <p>Ein Denkfehler zeigt keine Meldung im Code. Du findest ihn, indem du den Code Zeile für Zeile durchgehst und an jeder Stelle fragst: Welchen Wert hat die Variable jetzt, und welchen <em>sollte</em> sie haben?</p>
+  <p>Das Programm unten soll die Regentage zählen: Tage, an denen mehr als 0 Millimeter Regen gefallen sind. In den drei Tagen hat es nur einmal geregnet. Die Antwort müsste also 1 sein. VS Code unterstreicht nichts. Klick dich durch die Fassung mit dem Fehler und schau, in welcher Zeile der Wert falsch wird.</p>
+
+  <div id="lauf1"></div>
+
+  <p>Das Semikolon hinter der Bedingung in Zeile 4 beendet das <code>if</code> sofort (Kapitel 7). Der Block darunter gehört dann nicht mehr zum <code>if</code> und läuft in jeder Runde. Weder VS Code noch das Terminal melden hier etwas. Nur der Test wäre rot, weil 3 herauskommt statt 1. Klick zum Vergleich die behobene Fassung an.</p>
+
+  <h2>Eine Testmeldung lesen</h2>
+  <p>Ist ein Test rot, sagt dir seine Meldung genau, was er erwartet hat und was dein Code geliefert hat. So sieht die echte Meldung aus Aufgabe 2 dieses Kapitels aus:</p>
+  <pre class="k12-aus">org.opentest4j.AssertionFailedError: Bei -3, -7 und -1 Grad ist der Höchstwert -1. Mit welchem Wert startet max? ==&gt; <span class="k12-gut">expected: &lt;-1&gt;</span> <span class="k12-rot">but was: &lt;0&gt;</span></pre>
+  <div class="k12-teile">
+    <div><b>Der Hinweis</b>Der Text vor <code>==&gt;</code>. Den hat der Test geschrieben. Er nennt das Beispiel und gibt dir einen Tipp.</div>
+    <div><b class="k12-gut-t">expected: &lt;-1&gt;</b>„erwartet: -1“. Das ist das richtige Ergebnis.</div>
+    <div><b class="k12-rot-t">but was: &lt;0&gt;</b>„war aber: 0“. Das hat dein Code geliefert.</div>
+  </div>
+  <p>Die Werte in den spitzen Klammern sind der Schlüssel. Frag dich: Wie kommt mein Code auf 0? Dann gehst du den Code mit genau diesem Beispiel im Kopf durch, wie oben bei den Regentagen.</p>
+  <p>In VS Code findest du die Meldung beim roten Test: in der Ansicht „Testing“ (das Reagenzglas links) und im Bereich „Test Results“ unten. Im Terminal zeigt <code>./gradlew</code> nur eine Kurzfassung, ohne den Text:</p>
+  <pre class="k12-aus">Kapitel 12, Aufgabe 2: WeatherStation &gt; Höchstwert im Winter, alle Werte unter 0 <span class="k12-rot">FAILED</span>
+    org.opentest4j.AssertionFailedError at WeatherStationTest.java:20</pre>
+  <p>Diese Kurzfassung nennt nur die Zeile im Test, nicht die Zeile in deinem Code. Die ganze Meldung siehst du in VS Code.</p>
+  <p>Eine zweite Testmeldung kennst du aus Kapitel 11: <span class="meldung">Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.</span> Der Test hat eine Exception erwartet, aber deine Methode hat keine geworfen.</p>
+
+  <h2>Eine Exception verfolgen</h2>
+  <p>Die Methode <code>average</code> rechnet den Mittelwert der Temperaturen aus: alle Werte zusammenzählen, dann durch ihre Anzahl teilen. Probier sie mit drei Messwerten und dann ohne Messwerte aus. Achte bei „keine Messwerte“ auf die Meldung und darauf, wohin die beiden <code>at</code>-Zeilen zeigen.</p>
+
+  <div id="lauf2"></div>
+
+  <p>Die oberste <code>at</code>-Zeile zeigt auf <code>WeatherStation.java</code>, Zeile 7. Dort teilt Java durch <code>temps.length</code>, und das ist 0. Aber warum ist das Array leer? Das steht nicht in dieser Datei. Die zweite <code>at</code>-Zeile führt dich weiter: <code>Main.java</code>, Zeile 4 ruft <code>average</code> auf, und eine Zeile davor entsteht das leere Array. So gehst du einen Stacktrace Zeile für Zeile nach unten, bis du die Ursache findest.</p>
+
+  <h3>Dieselbe Art von Meldung in einem Test</h3>
+  <p>Passiert die Exception in einem Test, steht sie in der Meldung des Tests. Dann kommen noch mehr <code>at</code>-Zeilen dazu, die nicht zu deinem Code gehören. So sieht die echte Meldung aus Aufgabe 2 aus:</p>
+  <pre class="k12-aus"><span class="k12-rot">java.lang.ArrayIndexOutOfBoundsException: Index 4 out of bounds for length 4</span>
+	<span class="k12-hier">at de.phl.crashkurs.k12.WeatherStation.countFrostDays(WeatherStation.java:35)</span>
+	at de.phl.crashkurs.k12.WeatherStationTest.frosttage(WeatherStationTest.java:26)
+<span class="k12-blass">	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)</span></pre>
+  <p>Die Regel: Such die <strong>erste <code>at</code>-Zeile mit einer Datei, die du bearbeitest</strong>. Überspring alles mit <code>java.base</code> oder <code>org.junit</code> und die Testdatei (Name endet auf <code>Test.java</code>). Hier ist es <code>WeatherStation.java</code>, Zeile 35. Je nachdem, wo du die Meldung liest, stehen unten noch mehr solche fremden Zeilen. Wo der Fehler genau steckt, findest du in Aufgabe 2 selbst heraus. Denk an die Zeile davor.</p>
+
+  <h2>Wenn du nicht fertig wirst: auskommentieren</h2>
+  <p>In der Präsenzübung kann es passieren: Die Zeit wird knapp, und eine Methode ist halb fertig und rot unterstrichen. Dann gilt: <strong>Was nicht kompiliert, kommentierst du aus.</strong> Ein Kommentar ist Text hinter <code>//</code>. Java überliest ihn. So wird das Projekt wieder übersetzbar, und alle anderen Tests laufen.</p>
+  <p>Schreib dafür <code>//</code> vor jede Zeile. Oder markiere die Zeilen und wähle im Menü „Edit“ den Befehl „Toggle Line Comment“. Derselbe Befehl nimmt die <code>//</code> auch wieder weg.</p>
+  <p>Aber Vorsicht bei Methoden mit Rückgabewert (Kapitel 3). Kommentierst du alles zwischen den geschweiften Klammern aus, fehlt das <code>return</code>:</p>
+  <div class="code" data-code='public static int highest(int[] temps) {
+    // int max = temps[0]
+    // ...
+}' data-rot="1" data-legende="nein"></div>
+  <p>VS Code meldet dann: <span class="meldung">This method must return a result of type int</span>. Das heißt: Die Methode verspricht ein <code>int</code>, gibt aber keins zurück. Schreib deshalb einen Platzhalter ans Ende, also ein <code>return</code> mit einem passenden Wert. Der Test für diese Methode bleibt rot, aber alle anderen laufen.</p>
+  <div class="code" data-code='public static int highest(int[] temps) {
+    // int max = temps[0]
+    // ...
+    return 0;
+}' data-legende="nein"></div>
+  <table class="zeichen">
+    <tr><th>Rückgabetyp</th><th>Platzhalter</th></tr>
+    <tr><td><code>int</code>, <code>double</code></td><td><code>return 0;</code></td></tr>
+    <tr><td><code>boolean</code></td><td><code>return false;</code></td></tr>
+    <tr><td><code>String</code></td><td><code>return "";</code></td></tr>
+    <tr><td>eine Klasse oder eine Liste</td><td><code>return null;</code></td></tr>
+    <tr><td><code>void</code></td><td>nichts, eine <code>void</code>-Methode braucht kein <code>return</code></td></tr>
+  </table>
+  <p>Den Kopf der Methode (die erste Zeile) und die beiden geschweiften Klammern kommentierst du nie aus. Den Kopf ruft der Test auf.</p>
+
+  <h2>Nachschlagen: die häufigsten Meldungen</h2>
+  <p>Hier stehen die Meldungen aus den Kapiteln 1 bis 11. Oben steht der Wortlaut aus VS Code, klein darunter der aus dem Terminal. Alle sind echte Meldungen. Schreib dir die Meldungen, die dir schon begegnet sind, in deine eigenen Notizen.</p>
+
+  <h3>Rot unterstrichen</h3>
+  <div class="k12-rahmen">
+  <table class="k12-tab">
+    <tr><th>Meldung</th><th>Was sie heißt</th><th>Was du tust</th></tr>
+    <tr><td><span class="meldung">Syntax error, insert ";" to complete BlockStatements</span><small>';' expected</small></td><td>Am Ende der Anweisung fehlt das Semikolon. Steht vorne „Syntax error, insert“, fehlt an der Stelle ein Zeichen. <span class="k12-kap">Kapitel 1</span></td><td>Semikolon ans Ende der Zeile setzen. Stehen in derselben Zeile noch seltsame Meldungen, verschwinden sie danach meist.</td></tr>
+    <tr><td><span class="meldung">String literal is not properly closed by a double-quote</span><small>unclosed string literal</small></td><td>Ein Text in Anführungszeichen ist nicht geschlossen. <span class="k12-kap">Kapitel 1</span></td><td>Das schließende <code>"</code> ergänzen.</td></tr>
+    <tr><td><span class="meldung">Syntax error, insert "}" to complete ClassBody</span><small>reached end of file while parsing</small></td><td>Eine schließende geschweifte Klammer fehlt. VS Code zeigt oft erst auf die letzte Zeile der Datei. <span class="k12-kap">Kapitel 7</span></td><td>Neben jede <code>{</code> klicken. VS Code markiert die passende <code>}</code>. Markiert VS Code keine, fehlt sie.</td></tr>
+    <tr><td><span class="meldung">The public type Welcome must be defined in its own file</span><small>class Welcome is public, should be declared in a file named Welcome.java</small></td><td>Der Klassenname passt nicht zum Dateinamen. <span class="k12-kap">Kapitel 1</span></td><td>Klasse oder Datei so umbenennen, dass beide gleich heißen, mit derselben Groß- und Kleinschreibung.</td></tr>
+    <tr><td><span class="meldung">students cannot be resolved to a variable</span><small>cannot find symbol</small></td><td>Java kennt diesen Namen nicht: Tippfehler, nie angelegt, oder in einem anderen Block angelegt. <span class="k12-kap">Kapitel 2 und 11</span></td><td>Namen Buchstabe für Buchstabe mit der Stelle vergleichen, an der du die Variable anlegst.</td></tr>
+    <tr><td><span class="meldung">system cannot be resolved</span><small>package system does not exist</small></td><td><code>System</code> ist kleingeschrieben. Java kennt <code>system</code> mit kleinem s nicht. <span class="k12-kap">Kapitel 1</span></td><td><code>System</code> mit großem S schreiben.</td></tr>
+    <tr><td><span class="meldung">Duplicate local variable students</span><small>variable students is already defined in method main(String[])</small></td><td>Die Variable wird ein zweites Mal angelegt, weil vor dem Namen noch einmal der Typ steht. <span class="k12-kap">Kapitel 2</span></td><td>Beim Ändern den Typ weglassen: <code>students = 4;</code></td></tr>
+    <tr><td><span class="meldung">Type mismatch: cannot convert from String to int</span><small>incompatible types: String cannot be converted to int</small></td><td>Der Wert passt nicht zum Typ der Variable, hier Text in einer Zahl. <span class="k12-kap">Kapitel 2</span></td><td>Anführungszeichen weg, wenn eine Zahl gemeint ist, oder den Typ ändern.</td></tr>
+    <tr><td><span class="meldung">Type mismatch: cannot convert from double to int</span><small>incompatible types: possible lossy conversion from double to int</small></td><td>Eine Kommazahl soll in ein <code>int</code>. Oft ein Tausenderpunkt: <code>1.200</code> ist für Java 1,2. <span class="k12-kap">Kapitel 2</span></td><td>Zahlen ohne Punkt schreiben: <code>1200</code>.</td></tr>
+    <tr><td><span class="meldung">The local variable totalCost may not have been initialized</span><small>variable totalCost might not have been initialized</small></td><td>Du benutzt die Variable, bevor sie sicher einen Wert hat. <span class="k12-kap">Kapitel 2 und 8</span></td><td>Gleich beim Anlegen einen Startwert geben: <code>int totalCost = 0;</code></td></tr>
+    <tr><td><span class="meldung">This method must return a result of type int</span><small>missing return statement</small></td><td>Die Methode verspricht einen Rückgabewert, aber auf mindestens einem Weg fehlt das <code>return</code>. <span class="k12-kap">Kapitel 3</span></td><td><code>return</code> ergänzen, auch in jedem Zweig von <code>if</code> und <code>else</code>. Beim Auskommentieren einen Platzhalter schreiben.</td></tr>
+    <tr><td><span class="meldung">The method scale(int, int) in the type Recipe is not applicable for the arguments (int)</span><small>method scale in class Recipe cannot be applied to given types;</small></td><td>Beim Aufruf passen Zahl oder Art der Werte nicht zum Methodenkopf. In der ersten Klammer steht, was verlangt ist, in der zweiten, was du gibst. <span class="k12-kap">Kapitel 3</span></td><td>Den Methodenkopf lesen und genau so viele Werte in derselben Reihenfolge übergeben.</td></tr>
+    <tr><td><span class="meldung">The constructor Book(int, String) is undefined</span><small>incompatible types: int cannot be converted to String</small></td><td>Einen Konstruktor mit diesen Werten gibt es nicht. Oft ist die Reihenfolge vertauscht. <span class="k12-kap">Kapitel 4 und 5</span></td><td>In der Beschreibung oder der Klasse nachsehen, in welcher Reihenfolge der Konstruktor die Werte will.</td></tr>
+    <tr><td><span class="meldung">The method getBaterry() is undefined for the type Bike</span><small>cannot find symbol</small></td><td>Diese Methode gibt es in der Klasse nicht. Meist ein Tippfehler oder falsche Groß- und Kleinschreibung. <span class="k12-kap">Kapitel 5</span></td><td>Den Namen in der Klasse nachsehen und genau so schreiben, hier <code>getBattery()</code>.</td></tr>
+    <tr><td><span class="meldung">Cannot make a static reference to the non-static method getBattery() from the type Bike</span><small>non-static method getBattery() cannot be referenced from a static context</small></td><td>Du hast die Methode an der Klasse aufgerufen (<code>Bike.getBattery()</code>) statt an einem Objekt. <span class="k12-kap">Kapitel 5 und 6</span></td><td>Am Objekt aufrufen: <code>bike.getBattery()</code>.</td></tr>
+    <tr><td><span class="meldung">Type mismatch: cannot convert from int to boolean</span><small>incompatible types: int cannot be converted to boolean</small></td><td>In einer Bedingung steht <code>=</code> (speichern) statt <code>==</code> (vergleichen). <span class="k12-kap">Kapitel 7</span></td><td><code>==</code> schreiben.</td></tr>
+    <tr><td><span class="meldung">ArrayList cannot be resolved to a type</span><small>cannot find symbol</small></td><td>Java kennt <code>ArrayList</code> nicht, weil der <code>import</code> fehlt. <span class="k12-kap">Kapitel 10</span></td><td>Ganz oben unter die <code>package</code>-Zeile <code>import java.util.ArrayList;</code> schreiben.</td></tr>
+    <tr><td><span class="meldung">The operator - is undefined for the argument type(s) String, int</span><small>bad operand types for binary operator '-'</small></td><td>Java rechnet von links nach rechts. <code>"Diff: " + a</code> ist schon Text, und von Text kann Java nichts abziehen. <span class="k12-kap">Kapitel 5</span></td><td>Die Rechnung in Klammern setzen: <code>"Diff: " + (a - b)</code>.</td></tr>
+    <tr><td><span class="meldung">Unreachable code</span><small>unreachable statement</small></td><td>Diese Zeile kann nie laufen, weil direkt davor <code>return</code> oder <code>throw</code> steht. <span class="k12-kap">Kapitel 11</span></td><td>Die Zeile vor das <code>return</code> setzen oder löschen.</td></tr>
+    <tr><td><span class="meldung">MEDUIM cannot be resolved or is not a field</span><small>cannot find symbol</small></td><td>Diesen Enum-Wert gibt es nicht. Meist ein Tippfehler. <span class="k12-kap">Kapitel 8</span></td><td>Den Wert in der Enum-Datei nachsehen und genau so schreiben.</td></tr>
+    <tr><td><span class="meldung">Incompatible operand types Size and String</span><small>incomparable types: Size and String</small></td><td>Ein Enum-Wert wird mit Text verglichen. <span class="k12-kap">Kapitel 8</span></td><td>Mit dem Enum-Wert vergleichen: <code>size == Size.SMALL</code>.</td></tr>
+    <tr><td><span class="meldung">Cannot invoke length() on the array type String[]</span><small>cannot find symbol</small></td><td>Bei einem Array steht <code>length</code> ohne Klammern. <span class="k12-kap">Kapitel 10</span></td><td><code>names.length</code> schreiben.</td></tr>
+    <tr><td><span class="meldung">length cannot be resolved or is not a field</span><small>cannot find symbol</small></td><td>Eine Liste hat kein <code>length</code>. <span class="k12-kap">Kapitel 10</span></td><td><code>list.size()</code> schreiben.</td></tr>
+  </table>
+  </div>
+
+  <h3>Exceptions beim Laufen</h3>
+  <div class="k12-rahmen">
+  <table class="k12-tab">
+    <tr><th>Meldung</th><th>Was sie heißt</th><th>Was du tust</th></tr>
+    <tr><td><span class="meldung">java.lang.NullPointerException: Cannot invoke "ParkingGarage.getFreeSpots()" because "garage" is null</span></td><td>Die Variable zeigt auf kein Objekt. <span class="k12-kap">Kapitel 4 und 11</span></td><td>Nachsehen, wo die Variable ihr Objekt bekommen sollte. Meist fehlt ein <code>new</code> oder ein <code>this.</code> im Konstruktor.</td></tr>
+    <tr><td><span class="meldung">java.lang.ArrayIndexOutOfBoundsException: Index 4 out of bounds for length 4</span></td><td>Das Fach gibt es nicht. Das letzte Fach hat die Nummer <code>length - 1</code>. <span class="k12-kap">Kapitel 10 und 11</span></td><td>In der Schleife <code>&lt;</code> statt <code>&lt;=</code> verwenden und bei 0 anfangen.</td></tr>
+    <tr><td><span class="meldung">java.lang.ArithmeticException: / by zero</span></td><td>Das Programm teilt eine ganze Zahl durch 0. <span class="k12-kap">Kapitel 11</span></td><td>Herausfinden, warum der Teiler 0 ist. Ist 0 ein erlaubter Fall, vorher mit <code>if</code> prüfen.</td></tr>
+  </table>
+  </div>
+
+  <h3>Rote Tests</h3>
+  <div class="k12-rahmen">
+  <table class="k12-tab">
+    <tr><th>Meldung</th><th>Was sie heißt</th><th>Was du tust</th></tr>
+    <tr><td><span class="meldung">==&gt; expected: &lt;-1&gt; but was: &lt;0&gt;</span></td><td>Erwartet war -1, dein Code liefert 0. <span class="k12-kap">Kapitel 12</span></td><td>Den Code mit dem Beispiel aus dem Hinweis im Kopf durchgehen und die Stelle finden, an der der Wert falsch wird.</td></tr>
+    <tr><td><span class="meldung">==&gt; Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.</span></td><td>Der Test hat eine Exception erwartet, aber keine kam. <span class="k12-kap">Kapitel 11</span></td><td>Prüfen, ob die Bedingung vor dem <code>throw</code> für dieses Beispiel wahr ist.</td></tr>
+  </table>
+  </div>
+
+  <h2>Regeln für die Präsenzübung</h2>
+  <div class="merke">
+    <h3>Sieben Regeln zum Merken</h3>
+    <ol>
+      <li>Ist etwas rot unterstrichen, läuft bei der Bewertung kein einziger Test. Kompilieren geht vor allem anderen.</li>
+      <li>Was du nicht fertig bekommst, kommentierst du aus. Bei Methoden mit Rückgabewert schreibst du einen Platzhalter wie <code>return 0;</code> hin.</li>
+      <li>Vorgegebene Zeilen, Dateien und Tests änderst du nicht: keinen Methodenkopf, keinen Klassennamen, keine Testdatei.</li>
+      <li>Nach jedem kleinen Schritt speicherst du und startest den Test.</li>
+      <li>Bei einer Meldung: die oberste zuerst, dann die Zeile und die Zeile davor.</li>
+      <li>Bei einem roten Test: Erwartet und geliefert vergleichen, dann den Code mit diesem Beispiel im Kopf durchgehen.</li>
+      <li>Am Ende committest und synchronisierst du. Erst dann ist deine Abgabe angekommen.</li>
+    </ol>
+  </div>
+
+  <h3>Commit und Sync, Schritt für Schritt</h3>
+  <p>Gespeichert ist noch nicht abgegeben. Deine Änderungen liegen dann nur auf deinem Rechner. Die Bewertung prüft nur, was auf GitHub ankommt. So lädst du deinen Stand hoch:</p>
+  <ol class="schritte">
+    <li><strong>Alles speichern.</strong> Im Menü „File“ auf „Save All“. Steht im Reiter einer Datei ein Punkt statt des ×, ist sie noch nicht gespeichert.</li>
+    <li><strong>Quellcodeverwaltung öffnen.</strong> Links in der Leiste das Symbol „Source Control“ anklicken, die verbundenen Kreise. Unter „Changes“ stehen alle Dateien, die du geändert oder neu angelegt hast.</li>
+    <li><strong>Nachricht schreiben.</strong> Oben ins Feld „Message“ kurz schreiben, was du gemacht hast, zum Beispiel <code>Übung 1 und 2 fertig</code>.</li>
+    <li><strong>Committen.</strong> Auf den blauen Knopf „Commit“ klicken. Fragt VS Code <span class="meldung">There are no staged changes to commit. Would you like to stage all your changes and commit them directly?</span>, klickst du auf „Yes“. Das heißt: Alle geänderten Dateien kommen in den Commit.</li>
+    <li><strong>Synchronisieren.</strong> Jetzt heißt der blaue Knopf „Sync Changes“, daneben steht ein Pfeil nach oben mit einer Zahl. Klick darauf. Erst damit lädst du den Commit zu GitHub hoch. Beim ersten Mal fragt VS Code <span class="meldung">This action will pull and push commits from and to "origin/main".</span> (Das holt und lädt Commits von und nach GitHub.) Klick auf „OK“. In einem Codespace heißt der Knopf in Schritt 4 oft schon „Commit &amp; Sync“. Dann passiert beides auf einmal.</li>
+    <li><strong>Prüfen.</strong> Unter „Changes“ steht nichts mehr, und der Knopf „Sync Changes“ ist verschwunden. Am sichersten öffnest du dein Repository auf GitHub im Browser und schaust, ob oben deine Nachricht beim letzten Commit steht.</li>
+  </ol>
+  <p>Mach das nicht erst in der letzten Minute. Committe und synchronisiere nach jeder fertigen Übung. Dann ist auch bei einem Absturz von VS Code das meiste schon angekommen.</p>
+  <p>Eine Einschränkung beim Üben: Das Übungsprojekt dieses Crashkurses gehört nicht dir, du hast es nur kopiert. Dort kannst du committen, aber nicht zu GitHub hochladen. Üb die Schritte 1 bis 4 also im Crashkurs. In der Präsenzübung arbeitest du in deinem eigenen Repository, dort klappt auch Schritt 5.</p>
+
+  <h2>Drei Fehler, die Punkte kosten</h2>
+  <div id="fehler"></div>
+
+  <h2>Kurz geprüft: Rot lesen</h2>
+  <p>Bei den meisten Fragen geht es darum, eine Meldung der richtigen Stelle zuzuordnen. Lies zuerst die Meldung, dann den Code.</p>
+  <div id="fragen"></div>
+
+  <h2>Jetzt reparierst du selbst: drei Aufgaben im Projekt</h2>
+  <p>Diesmal schreibst du keinen neuen Code. Im Ordner <code>src/main/java/de/phl/crashkurs/k12</code> liegen drei Dateien, die kompilieren, aber Denkfehler enthalten. In jeder Datei stecken genau zwei. Zu jedem Denkfehler gibt es einen eigenen Test, der rot ist, solange der Fehler drin ist. Ein paar Tests sind schon am Anfang grün. Die zeigen dir, welche Fälle schon stimmen.</p>
+  <ol class="schritte">
+    <li>Starte den Test zur Aufgabe und lies die Meldung jedes roten Tests: Welches Beispiel, was erwartet, was geliefert?</li>
+    <li>Lies die Beschreibung über der Methode. Sie sagt, was die Methode tun soll.</li>
+    <li>Geh die Methode mit dem Beispiel aus der Meldung im Kopf durch, bis du die Zeile findest, an der der Wert falsch wird.</li>
+    <li>Ändere nur diese Stelle, speichere, starte den Test. Ein roter Test weniger heißt: ein Fehler gefunden.</li>
+  </ol>
+  <p>Achte auch auf gelbe Wellenlinien. Gelb ist kein Fehler, sondern eine Warnung: Der Code läuft, aber VS Code findet etwas verdächtig. Manchmal ist genau das der Denkfehler.</p>
+  <div id="aufgaben"></div>
+
+</main>
+
+<script src="kurs.js"></script>
+<script>
+(function () {
+  var urteil = Kurs.urteil;
+  var RAIN = [0, 4, 0];
+  var STATION = ['public class WeatherStation {', '    public static int average(int[] temps) {', '        int sum = 0;', '        for (int i = 0; i < temps.length; i++) {', '            sum = sum + temps[i];', '        }', '        return sum / temps.length;', '    }', '}'];
+
+  Kurs.start({
+    nr: 12,
+    legende: { orange: 'Bedingung', blau: 'Block' },
+
+    laeufe: {
+      lauf1: {
+        eingabe: { art: 'wahl', label: 'Fassung', werte: [{ text: 'mit dem Fehler', wert: 'fehler' }, { text: 'behoben', wert: 'ok' }] },
+        code: function (v) {
+          var kopf = ['int[] rain = {0, 4, 0};', 'int rainyDays = 0;', 'for (int i = 0; i < rain.length; i++) {'];
+          return v === 'fehler'
+            ? kopf.concat(['    if (rain[i] > 0);', '    {', '        rainyDays++;', '    }', '}', 'System.out.println("Regentage: " + rainyDays);'])
+            : kopf.concat(['    if (rain[i] > 0) {', '        rainyDays++;', '    }', '}', 'System.out.println("Regentage: " + rainyDays);']);
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf(), fehler = v === 'fehler', n = 0, plus = fehler ? 6 : 5, ende = fehler ? 9 : 8;
+          a.setze('rain', { array: RAIN }).schritt(1, 'Ein Array mit den Regenmengen von drei Tagen in Millimetern. Nur am Tag mit der Nummer 1 hat es geregnet.');
+          a.setze('rainyDays', 0).schritt(2, 'Der Zähler <code>rainyDays</code> startet bei 0.');
+          for (var i = 0; i < 3; i++) {
+            a.setze('i', i).schritt(3, (i === 0 ? 'Die Schleife beginnt mit <code>i</code> = 0. ' : '<code>i</code> ist jetzt ' + i + '. ') + 'Bedingung: ' + urteil(i + ' < 3', true) + '.');
+            var ja = RAIN[i] > 0;
+            if (fehler) {
+              a.schritt(4, 'Java prüft ' + urteil(RAIN[i] + ' > 0', ja) + '. Aber egal wie das ausgeht: Das Semikolon am Ende der Zeile beendet das <code>if</code> sofort. Das <code>if</code> macht nichts.');
+              n++;
+              a.setze('rainyDays', n).schritt(6, ja ? 'Der Block zählt <code>rainyDays</code> auf ' + n + ' hoch. Das passt hier, denn es hat geregnet.'
+                : 'Der Block in den Zeilen 5 bis 7 gehört nicht zum <code>if</code>. Er läuft immer. <code>rainyDays</code> steigt auf ' + n + ', obwohl es nicht geregnet hat. <strong>Hier wird der Wert falsch.</strong>');
+            } else {
+              a.schritt(4, 'Java prüft ' + urteil(RAIN[i] + ' > 0', ja) + '.' + (ja ? '' : ' Java überspringt den Block.'));
+              if (ja) { n++; a.setze('rainyDays', n).schritt(5, 'Der Block gehört zum <code>if</code> und läuft nur, weil es geregnet hat. <code>rainyDays</code> steigt auf ' + n + '.'); }
+            }
+          }
+          a.setze('i', 3).schritt(3, '<code>i</code> ist jetzt 3. Bedingung: ' + urteil('3 < 3', false) + '. Die Schleife ist zu Ende.', { skip: fehler ? [4, 5, 6, 7] : [4, 5, 6] });
+          a.loesche('i').aus('Regentage: ' + n).schritt(ende, fehler ? 'Ausgabe „Regentage: 3“. Richtig wäre 1. Ein Test, der 1 erwartet, wäre hier rot. Gefunden hast du die Stelle, indem du bei jedem Schritt verglichen hast: Welchen Wert hat <code>rainyDays</code>, welchen sollte es haben?'
+            : 'Ausgabe „Regentage: 1“. Jetzt stimmt es.');
+          return a.schritte;
+        }
+      },
+      lauf2: {
+        eingabe: { art: 'wahl', label: 'Messwerte', werte: [{ text: 'drei Messwerte', wert: '12, 15, 9' }, { text: 'keine Messwerte', wert: '' }] },
+        nebeneinander: true,
+        dateien: function (v) {
+          return [
+            { name: 'Main.java', code: ['public class Main {', '    public static void main(String[] args) {', '        int[] today = {' + v + '};', '        int avg = WeatherStation.average(today);', '        System.out.println("Mittel: " + avg);', '    }', '}'] },
+            { name: 'WeatherStation.java', code: STATION }
+          ];
+        },
+        schritte: function (v) {
+          var werte = v ? v.split(', ').map(Number) : [], a = Kurs.ablauf().datei('Main.java'), sum = 0;
+          a.setze('today', { array: werte }).schritt(3, werte.length ? 'Ein Array mit drei Temperaturen.' : 'Ein leeres Array: Heute gibt es noch keine Messwerte. Es hat die Länge 0.');
+          a.schritt(4, 'Java ruft <code>average</code> auf und gibt das Array mit.');
+          a.bereich('average(…)', 'WeatherStation.java').setze('temps', { array: werte }).schritt(2, 'Java springt in <code>average</code>. Der Parameter <code>temps</code> zeigt auf dasselbe Array. Zeile 4 in <code>Main.java</code> wartet.');
+          a.setze('sum', 0).schritt(3, '<code>sum</code> startet bei 0.');
+          for (var i = 0; i < werte.length; i++) {
+            a.setze('i', i).schritt(4, 'Bedingung: ' + urteil(i + ' < ' + werte.length, true) + '.');
+            sum += werte[i];
+            a.setze('sum', sum).schritt(5, '<code>sum</code> wird um <code>temps[' + i + ']</code> = ' + werte[i] + ' größer und ist jetzt ' + sum + '.');
+          }
+          a.setze('i', werte.length).schritt(4, 'Bedingung: ' + urteil(werte.length + ' < ' + werte.length, false) + '. ' + (werte.length ? 'Die Schleife ist zu Ende.' : 'Die Schleife läuft kein einziges Mal.'), { skip: [5] });
+          a.loesche('i');
+          if (werte.length) {
+            var avg = Math.floor(sum / werte.length);
+            a.schritt(7, 'Java teilt ' + sum + ' durch ' + werte.length + ' und gibt ' + avg + ' zurück.', { gibt: avg });
+            a.verlasse().setze('avg', avg).schritt(4, 'Zurück in <code>Main.java</code>. <code>avg</code> bekommt ' + avg + '.');
+            a.aus('Mittel: ' + avg).schritt(5, 'Ausgabe „Mittel: ' + avg + '“.');
+          } else {
+            a.schritt(7, 'Java soll 0 durch <code>temps.length</code> teilen, und das ist 0. Teilen durch 0 geht nicht: Java bricht hier ab. Das ist die oberste <code>at</code>-Zeile der Meldung.', { abbruch: true });
+            a.verlasse().ausRot('Exception in thread "main" java.lang.ArithmeticException: / by zero\n\tat WeatherStation.average(WeatherStation.java:7)\n\tat Main.main(Main.java:4)').schritt(4, 'Die Exception geht zurück nach <code>Main.java</code>, Zeile 4. Das ist die zweite <code>at</code>-Zeile. Niemand fängt sie ab, also bricht auch <code>main</code> ab, und die rote Meldung erscheint. Die Ursache steht eine Zeile davor: das leere Array.', { abbruch: true });
+          }
+          return a.schritte;
+        }
+      }
+    },
+
+    fehler: [
+      { titel: 'Einen Methodenkopf geändert', code: ['public boolean hasFrost() {'],
+        meldung: 'The method isFrost() is undefined for the type Measurement',
+        text: '<p>Die Methode hieß <code>isFrost</code> und hat jetzt einen anderen Namen. In deiner Datei ist alles in Ordnung. VS Code unterstreicht stattdessen die Testdatei rot, denn der Test ruft <code>isFrost()</code> auf. Damit kompiliert das Projekt nicht mehr, und kein Test läuft. Methodenköpfe bleiben deshalb immer genau so, wie sie vorgegeben sind: Name, Rückgabetyp und Parameter.</p>' },
+      { titel: 'Bei „Build failed“ auf Continue geklickt',
+        text: '<p>VS Code fragt <span class="meldung">Build failed, do you want to continue?</span>, und du klickst auf „Continue“. Einige Tests laufen dann bei dir und werden vielleicht grün. Das ist trügerisch: Eine Bewertung mit <code>./gradlew</code> übersetzt das ganze Projekt und scheitert an der roten Stelle. Dann zählt kein einziger Test. Schau stattdessen in die Ansicht „Problems“ und behebe oder kommentiere die rote Stelle.</p>' },
+      { titel: 'Gespeichert, aber nicht synchronisiert',
+        text: '<p>Alle Tests sind grün, die Dateien sind gespeichert, und trotzdem kommt nichts an. Gespeichert ist nur auf deinem Rechner. Erst „Commit“ und danach „Sync Changes“ bringen deinen Stand zu GitHub. Prüf am Ende, ob unter „Changes“ nichts mehr steht und der Knopf „Sync Changes“ verschwunden ist.</p>' }
+    ],
+
+    fragen: [
+      { art: 'zuordnen', frage: 'Welche Art von Rot ist das? Ordne jede Meldung zu.',
+        optionen: ['rot unterstrichen', 'roter Test', 'Exception'],
+        paare: [['Syntax error, insert ";" to complete BlockStatements', 'rot unterstrichen', 'Syntax error heißt: Java versteht den Code nicht. Das zeigt VS Code schon beim Schreiben.'],
+                ['expected: <-1> but was: <0>', 'roter Test', 'expected und but was vergleichen das erwartete mit dem gelieferten Ergebnis. Das schreibt ein Test.'],
+                ['java.lang.ArithmeticException: / by zero', 'Exception', 'Ein Name auf Exception heißt: Java ist beim Laufen abgebrochen.'],
+                ['student cannot be resolved to a variable', 'rot unterstrichen', 'Ein unbekannter Name fällt Java schon beim Übersetzen auf.']],
+        richtig: 'Alles richtig zugeordnet.', falsch: 'Noch nicht ganz.' },
+      { art: 'zeile', frage: 'VS Code zeigt für diesen Code zwei Meldungen: „Syntax error, insert \":: IdentifierOrNew\" to complete ReferenceExpression“ und „Syntax error, insert \";\" to complete LocalVariableDeclarationStatement“. Klick auf die Zeile mit dem Fehler.',
+        code: ['public class Main {', '    public static void main(String[] args) {', '        int wind = 70;', '        String text = "Wind: " + wind', '        System.out.println(text);', '    }', '}'],
+        ok: 4,
+        richtig: 'Richtig. Am Ende von Zeile 4 fehlt das Semikolon. Die erste, seltsame Meldung verschwindet mit, sobald es da ist. Hör auf die Meldung, die du verstehst: insert ";".',
+        falsch: 'Such die Zeile, an deren Ende ein Zeichen fehlt. Beide Meldungen beginnen mit „Syntax error, insert“.',
+        warum: { 5: 'Zeile 5 ist vollständig. Aber schau eine Zeile höher: Wo endet die Anweisung in Zeile 4?' } },
+      { art: 'zeile', frage: 'VS Code unterstreicht die letzte Zeile: „Syntax error, insert \"}\" to complete ClassBody“. Das Programm soll „fertig“ immer ausgeben. Klick auf die Zeile, nach der die schließende Klammer fehlt.',
+        code: ['public class Main {', '    public static void main(String[] args) {', '        int wind = 70;', '        if (wind > 50) {', '            System.out.println("Warnung");', '        System.out.println("fertig");', '    }', '}'],
+        ok: 5,
+        richtig: 'Richtig. Der Block des if beginnt in Zeile 4 und muss nach Zeile 5 enden. Weil die Klammer fehlt, zählt Java alle Klammern bis zum Dateiende falsch. Deshalb zeigt VS Code erst auf die letzte Zeile.',
+        falsch: 'VS Code zeigt auf das Dateiende, weil die Klammer dort zum ersten Mal fehlt. Such die öffnende Klammer, die keine schließende hat.',
+        warum: { 8: 'Hier zeigt VS Code hin, aber hier fehlt nichts. Die Klammer fehlt weiter oben. Welche öffnende Klammer hat keine schließende?', 6: 'Nach Zeile 6 wäre die Ausgabe „fertig“ im if-Block. Dann käme sie nur bei Wind über 50. Sie soll aber immer kommen.' } },
+      { art: 'zuordnen', frage: 'Was tust du bei welcher Meldung?',
+        paare: [['cannot be resolved to a variable', 'Den Namen mit der Stelle vergleichen, an der du die Variable anlegst.', 'Java kennt den Namen nicht. Meist ein Tippfehler.'],
+                ['This method must return a result of type int', 'Ein return ergänzen, notfalls return 0;', 'Die Methode verspricht ein int, gibt aber keins zurück.'],
+                ['The constructor Book(int, String) is undefined', 'Die Reihenfolge der Werte bei new prüfen.', 'Einen Konstruktor mit diesen Werten in dieser Reihenfolge gibt es nicht.'],
+                ['ArrayList cannot be resolved to a type', 'Den import oben in der Datei ergänzen.', 'Java kennt ArrayList nur mit import java.util.ArrayList;'],
+                ['Type mismatch: cannot convert from int to boolean', '== statt = in die Bedingung schreiben.', 'In der Bedingung steht eine Zuweisung statt eines Vergleichs.']],
+        richtig: 'Alles richtig zugeordnet.', falsch: 'Noch nicht ganz.' },
+      { art: 'wahl', frage: 'Ein Test meldet: „Bei 3 Regentagen muss count 3 liefern. ==> expected: <3> but was: <4>“. Was hat dein Code geliefert?',
+        optionen: [
+          { t: '3', warum: '3 steht hinter expected. Das ist der Wert, den der Test erwartet hat, also das richtige Ergebnis.' },
+          { t: '4', ok: true, warum: 'Richtig. but was heißt „war aber“. Dein Code hat 4 geliefert, einen zu viel. Typisch für eine Schleife, die eine Runde zu viel zählt, oder einen Block, der zu oft läuft.' },
+          { t: 'Das steht nicht in der Meldung.', warum: 'Doch. Die Meldung nennt beide Werte: expected ist das erwartete, but was das gelieferte Ergebnis.' }
+        ] },
+      { art: 'zeile', frage: 'Ein Test ist rot. Die Meldung lautet so. Klick in der Datei Rain.java auf die Zeile, die die Meldung nennt.',
+        text: '<pre class="k12-aus"><span class="k12-rot">java.lang.ArithmeticException: / by zero</span>\n\tat de.phl.crashkurs.k12.Rain.average(Rain.java:10)\n\tat de.phl.crashkurs.k12.RainTest.leer(RainTest.java:11)\n<span class="k12-blass">\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)</span></pre>',
+        code: ['package de.phl.crashkurs.k12;', '', 'public class Rain {', '', '    public static int average(int[] mm) {', '        int sum = 0;', '        for (int i = 0; i < mm.length; i++) {', '            sum = sum + mm[i];', '        }', '        return sum / mm.length;', '    }', '}'],
+        ok: 10,
+        richtig: 'Richtig. Die erste at-Zeile mit deiner Datei ist Rain.java, Zeile 10. Dort teilt Java durch mm.length, und das Array ist leer.',
+        falsch: 'Such die erste at-Zeile, in der Rain.java steht. Die Zahl hinter dem Doppelpunkt ist die Zeile.',
+        warum: { 11: 'Die 11 gehört zu RainTest.java, nicht zu Rain.java. Das ist die Zeile im Test, die average aufruft.' } },
+      { art: 'wahl', frage: 'Noch fünf Minuten. Eine Methode mit dem Rückgabetyp int ist halb fertig und rot unterstrichen. Was tust du?',
+        optionen: [
+          { t: 'Den Inhalt auskommentieren und return 0; hinschreiben', ok: true, warum: 'Richtig. Dann kompiliert das Projekt wieder, und alle anderen Tests bringen ihre Punkte. Nur der Test dieser Methode bleibt rot.' },
+          { t: 'So lassen, vielleicht gibt es Teilpunkte', warum: 'Solange etwas rot unterstrichen ist, läuft bei einer Bewertung mit <code>./gradlew</code> kein einziger Test. Dann gibt es meist 0 Punkte.' },
+          { t: 'Die ganze Methode samt Kopf löschen', warum: 'Dann unterstreicht VS Code den Test rot, weil er die Methode aufruft. Das Projekt kompiliert wieder nicht. Der Kopf bleibt immer stehen.' },
+          { t: 'Den Test für diese Methode auskommentieren', warum: 'Tests änderst du nie. Die Bewertung nutzt immer die originalen Tests. Die rote Stelle in deiner Methode bliebe trotzdem.' }
+        ] },
+      { art: 'reihenfolge', frage: 'Bring die Schritte zum Abgeben in die richtige Reihenfolge.',
+        zeilen: ['Alle Dateien speichern (File, Save All)', 'Source Control öffnen', 'Nachricht ins Feld Message schreiben', 'Auf Commit klicken', 'Auf Sync Changes klicken', 'Auf GitHub nachsehen, ob der Commit da ist'],
+        richtig: 'Richtig. Erst speichern, dann committen, dann synchronisieren. Erst nach dem Sync ist alles auf GitHub.',
+        falsch: 'Die rot markierten Schritte stehen noch am falschen Platz. Denk daran: Ohne Speichern kennt der Commit deine Änderungen nicht, und erst Sync lädt den Commit hoch.' }
+    ],
+
+    aufgaben: [
+      { titel: 'Aufgabe 1: Der Messwert', datei: 'Measurement.java', befehl: './gradlew test --tests "*k12.MeasurementTest"',
+        text: '<p>Ein Messwert speichert einen Ort und eine Temperatur. Die Methode <code>isFrost</code> soll bei 0 Grad und darunter <code>true</code> liefern. In der Datei stecken <strong>zwei Denkfehler</strong>. Am Anfang sind zwei von vier Tests rot.</p>',
+        tipps: ['Der Test „Der Konstruktor speichert Ort und Temperatur“ meldet <code>expected: &lt;Ludwigsburg&gt; but was: &lt;null&gt;</code>. Das Attribut bekommt seinen Wert also nie. Vergleich die beiden Zeilen im Konstruktor miteinander. Auch die gelbe Wellenlinie dort ist ein Hinweis (Kapitel 4).', '„Bei 0 Grad herrscht Frost“ meldet <code>expected: &lt;true&gt; but was: &lt;false&gt;</code>, „Bei -4 Grad“ ist aber grün. Vergleich die Bedingung in <code>isFrost</code> mit der Beschreibung: „0 Grad und darunter“ (Kapitel 7).'],
+        loesung: ['public Measurement(String place, int temperature) {', '    this.place = place;', '    this.temperature = temperature;', '}', '', 'public boolean isFrost() {', '    return temperature <= 0;', '}'],
+        erklaerung: '<p><strong>Fehler 1:</strong> <code>place = place;</code> speichert den Parameter in sich selbst. Das Attribut bleibt leer (<code>null</code>). In der Zeile darunter steht es richtig: Erst <code>this.place</code> meint das Attribut des Objekts. VS Code warnt gelb: <span class="meldung">The assignment to variable place has no effect</span> (die Zuweisung bewirkt nichts). <strong>Fehler 2:</strong> <code>&lt;</code> lässt die 0 nicht mitzählen, <code>&lt;=</code> schon.</p>' },
+      { titel: 'Aufgabe 2: Die Wetterstation', datei: 'WeatherStation.java', befehl: './gradlew test --tests "*k12.WeatherStationTest"',
+        text: '<p><code>highest</code> soll den größten Wert im Array liefern, <code>countFrostDays</code> die Zahl der Tage mit 0 Grad oder weniger. In der Datei stecken <strong>zwei Denkfehler</strong>, einer in jeder Methode. Am Anfang sind zwei von drei Tests rot. Einer davon endet mit einer Exception.</p>',
+        tipps: ['„Höchstwert im Winter“ meldet <code>expected: &lt;-1&gt; but was: &lt;0&gt;</code>. Geh <code>highest</code> mit -3, -7 und -1 im Kopf durch: Welchen Wert hat <code>max</code> am Anfang, und wird er je kleiner? Besser startet <code>max</code> mit dem ersten Wert im Array (Kapitel 10).', '„Frosttage zählen“ endet mit <code>Index 4 out of bounds for length 4</code> in Zeile 35. Das Array hat die Fächer 0 bis 3. Schau dir die Zeile davor an: Wie weit läuft die Schleife (Kapitel 10 und 11)?'],
+        loesung: ['public static int highest(int[] temps) {', '    int max = temps[0];', '    for (int i = 0; i < temps.length; i++) {', '        if (temps[i] > max) {', '            max = temps[i];', '        }', '    }', '    return max;', '}', '', 'public static int countFrostDays(int[] temps) {', '    int count = 0;', '    for (int i = 0; i < temps.length; i++) {', '        if (temps[i] <= 0) {', '            count++;', '        }', '    }', '    return count;', '}'],
+        erklaerung: '<p><strong>Fehler 1:</strong> Startet <code>max</code> bei 0, ist kein Minusgrad je größer. Das Ergebnis bleibt 0. Mit dem ersten Wert als Start stimmt es für jedes Array, das mindestens einen Wert enthält. <strong>Fehler 2:</strong> Mit <code>&lt;=</code> läuft die Schleife bis <code>i = 4</code>. Das Fach 4 gibt es nicht. Abgebrochen hat Java in Zeile 35, die Ursache stand in Zeile 34.</p>' },
+      { titel: 'Aufgabe 3: Die Wetterwarnung', datei: 'WeatherAlert.java', befehl: './gradlew test --tests "*k12.WeatherAlertTest"',
+        text: '<p><code>forWind</code> soll aus der Windgeschwindigkeit eine Warnstufe machen: über 90 km/h <code>STORM</code>, über 50 km/h <code>WIND</code>, sonst <code>NONE</code>. <code>advice</code> soll zu jeder Warnstufe einen Rat liefern. In der Datei stecken <strong>zwei Denkfehler</strong>, einer in jeder Methode. Am Anfang sind zwei von fünf Tests rot.</p>',
+        tipps: ['„120 km/h: Warnung STORM“ liefert <code>WIND</code>. Geh die Kette aus <code>if</code> und <code>else if</code> mit 120 durch: Welche Bedingung prüft Java zuerst, und ist sie schon wahr (Kapitel 7)?', '„Rat bei WIND“ liefert „Drinnen bleiben“. Geh den <code>switch</code> mit <code>WIND</code> durch: Wo hört der Fall <code>WIND</code> auf? Was fehlt im Vergleich zu den anderen Fällen (Kapitel 8)?'],
+        loesung: ['public static Warning forWind(int windSpeed) {', '    if (windSpeed > 90) {', '        return Warning.STORM;', '    } else if (windSpeed > 50) {', '        return Warning.WIND;', '    } else {', '        return Warning.NONE;', '    }', '}', '', 'public static String advice(Warning warning) {', '    String text = "";', '    switch (warning) {', '        case NONE:', '            text = "Alles ruhig";', '            break;', '        case WIND:', '            text = "Schirm zu Hause lassen";', '            break;', '        case STORM:', '            text = "Drinnen bleiben";', '            break;', '    }', '    return text;', '}'],
+        erklaerung: '<p><strong>Fehler 1:</strong> 120 ist schon größer als 50. Deshalb gibt die erste Bedingung <code>WIND</code> zurück, und Java kommt nie bis zu <code>&gt; 90</code>. Die strengere Bedingung muss zuerst stehen. <strong>Fehler 2:</strong> Ohne <code>break</code> läuft Java nach <code>case WIND</code> in <code>case STORM</code> weiter und überschreibt den Text.</p>' }
+    ]
+  });
+})();
+</script>
+</body>
+</html>

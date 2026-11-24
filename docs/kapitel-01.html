@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 1: Dein erstes Programm – Java-Crashkurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kurs.css">
+<style>
+/* Nur in diesem Kapitel: Läufe ohne Variablen zeigen nur die Ausgabe. */
+.k01-ohne-speicher .unten { grid-template-columns: minmax(0, 1fr); }
+.k01-ohne-speicher .unten > div:first-child { display: none; }
+.k01-ziel { margin: 0 0 14px; }
+.k01-pfad { font-family: var(--k-mono); font-size: 15px; background: var(--k-code); border-radius: var(--k-radius); padding: 10px 14px; margin: 0 0 14px; overflow-x: auto; white-space: nowrap; }
+</style>
+</head>
+<body>
+<main class="kurs">
+
+  <p class="vorwissen">Du brauchst kein Vorwissen, nur das Übungsprojekt in VS Code. Wie du es dir holst, steht auf der <a href="index.html#projekt">Startseite</a>.</p>
+
+  <p>Stell dir den Aushang am Eingang der Mensa vor. Jeden Morgen schreibt ihn jemand neu, nach einer festen Liste:</p>
+  <ol class="schritte">
+    <li>Schreib „Heute in der Mensa“.</li>
+    <li>Schreib „Linsensuppe mit Brot“.</li>
+    <li>Schreib „Kasse bis 14 Uhr“.</li>
+  </ol>
+  <p>Die Person arbeitet die Liste von oben nach unten ab, einen Punkt nach dem anderen. Sie fragt nicht nach, ob das sinnvoll ist. Sie macht genau, was dasteht.</p>
+  <p>Ein <strong>Programm</strong> ist genau so eine Liste, nur für den Computer. Jeder Punkt der Liste heißt <strong>Anweisung</strong>: ein Befehl an den Computer. Der Computer führt die Anweisungen von oben nach unten aus.</p>
+
+  <h2>Eine Anweisung: Text ausgeben</h2>
+  <p>Deine erste Anweisung schreibt eine Zeile Text auf den Bildschirm. Das ist die <strong>Ausgabe</strong>: der Text, den das Programm anzeigt. So sieht die Anweisung aus:</p>
+  <div class="code" data-code='System.out.println("Heute in der Mensa");'></div>
+  <p>Sie besteht aus vier Teilen:</p>
+  <div class="aufbau">
+    <div class="teil"><span class="stueck">System.out.println</span><span class="heisst"><b>Der Befehl</b>Heißt „gib eine Zeile aus“. Schreib ihn genau so, mit großem S. Das l in <code>println</code> ist ein kleines L.</span></div>
+    <div class="teil"><span class="stueck">( )</span><span class="heisst"><b>Runde Klammern</b>Darin steht, was Java ausgibt.</span></div>
+    <div class="teil"><span class="stueck">"Heute in der Mensa"</span><span class="heisst"><b>Der Text</b>Steht in Anführungszeichen. Java gibt ihn genau so aus, aber ohne die Anführungszeichen.</span></div>
+    <div class="teil"><span class="stueck">;</span><span class="heisst"><b>Das Semikolon</b>Jede Anweisung endet mit einem Semikolon. Es ist der Punkt am Ende des Satzes.</span></div>
+  </div>
+  <p>Die Anführungszeichen sind wichtig. Sie zeigen Java, wo der Text anfängt und wo er aufhört. Alles dazwischen gibt Java Buchstabe für Buchstabe aus, auch Leerzeichen und Satzzeichen.</p>
+
+  <h2>Mehrere Anweisungen: von oben nach unten</h2>
+  <p>Jetzt stehen drei Anweisungen untereinander. Klick auf „Nächster Schritt“. Die gelbe Zeile ist die Zeile, die Java gerade ausführt. Unten bei „Ausgabe“ siehst du, was auf dem Bildschirm erscheint.</p>
+  <p>Wähl danach „Fassung 2“ und klick dich noch einmal durch. Dort sind zwei Zeilen vertauscht.</p>
+
+  <div id="lauf1" class="k01-ohne-speicher"></div>
+
+  <p>Jedes <code>println</code> beginnt eine neue Zeile in der Ausgabe. Die Reihenfolge der Ausgabe ist immer die Reihenfolge der Anweisungen. Java prüft nicht, ob das sinnvoll ist.</p>
+
+  <h2>Wo die Anweisungen stehen: der Aufbau einer Datei</h2>
+  <p>Anweisungen stehen nicht lose in einer Datei. Sie brauchen eine feste Hülle. Jede Datei mit einem Programm hat diesen Aufbau:</p>
+  <div class="code" data-code='package «tuerkis:de.phl.crashkurs.k01»;
+
+public class «pink:MensaBoard» «blau:{»
+    public static void main(String[] args) «blau:{»
+        System.out.println("Heute in der Mensa");
+        System.out.println("Linsensuppe mit Brot");
+    «blau:}»
+«blau:}»'></div>
+  <p>Das sind die Teile, von oben nach unten:</p>
+  <div class="aufbau">
+    <div class="teil" data-farbe="tuerkis"><span class="stueck">de.phl.crashkurs.k01</span><span class="heisst"><b>Der Ordner</b>Die Zeile mit <code>package</code> sagt, in welchem Ordner die Datei liegt. Ein Paket ist ein Ordner für Java-Dateien.</span></div>
+    <div class="teil" data-farbe="pink"><span class="stueck">MensaBoard</span><span class="heisst"><b>Der Name der Klasse</b>Genauso wie die Datei <code>MensaBoard.java</code>, nur ohne Endung. Er beginnt mit einem Großbuchstaben.</span></div>
+    <div class="teil"><span class="stueck">public static void main(String[] args)</span><span class="heisst"><b>Der Startpunkt</b>Hier beginnt das Programm. Schreib diese Zeile genau so ab.</span></div>
+    <div class="teil" data-farbe="blau"><span class="stueck">{ ... }</span><span class="heisst"><b>Ein Block</b>Alles zwischen <code>{</code> und <code>}</code>. Jede öffnende Klammer braucht eine schließende.</span></div>
+  </div>
+  <p class="vorlesen">Im <span class="t-tuerkis">Ordner de/phl/crashkurs/k01</span> liegt die <span class="t-pink">Klasse MensaBoard</span>. In ihrem <span class="t-blau">Block</span> steht der Startpunkt <code>main</code>, und in dessen <span class="t-blau">Block</span> stehen die Anweisungen.</p>
+
+  <h3>Die Klasse und der Dateiname</h3>
+  <p>Eine <strong>Klasse</strong> ist für den Moment eine Datei mit einem Namen, in der Code steht. Was eine Klasse genau ist, erklärt Kapitel 4. Jetzt zählt nur eine Regel: Der Name hinter <code>public class</code> und der Dateiname sind gleich, Buchstabe für Buchstabe. Auch Groß- und Kleinschreibung muss stimmen. Beim Dateinamen steht nur <code>.java</code> am Ende.</p>
+
+  <h3>Die package-Zeile und der Ordner</h3>
+  <p>In VS Code siehst du links den Explorer, die Liste der Ordner und Dateien. Die Datei aus dem Beispiel liegt an dieser Stelle:</p>
+  <p class="k01-pfad">src/main/java/<span class="t-tuerkis">de/phl/crashkurs/k01</span>/<span class="t-pink">MensaBoard</span>.java</p>
+  <p>Der Teil nach <code>src/main/java/</code> ist das Paket. In der <code>package</code>-Zeile stehen Punkte statt Schrägstrichen: Aus dem Ordner <code>de/phl/crashkurs/k01</code> wird <code>package de.phl.crashkurs.k01;</code>. Auch diese Zeile endet mit einem Semikolon.</p>
+
+  <h3>Der Startpunkt main</h3>
+  <p>Ein Programm startet immer bei <code>main</code>. Die Zeile sieht immer gleich aus:</p>
+  <div class="code" data-code='public static void main(String[] args) {'></div>
+  <p>Lerne sie auswendig, Zeichen für Zeichen: <code>String</code> mit großem S, eckige Klammern <code>[]</code> direkt dahinter, <code>main</code> klein. Was die einzelnen Wörter bedeuten, erfährst du nach und nach: <code>void</code> und die runden Klammern in Kapitel 3, <code>static</code> in Kapitel 6.</p>
+
+  <h3>Blöcke und Einrückung</h3>
+  <p>Ein <strong>Block</strong> ist alles zwischen einer geschweiften Klammer <code>{</code> und der passenden <code>}</code>. Blöcke stecken ineinander wie Kisten: Der Block von <code>main</code> steckt im Block der Klasse. Deshalb stehen am Ende zwei schließende Klammern.</p>
+  <p>Die Leerzeichen am Zeilenanfang heißen Einrückung. Java braucht sie nicht, aber du siehst damit sofort, was in welchem Block steht. VS Code rückt beim Tippen von selbst ein. Ist die Einrückung durcheinander, räumt <kbd>Umschalt</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd> sie auf (am Mac <kbd>Umschalt</kbd> + <kbd>Option</kbd> + <kbd>F</kbd>).</p>
+
+  <h2>Wo Java anfängt</h2>
+  <p>Java startet nicht in der ersten Zeile der Datei. Klick dich durch und achte darauf, wo die gelbe Zeile beginnt.</p>
+
+  <div id="lauf2" class="k01-ohne-speicher"></div>
+
+  <p>Die <code>package</code>-Zeile und die Zeile mit <code>public class</code> sind keine Anweisungen. Sie sagen nur, wo die Datei liegt und wie sie heißt. Die Anweisungen in <code>main</code> laufen von oben nach unten.</p>
+
+  <h2>Das Programm in VS Code starten</h2>
+  <p>Jetzt startest du ein echtes Programm. Öffne dazu das Übungsprojekt in VS Code.</p>
+  <ol class="schritte">
+    <li>Klick links oben auf das Symbol mit den zwei Blättern. Das ist der Explorer.</li>
+    <li>Klapp die Ordner <code>src</code>, <code>main</code>, <code>java</code>, <code>de</code>, <code>phl</code>, <code>crashkurs</code> und <code>k01</code> auf. Oft zeigt VS Code mehrere Ordner in einer Zeile, etwa <code>de/phl/crashkurs</code>. Klick dann auf <code>MensaBoard.java</code>.</li>
+    <li>Über der Zeile mit <code>main</code> stehen klein die Wörter „Run | Debug“. Klick auf „Run“.</li>
+    <li>Unten öffnet sich das Terminal, das Textfenster für Befehle und Ausgaben. Zuerst erscheint dort ein langer Befehl, den VS Code selbst startet. Darunter steht die Ausgabe deines Programms: <code>Heute in der Mensa</code>. Aufgaben nennen diesen Bereich oft die Konsole. „In der Konsole ausgeben“ heißt also: mit <code>System.out.println</code> ausgeben.</li>
+  </ol>
+  <div class="hinweis">
+    <p>Siehst du kein „Run“? Dann richtet VS Code Java noch ein. Das dauert beim ersten Öffnen ein paar Minuten. Warte, bis unten in der Statusleiste nichts mehr lädt.</p>
+    <p>Fragt VS Code nach dem Klick „Build failed, do you want to continue?“, dann ist irgendwo im Projekt etwas rot unterstrichen. Klick nicht auf „Continue“. Schließ die Meldung, such die rote Stelle und behebe sie zuerst.</p>
+  </div>
+  <p>Speichere nach jeder Änderung mit <kbd>Strg</kbd> + <kbd>S</kbd> (am Mac <kbd>Cmd</kbd> + <kbd>S</kbd>). Ein Punkt im Reiter der Datei, oben neben ihrem Namen, heißt: noch nicht gespeichert.</p>
+
+  <h2>Eine neue Klasse anlegen</h2>
+  <p>In der Präsenzübung legst du eine Klasse selbst an, im richtigen Ordner. So geht es:</p>
+  <ol class="schritte">
+    <li>Klick im Explorer mit der rechten Maustaste auf den Ordner, in den die Klasse soll, zum Beispiel <code>k01</code>.</li>
+    <li>Wähl im Menü „New Java File“ und dann „Class...“.</li>
+    <li>Oben erscheint ein Eingabefeld mit dem Hinweis „Input the class name“. Tippe den Namen der Klasse, zum Beispiel <code>Welcome</code>. Ohne <code>.java</code>, mit großem Anfangsbuchstaben. Drück <kbd>Enter</kbd>.</li>
+    <li>VS Code legt die Datei <code>Welcome.java</code> an und schreibt bereits diese Zeilen hinein:</li>
+  </ol>
+  <div class="code" data-code='package «tuerkis:de.phl.crashkurs.k01»;
+
+public class «pink:Welcome» «blau:{»
+
+«blau:}»'></div>
+  <ol class="schritte" start="5">
+    <li>Prüfe die <code>package</code>-Zeile. Sie muss zum Ordner passen. Steht dort etwas anderes oder fehlt sie, hast du auf den falschen Ordner geklickt. Lösch die Datei dann (Rechtsklick, „Delete“) und leg sie im richtigen Ordner neu an.</li>
+    <li>Schreib zwischen die Klammern der Klasse die Zeile mit <code>main</code>, ihren Block und darin deine Anweisungen.</li>
+  </ol>
+  <p>Zwei Abkürzungen helfen beim Tippen. Tippst du in der Klasse <code>main</code>, schlägt VS Code <code>public static void main</code> vor. Wählst du den Vorschlag aus, schreibt VS Code die ganze Zeile für dich. Tippst du <code>sysout</code>, macht VS Code daraus <code>System.out.println();</code>. Verlass dich nicht nur darauf: Du solltest die main-Zeile auch ohne Hilfe schreiben können.</p>
+
+  <h2>Den ersten Test starten</h2>
+  <p>Zu jeder Aufgabe im Projekt gibt es einen <strong>Test</strong>: ein Prüfprogramm, das deinen Code startet und das Ergebnis mit der Vorgabe vergleicht. Die Tests liegen in einem eigenen Ordner, <code>src/test/java/de/phl/crashkurs/k01</code>. Diese Dateien änderst du nicht.</p>
+  <ol class="schritte">
+    <li>Öffne die Testdatei, zum Beispiel <code>MensaBoardTest.java</code>.</li>
+    <li>Links neben der Zeile mit <code>class MensaBoardTest</code> steht ein kleiner grüner Pfeil. Klick darauf.</li>
+    <li>Nach ein paar Sekunden steht neben dem Pfeil ein grüner Haken oder ein rotes Kreuz. Bei einem roten Test öffnet VS Code einen Kasten mit der Meldung. Sie sagt dir auf Deutsch, was noch nicht stimmt.</li>
+  </ol>
+  <p>Alle Tests findest du auch in der Testing-Ansicht: Klick links auf das Symbol mit dem Reagenzglas. Oder du tippst den Befehl aus der Aufgabe ins Terminal (unter Windows <code>.\gradlew.bat</code> statt <code>./gradlew</code>).</p>
+  <p>Zwei Dinge musst du dabei wissen. Erstens prüft der Test die gespeicherte Datei. Speichere deshalb vorher. Zweitens: Solange irgendwo im Projekt etwas rot unterstrichen ist, läuft im Terminal kein einziger Test, und auf grüne Tests in VS Code ist dann kein Verlass. Dann behebst du zuerst die rote Stelle. Kapitel 12 kommt darauf zurück.</p>
+
+  <div class="merke">
+    <h3>Sechs Regeln zum Merken</h3>
+    <ol>
+      <li>Ein Programm ist eine Liste von Anweisungen. Java führt sie von oben nach unten aus.</li>
+      <li>Jede Anweisung endet mit einem Semikolon <code>;</code>.</li>
+      <li><code>System.out.println("Text");</code> gibt eine Zeile aus. Der Text steht in Anführungszeichen.</li>
+      <li>Klassenname gleich Dateiname: <code>public class Welcome</code> steht in <code>Welcome.java</code>. Großer Anfangsbuchstabe.</li>
+      <li>Die <code>package</code>-Zeile nennt den Ordner, mit Punkten: Aus <code>de/phl/crashkurs/k01</code> wird <code>package de.phl.crashkurs.k01;</code>. Neue Klassen legst du mit Rechtsklick auf den richtigen Ordner an.</li>
+      <li>Das Programm startet bei <code>public static void main(String[] args) {</code>. Jede <code>{</code> braucht eine <code>}</code>.</li>
+    </ol>
+  </div>
+
+  <h2>Fünf häufige Fehler verstehen und beheben</h2>
+  <p>Wenn VS Code etwas rot unterstreicht, ist nichts kaputt. Java versteht eine Stelle im Code noch nicht und zeigt sie dir. Fahr mit der Maus über die rote Stelle, dann erscheint die Meldung. Die Meldungen sind englisch. Hier steht, was sie heißen.</p>
+  <div id="fehler"></div>
+
+  <h2>Kurz geprüft: Was macht dieser Code?</h2>
+  <p>Hier warten sechs kurze Aufgaben. Geh den Code im Kopf Zeile für Zeile durch, bevor du auf eine Antwort klickst.</p>
+  <div id="fragen"></div>
+
+  <h2>Jetzt schreibst du selbst: drei Aufgaben im Projekt</h2>
+  <p>Die Aufgaben liegen im Ordner <code>src/main/java/de/phl/crashkurs/k01</code>. Geh bei jeder Aufgabe so vor:</p>
+  <ol class="schritte">
+    <li>Öffne die Datei und lies, was beim <code>TODO</code> steht. <code>TODO</code> steht in einem Kommentar: Zeilen, die mit <code>//</code> beginnen, ignoriert Java. Sie sind nur für Menschen.</li>
+    <li>Schreib deine Anweisungen und speichere.</li>
+    <li>Starte das Programm mit „Run“ und vergleiche die Ausgabe mit der Aufgabe.</li>
+    <li>Starte den Test. Ist er rot, lies die Meldung.</li>
+  </ol>
+  <p>Am Anfang sind fast alle Tests rot. Das ist normal, denn die Aufgaben sind noch nicht gelöst. Einzelne Tests können schon grün sein, bevor du etwas geschrieben hast.</p>
+  <div id="aufgaben"></div>
+
+</main>
+
+<script src="kurs.js"></script>
+<script>
+(function () {
+  function rein(zeilen) { return zeilen.map(function (z) { return z.replace(/«[a-z]+:([^»]*)»/g, '$1'); }).join('\n') + '\n'; }
+
+  var BOARD = ['package «tuerkis:de.phl.crashkurs.k01»;', '', 'public class «pink:MensaBoard» «blau:{»', '    public static void main(String[] args) «blau:{»',
+    '        System.out.println("Heute in der Mensa");', '        System.out.println("Linsensuppe mit Brot");', '    «blau:}»', '«blau:}»'];
+
+  Kurs.start({
+    nr: 1,
+    legende: { tuerkis: 'Ordner (package)', pink: 'Name der Klasse (= Dateiname)', blau: 'Block' },
+
+    laeufe: {
+      lauf1: {
+        eingabe: { art: 'wahl', label: 'Code', werte: [{ text: 'Fassung 1', wert: '1' }, { text: 'Fassung 2', wert: '2' }] },
+        code: function (v) {
+          var z = ['System.out.println("Heute in der Mensa");', 'System.out.println("Linsensuppe mit Brot");', 'System.out.println("Kasse bis 14 Uhr");'];
+          return v === '1' ? z : [z[0], z[2], z[1]];
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf(), zwei = v === '1' ? 'Linsensuppe mit Brot' : 'Kasse bis 14 Uhr', drei = v === '1' ? 'Kasse bis 14 Uhr' : 'Linsensuppe mit Brot';
+          a.aus('Heute in der Mensa').schritt(1, 'Java führt die erste Anweisung aus. Bei „Ausgabe“ erscheint ihr Text, ohne die Anführungszeichen.');
+          a.aus(zwei).schritt(2, 'Die zweite Anweisung läuft. Ihr Text erscheint in einer neuen Zeile darunter.' +
+            (v === '2' ? ' In Fassung 2 steht hier die Zeile mit der Kasse, deshalb erscheint sie jetzt.' : ''));
+          a.aus(drei).schritt(3, v === '1'
+            ? 'Die dritte Anweisung. Danach gibt es keine Anweisung mehr. Das Programm ist fertig.'
+            : 'Die Suppe kommt erst zum Schluss. Java hat genau die Reihenfolge im Code befolgt, auch wenn der Aushang so seltsam aussieht.');
+          return a.schritte;
+        }
+      },
+      lauf2: {
+        dateien: [{ name: 'MensaBoard.java', code: BOARD }],
+        schritte: function () {
+          var a = Kurs.ablauf().datei('MensaBoard.java');
+          a.schritt(4, 'Java sucht in der Klasse den Startpunkt <code>main</code> und beginnt dort. Die Zeilen 1 und 3 sind blass: Sie sind keine Anweisungen, Java führt sie nicht aus.', { skip: [1, 3] });
+          a.aus('Heute in der Mensa').schritt(5, 'Die erste Anweisung im Block von <code>main</code>. Ab hier geht es von oben nach unten.', { skip: [1, 3] });
+          a.aus('Linsensuppe mit Brot').schritt(6, 'Java führt die zweite Anweisung aus.', { skip: [1, 3] });
+          a.schritt(7, 'Diese Klammer schließt den Block von <code>main</code>. Es gibt keine Anweisung mehr, das Programm ist fertig. Die Klammer in Zeile 8 schließt den Block der Klasse.', { skip: [1, 3] });
+          return a.schritte;
+        },
+        java: function () { return { dateien: { 'MensaBoard.java': rein(BOARD) }, main: 'de.phl.crashkurs.k01.MensaBoard' }; }
+      }
+    },
+
+    fehler: [
+      { titel: 'Das Semikolon fehlt', code: ['System.out.println("Heute in der Mensa")', 'System.out.println("Linsensuppe mit Brot");'], rot: [1],
+        meldung: 'Syntax error, insert ";" to complete BlockStatements', quelle: 'VS Code',
+        text: '<p>Das heißt: Füg ein Semikolon ein, damit die Anweisung vollständig ist. Mit „BlockStatements“ meint Java die Anweisungen im Block. Im Terminal heißt dieselbe Meldung kürzer <span class="meldung">\';\' expected</span>, also „Semikolon erwartet“.</p><p>Setz das Semikolon ans Ende von Zeile 1, direkt hinter die runde Klammer.</p>' },
+      { titel: 'Ein Anführungszeichen fehlt', code: ['System.out.println("Heute in der Mensa);'], rot: [1],
+        meldung: 'String literal is not properly closed by a double-quote', quelle: 'VS Code',
+        text: '<p>„String literal“ ist Javas Wort für einen Text in Anführungszeichen. Die Meldung heißt: Dem Text fehlt das schließende Anführungszeichen. Java weiß nicht, wo der Text aufhört, und hält auch <code>);</code> noch für Text.</p><p>Jeder Text braucht zwei Anführungszeichen: eins am Anfang, eins am Ende. Hier fehlt das hintere, direkt vor der runden Klammer.</p>' },
+      { titel: 'Der Klassenname passt nicht zum Dateinamen', code: ['// Datei MensaBoard.java', 'public class Welcome {'], rot: [2],
+        meldung: 'The public type Welcome must be defined in its own file', quelle: 'VS Code',
+        text: '<p>Mit „public type“ meint Java hier die Klasse. Die Meldung heißt: Die Klasse <code>Welcome</code> gehört in eine eigene Datei mit dem Namen <code>Welcome.java</code>.</p><p>Mach Name und Datei gleich: Ändere den Klassennamen in <code>MensaBoard</code> oder benenne die Datei um. Auch Groß- und Kleinschreibung zählt: <code>welcome</code> ist nicht <code>Welcome</code>.</p>' },
+      { titel: 'System kleingeschrieben', code: ['system.out.println("Heute in der Mensa");'], rot: [1],
+        meldung: 'system cannot be resolved', quelle: 'VS Code',
+        text: '<p>Das heißt: Java kennt nichts mit dem Namen <code>system</code>. Java unterscheidet streng zwischen Groß- und Kleinbuchstaben. Für Java sind <code>system</code> und <code>System</code> zwei verschiedene Wörter.</p><p>Schreib <code>System</code> mit großem S.</p>' },
+      { titel: 'Die package-Zeile passt nicht zum Ordner', code: ['// Datei src/main/java/de/phl/crashkurs/k01/Welcome.java', 'package de.phl.crashkurs;', '', 'public class Welcome {'], rot: [2],
+        meldung: 'Die Datei Welcome.java gibt es, aber ihre package-Zeile fehlt oder ist falsch. Deshalb liegt die Klasse nicht im Paket de.phl.crashkurs.k01. Die erste Zeile muss lauten: package de.phl.crashkurs.k01;', quelle: 'Test',
+        text: '<p>Die Datei liegt im Ordner <code>k01</code>, aber die <code>package</code>-Zeile nennt einen anderen Ordner. VS Code unterstreicht die <code>package</code>-Zeile rot. Dieser Fehler ist tückisch, denn im Terminal läuft der Test trotzdem (<code>./gradlew test --tests "*k01.WelcomeTest"</code>). Er findet die Klasse dann nicht im Paket <code>de.phl.crashkurs.k01</code> und zeigt die Meldung oben. Dasselbe passiert, wenn die <code>package</code>-Zeile ganz fehlt.</p><p>Schreib die vollständige Zeile <code>package de.phl.crashkurs.k01;</code>. Am sichersten legst du Klassen immer mit Rechtsklick auf den richtigen Ordner an. Dann schreibt VS Code die Zeile selbst.</p>' }
+    ],
+
+    fragen: [
+      { art: 'wahl', frage: 'Was gibt dieses Programm aus?',
+        code: ['System.out.println("Suppe");', 'System.out.println("Salat");'],
+        optionen: [
+          { t: 'zuerst Suppe, dann Salat, jedes in einer eigenen Zeile', ok: true, warum: 'Richtig. Die Anweisungen laufen von oben nach unten, und jedes println beginnt eine neue Zeile. Die Anführungszeichen erscheinen nicht in der Ausgabe.' },
+          { t: 'zuerst "Suppe", dann "Salat", mit Anführungszeichen', warum: 'Die Anführungszeichen zeigen Java nur, wo der Text anfängt und aufhört. In der Ausgabe erscheinen sie nicht.' },
+          { t: 'zuerst Salat, dann Suppe', warum: 'Java führt die Anweisungen von oben nach unten aus. Die Zeile mit „Suppe“ steht oben, also kommt sie zuerst.' },
+          { t: 'Suppe Salat in einer einzigen Zeile', warum: 'println heißt „print line“, also „gib eine Zeile aus“. Jedes println beginnt eine eigene Zeile.' }
+        ] },
+      { art: 'zeile', frage: 'In diesem Code steckt ein Fehler, den VS Code rot unterstreicht. Klick auf die fehlerhafte Zeile.',
+        code: ['public class MensaBoard {', '    public static void main(String[] args) {', '        System.out.println("Heute in der Mensa");', '        System.out.println("Kasse bis 14 Uhr")', '    }', '}'],
+        ok: 4,
+        richtig: 'Richtig. Am Ende von Zeile 4 fehlt das Semikolon. VS Code meldet: „Syntax error, insert ";" to complete BlockStatements“.',
+        falsch: 'Diese Zeile ist in Ordnung. Prüf bei jeder Anweisung das Ende: Womit muss eine Anweisung aufhören?' },
+      { art: 'wahl', frage: 'Welche Zeile ist ein richtiger Startpunkt für ein Programm?', mono: true,
+        optionen: [
+          { t: 'public static void main(String[] args) {', ok: true, warum: 'Richtig. Genau so, Zeichen für Zeichen.' },
+          { t: 'public static void main(string[] args) {', warum: 'string ist kleingeschrieben. Java unterscheidet Groß- und Kleinbuchstaben. Es muss String mit großem S heißen, sonst unterstreicht VS Code das Wort rot.' },
+          { t: 'public static void Main(String[] args) {', warum: 'Main ist großgeschrieben. Der Startpunkt heißt main, klein. Mit großem M erkennt Java die Zeile nicht als Startpunkt.' },
+          { t: 'public static void main(String args) {', warum: 'Hinter String fehlen die eckigen Klammern []. Ohne sie erkennt Java die Zeile nicht als Startpunkt.' }
+        ] },
+      { art: 'reihenfolge', frage: 'Bring die Zeilen der Datei Welcome.java in die richtige Reihenfolge. Benutze die Pfeile.',
+        zeilen: ['package de.phl.crashkurs.k01;', 'public class Welcome {', '    public static void main(String[] args) {', '        System.out.println("Willkommen");', '    }', '}'],
+        richtig: 'Richtig. Oben das Paket, dann die Klasse, darin main, darin die Anweisung. Danach schließt du die Blöcke von innen nach außen.',
+        falsch: 'Die rot markierten Zeilen stehen noch am falschen Platz. Denk an die Kisten: Die package-Zeile steht ganz oben, außerhalb von allem. Die Klasse ist die äußere Kiste, main die innere. Zuerst schließt du den inneren Block.' },
+      { art: 'zuordnen', frage: 'Welcher Teil hat welche Aufgabe? Wähl zu jedem Teil die passende Bedeutung.',
+        paare: [
+          ['package de.phl.crashkurs.k01;', 'nennt den Ordner, in dem die Datei liegt', 'Die package-Zeile steht ganz oben und nennt das Paket, also den Ordner.'],
+          ['public class Welcome', 'nennt die Klasse, gleich dem Dateinamen', 'Hinter public class steht der Name der Klasse. Die Datei heißt genauso, mit .java dahinter.'],
+          ['public static void main(String[] args)', 'Startpunkt: hier beginnt das Programm', 'Mit main beginnt jedes Programm.'],
+          [';', 'beendet eine Anweisung', 'Das Semikolon steht am Ende jeder Anweisung, wie ein Punkt am Satzende.'],
+          ['{ }', 'Anfang und Ende eines Blocks', 'Geschweifte Klammern umschließen einen Block.']
+        ],
+        richtig: 'Alles richtig zugeordnet.', falsch: 'Noch nicht ganz. Zu den rot markierten Zeilen:' },
+      { art: 'luecke', frage: 'Die Datei liegt im Ordner src/main/java/de/phl/crashkurs/k01 und heißt Notice.java. Was gehört in die beiden Lücken?',
+        code: ['package ___;', '', 'public class ___ {'], ok: [['de.phl.crashkurs.k01'], ['Notice']],
+        proben: ['de/phl/crashkurs/k01', 'src.main.java.de.phl.crashkurs.k01', 'de.phl.crashkurs.k01'],
+        richtig: 'Stimmt. Das Paket ist der Ordner nach src/main/java, mit Punkten statt Schrägstrichen. Die Klasse heißt wie die Datei, ohne .java.',
+        falsch: 'Das passt noch nicht. In der package-Zeile stehen Punkte statt Schrägstrichen, und src/main/java gehört nicht dazu. Der Klassenname ist der Dateiname ohne .java, mit großem Anfangsbuchstaben.' }
+    ],
+
+    aufgaben: [
+      { titel: 'Aufgabe 1: Den Aushang ausgeben', datei: 'MensaBoard.java, im Block von main', befehl: './gradlew test --tests "*k01.MensaBoardTest"',
+        text: '<p>Im Block von <code>main</code> steht schon eine Anweisung. Starte das Programm einmal mit „Run“ und schau dir die Ausgabe an.</p><p>Ergänze dann zwei Anweisungen, sodass das Programm genau diese drei Zeilen ausgibt:</p><div class="konsole k01-ziel">Heute in der Mensa\nEssen 1: Nudeln mit Tomatensauce\nEssen 2: Linsencurry mit Reis</div>',
+        tipps: ['Kopiere die vorhandene Zeile mit <code>System.out.println</code> und füg sie zweimal darunter ein. Ändere dann nur den Text zwischen den Anführungszeichen.', 'Der Test vergleicht jeden Buchstaben. Nach „Essen 1“ kommt ein Doppelpunkt und danach ein Leerzeichen.'],
+        loesung: ['public static void main(String[] args) {', '    System.out.println("Heute in der Mensa");', '    System.out.println("Essen 1: Nudeln mit Tomatensauce");', '    System.out.println("Essen 2: Linsencurry mit Reis");', '}'] },
+      { titel: 'Aufgabe 2: Die richtige Reihenfolge', datei: 'OpeningHours.java, im Block von main', befehl: './gradlew test --tests "*k01.OpeningHoursTest"',
+        text: '<p>Hier stehen vier Anweisungen in der falschen Reihenfolge. Ordne sie so, dass der Aushang so aussieht:</p><div class="konsole k01-ziel">Zeiten der Mensa\nMontag bis Donnerstag: 11 bis 14 Uhr\nFreitag: 11 bis 13 Uhr\nSamstag und Sonntag: geschlossen</div><p>Verschiebe nur die Zeilen. Ändere ihren Text nicht.</p>',
+        tipps: ['Eine Zeile verschiebst du in VS Code so: Klick in die Zeile und drück <kbd>Alt</kbd> + Pfeil nach oben oder unten (am Mac <kbd>Option</kbd> + Pfeil).', 'Die Überschrift „Zeiten der Mensa“ muss die erste Anweisung im Block von <code>main</code> sein. Die Kommentarzeilen mit <code>//</code> darfst du stehen lassen oder löschen.'],
+        loesung: ['public static void main(String[] args) {', '    System.out.println("Zeiten der Mensa");', '    System.out.println("Montag bis Donnerstag: 11 bis 14 Uhr");', '    System.out.println("Freitag: 11 bis 13 Uhr");', '    System.out.println("Samstag und Sonntag: geschlossen");', '}'] },
+      { titel: 'Aufgabe 3: Eine neue Klasse anlegen', datei: 'neue Datei Welcome.java im Ordner k01', befehl: './gradlew test --tests "*k01.WelcomeTest"',
+        text: '<p>Diese Datei gibt es noch nicht. Leg sie selbst an, genau wie in der Präsenzübung:</p><ol><li>Leg im Paket <code>de.phl.crashkurs.k01</code> eine neue Klasse mit dem Namen <code>Welcome</code> an.</li><li>Schreib in die Klasse den Startpunkt <code>main</code>.</li><li>Gib in <code>main</code> genau diese zwei Zeilen aus: <code>Willkommen in der Mensa</code> und darunter <code>Guten Appetit</code>.</li></ol><p>Der Test prüft auch, ob die Datei im richtigen Ordner liegt und die richtige <code>package</code>-Zeile hat. Solange es die Klasse nicht gibt, sind alle drei Tests von <code>WelcomeTest</code> rot.</p>',
+        tipps: ['Rechtsklick im Explorer auf den Ordner <code>k01</code>, dann „New Java File“ und „Class...“. Tippe <code>Welcome</code> und drück <kbd>Enter</kbd>.', 'Zwischen die Klammern der Klasse kommt <code>public static void main(String[] args) {</code>, darunter zwei Anweisungen mit <code>System.out.println</code>, dann die schließende Klammer von <code>main</code>. Am Ende stehen zwei schließende Klammern untereinander.'],
+        loesung: [{ datei: 'Welcome.java', code: ['package de.phl.crashkurs.k01;', '', 'public class Welcome {', '', '    public static void main(String[] args) {', '        System.out.println("Willkommen in der Mensa");', '        System.out.println("Guten Appetit");', '    }', '}'] }] }
+    ]
+  });
+})();
+</script>
+</body>
+</html>

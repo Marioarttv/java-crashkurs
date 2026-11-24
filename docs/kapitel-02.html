@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 2: Variablen und Rechnen – Java-Crashkurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kurs.css">
+<style>
+/* Nur in diesem Kapitel: Zielausgabe in den Aufgaben mit Abstand darunter. */
+.k02-ziel { margin: 0 0 14px; }
+</style>
+</head>
+<body>
+<main class="kurs">
+
+  <p class="vorwissen">Das solltest du schon kennen: Anweisungen, <code>System.out.println</code> und den Aufbau einer Datei mit <code>package</code>, Klasse und <code>main</code> aus Kapitel 1.</p>
+
+  <p>Stell dir vor, du planst eine Klassenfahrt. Du notierst dir ein paar Zahlen auf einem Zettel: Es fahren 24 Personen mit. Jede Person zahlt 85 Euro. Neben jeder Zahl steht, was sie bedeutet. Meldet sich jemand nach, streichst du die 24 durch und schreibst 25 hin.</p>
+  <p>Ein Programm muss sich auch Werte merken. Dafür gibt es <strong>Variablen</strong>: Eine Variable ist ein benannter Speicherplatz für einen Wert. Stell sie dir als Schachtel mit Etikett vor. Auf dem Etikett steht der Name, in der Schachtel liegt der Wert.</p>
+
+  <h2>Eine Variable anlegen</h2>
+  <p>So legst du in Java eine Variable an und speicherst gleich einen Wert darin:</p>
+  <div class="code" data-code='«typ:int» «pink:students» = «tuerkis:24»;'></div>
+  <div class="aufbau">
+    <div class="teil" data-farbe="typ"><span class="stueck">int</span><span class="heisst"><b>Der Typ</b>Welche Art von Wert hineinpasst. <code>int</code> heißt: eine ganze Zahl.</span></div>
+    <div class="teil" data-farbe="pink"><span class="stueck">students</span><span class="heisst"><b>Der Name</b>So heißt die Variable. Mit diesem Namen holst du den Wert später wieder heraus.</span></div>
+    <div class="teil"><span class="stueck">=</span><span class="heisst"><b>Speichere</b>Der Wert rechts kommt in die Variable links.</span></div>
+    <div class="teil" data-farbe="tuerkis"><span class="stueck">24</span><span class="heisst"><b>Der Wert</b>Das, was du in der Variable speicherst.</span></div>
+  </div>
+  <p class="vorlesen">Leg eine Variable für eine <span class="t-typ">ganze Zahl (int)</span> mit dem <span class="t-pink">Namen students</span> an und speichere darin den <span class="t-tuerkis">Wert 24</span>.</p>
+  <p>Wie jede Anweisung endet auch diese mit einem Semikolon. Einen Wert mit <code>=</code> in einer Variable speichern heißt <strong>Zuweisung</strong>. Lies <code>=</code> immer als „speichere“, nie als „ist gleich“.</p>
+
+  <h3>Vier Typen, die du brauchst</h3>
+  <p>Der <strong>Typ</strong> legt fest, welche Art von Wert in die Variable passt. Für den Anfang reichen vier:</p>
+  <div class="tabelle-rahmen"><table class="tabelle">
+    <tr><th>Typ</th><th>für</th><th>Beispiel</th></tr>
+    <tr><td><code>int</code></td><td>ganze Zahlen, auch negative</td><td><code>int students = 24;</code></td></tr>
+    <tr><td><code>double</code></td><td>Kommazahlen, aber mit Punkt statt Komma</td><td><code>double distance = 312.5;</code></td></tr>
+    <tr><td><code>String</code></td><td>Text, in Anführungszeichen, mit großem S</td><td><code>String city = "Hamburg";</code></td></tr>
+    <tr><td><code>boolean</code></td><td>wahr oder falsch, also <code>true</code> oder <code>false</code></td><td><code>boolean paid = true;</code></td></tr>
+  </table></div>
+  <p>Am häufigsten brauchst du <code>int</code>. <code>boolean</code> wird ab Kapitel 7 wichtig, wenn Programme entscheiden.</p>
+
+  <h3>Wie Namen aussehen</h3>
+  <p>Namen von Variablen beginnen mit einem kleinen Buchstaben und haben keine Leerzeichen. Besteht ein Name aus mehreren Wörtern, beginnt jedes weitere Wort mit einem Großbuchstaben: <code>pricePerPerson</code>. Java unterscheidet Groß- und Kleinschreibung. <code>pricePerPerson</code> und <code>priceperperson</code> sind zwei verschiedene Namen.</p>
+
+  <h2>Eine Variable benutzen und ändern</h2>
+  <p>Willst du den Wert einer Variable ausgeben, schreibst du ihren Namen ohne Anführungszeichen in die Klammern: <code>System.out.println(students);</code> gibt <code>24</code> aus. Mit Anführungszeichen wäre es Text: <code>System.out.println("students");</code> gibt das Wort <code>students</code> aus.</p>
+  <p>Den Wert einer Variable kannst du später ändern. Dann steht <strong>kein Typ</strong> mehr davor, denn die Variable gibt es schon. Im Beispiel meldet sich eine Person nach. Klick dich durch und stell danach andere Werte ein.</p>
+
+  <div id="lauf1"></div>
+
+  <p>Zeile 3 sieht als Gleichung unsinnig aus, denn keine Zahl ist gleich sich selbst plus 1. Als Anweisung ergibt sie Sinn: Java rechnet zuerst die rechte Seite mit dem aktuellen Wert aus. Erst danach speichert es das Ergebnis links. Der alte Wert ist dann weg.</p>
+
+  <div class="hinweis">
+    <p><strong>Kurzformen.</strong> Oft änderst du eine Variable um einen festen Wert. Dafür gibt es Abkürzungen. Sie bedeuten genau dasselbe wie die lange Form:</p>
+    <div class="tabelle-rahmen"><table class="tabelle">
+      <tr><th>kurz</th><th>lang</th><th>heißt</th></tr>
+      <tr><td><code>students += 3;</code></td><td><code>students = students + 3;</code></td><td>3 dazuzählen</td></tr>
+      <tr><td><code>students -= 2;</code></td><td><code>students = students - 2;</code></td><td>2 abziehen</td></tr>
+      <tr><td><code>students++;</code></td><td><code>students = students + 1;</code></td><td>um 1 erhöhen</td></tr>
+    </table></div>
+  </div>
+
+  <h2>Rechnen</h2>
+  <p>Java rechnet mit <code>+</code> (plus), <code>-</code> (minus), <code>*</code> (mal) und <code>/</code> (geteilt). Es gilt Punkt vor Strich: <code>2 + 3 * 4</code> ist 14. Brauchst du eine andere Reihenfolge, setzt du runde Klammern: <code>(2 + 3) * 4</code> ist 20.</p>
+  <p>Statt mit Zahlen rechnest du meistens mit Variablen. Java setzt dann den Wert ein, der gerade in der Variable steht. Das Ergebnis speicherst du in einer neuen Variable:</p>
+  <div class="code" data-code='«typ:int» «pink:totalCost» = «tuerkis:students * pricePerPerson»;'></div>
+  <p class="vorlesen">Rechne <span class="t-tuerkis">students mal pricePerPerson</span> aus und speichere das Ergebnis in einer neuen Variable für eine <span class="t-typ">ganze Zahl</span> mit dem <span class="t-pink">Namen totalCost</span>.</p>
+
+  <h3>Text und Zahl verbinden</h3>
+  <p>Bei der Ausgabe willst du oft einen Text und eine Zahl in einer Zeile. Dafür verbindest du beide mit <code>+</code>. Steht links von <code>+</code> ein Text, rechnet Java nicht, sondern hängt die Zahl hinten an den Text an. Das Leerzeichen nach dem Doppelpunkt musst du selbst in den Text schreiben, sonst kleben Text und Zahl aneinander.</p>
+  <p>Probier im Kasten verschiedene Zahlen von Personen aus.</p>
+
+  <div id="lauf2"></div>
+
+  <p>Vorsicht, wenn danach noch eine Zahl kommt. Java arbeitet die <code>+</code> von links nach rechts ab. Ist links ein Text entstanden, hängt Java jede weitere Zahl nur noch an:</p>
+  <div class="code" data-code='System.out.println("Plätze: " + 20 + 30);     // gibt Plätze: 2030 aus
+System.out.println("Plätze: " + (20 + 30));   // gibt Plätze: 50 aus'></div>
+  <p>Mit runden Klammern rechnet Java zuerst <code>20 + 30</code> aus und hängt erst dann das Ergebnis an. Am sichersten rechnest du vorher in einer eigenen Variable und gibst nur diese aus.</p>
+
+  <h2>Teilen: Ganze Zahlen schneiden ab</h2>
+  <p>Beim Teilen gibt es eine Überraschung. Teilst du zwei ganze Zahlen, ist das Ergebnis wieder eine ganze Zahl. Java schneidet alles nach dem Komma ab. Es rundet nicht. <code>7 / 2</code> ist also 3, nicht 3,5.</p>
+  <p>Für die Fahrt heißt das: In jedes Zimmer passen vier Personen. Wie viele Zimmer werden voll, und wie viele Personen bleiben übrig? Für den Rest hat Java das Zeichen <code>%</code>. <code>26 % 4</code> ist 2, denn 26 geteilt durch 4 ist 6, Rest 2. Probier 24, 26 und 27 Personen aus.</p>
+
+  <div id="lauf3"></div>
+
+  <p>Bei 27 Personen ist 27 geteilt durch 4 genau gerechnet 6,75. Java macht daraus 6. Willst du ein Ergebnis mit Komma, muss eine der Zahlen eine Kommazahl sein: <code>7.0 / 2</code> ist 3.5. Java schreibt Kommazahlen immer mit Punkt.</p>
+
+  <h2>Genau so, wie es in der Aufgabe steht</h2>
+  <p>In der Präsenzübung prüfen Tests deinen Code. Manche lesen sogar deinen Quelltext, also den geschriebenen Code, und suchen nach dem verlangten Namen und Wert. Ein Buchstabe anders, und der Test ist rot. Drei Dinge helfen dir dabei.</p>
+  <p><strong>Die Wörter in der Aufgabe.</strong> Aufgaben sind oft so formuliert: „Deklariere eine lokale Variable vom Typ <code>int</code> mit dem Namen <code>seats</code> und initialisiere sie mit dem Wert 50.“ Das heißt:</p>
+  <ul>
+    <li><strong>deklarieren</strong>: die Variable anlegen, also Typ und Name hinschreiben,</li>
+    <li><strong>initialisieren</strong>: den ersten Wert in ihr speichern,</li>
+    <li><strong>lokal</strong>: Die Variable steht in einem Block, zum Beispiel im Block von <code>main</code>.</li>
+  </ul>
+  <p>Meistens machst du beides in einer Zeile. Aus dem Satz wird also diese eine Zeile:</p>
+  <div class="code" data-code='«typ:int» «pink:seats» = «tuerkis:50»;'></div>
+  <p>Getrennt geht es auch: <code>int seats;</code> deklariert die Variable, und erst später speichert <code>seats = 50;</code> den ersten Wert. Bis dahin hat die Variable keinen Wert, und du darfst sie noch nicht benutzen.</p>
+  <p><strong>Die Namen.</strong> Schreib den Namen genau so ab, wie er in der Aufgabe steht, mit jedem Groß- und Kleinbuchstaben.</p>
+  <p><strong>Die Zahlen.</strong> Im deutschen Text steht oft ein Tausenderpunkt: „1.800 Euro“. In Java schreibst du <code>1800</code>, ohne Punkt. Der Punkt ist in Java das Komma einer Kommazahl. <code>1.800</code> wäre für Java die Zahl 1,8.</p>
+
+  <div class="merke">
+    <h3>Sechs Regeln zum Merken</h3>
+    <ol>
+      <li>Eine Variable anlegen: Typ, Name, <code>=</code>, Wert, Semikolon. Beispiel: <code>int students = 24;</code></li>
+      <li><code>=</code> heißt „speichere“: Java rechnet zuerst rechts aus und speichert das Ergebnis in der Variable links. Der alte Wert ist danach weg.</li>
+      <li>Jede Variable legst du nur einmal mit Typ an. Zum Ändern schreibst du sie ohne Typ: <code>students = students + 1;</code> oder kurz <code>students++;</code></li>
+      <li><code>int</code> ganze Zahl, <code>double</code> Kommazahl mit Punkt, <code>String</code> Text in Anführungszeichen, <code>boolean</code> <code>true</code> oder <code>false</code>.</li>
+      <li>Punkt vor Strich. Teilst du zwei ganze Zahlen, schneidet Java nach dem Komma ab: <code>7 / 2</code> ist 3. <code>%</code> gibt den Rest.</li>
+      <li><code>"Text: " + zahl</code> hängt die Zahl an den Text. Zahlen ohne Tausenderpunkt: <code>1800</code>, nicht <code>1.800</code>. Namen genau wie in der Aufgabe.</li>
+    </ol>
+  </div>
+
+  <h2>Fünf häufige Fehler verstehen und beheben</h2>
+  <p>Bei Variablen passieren am Anfang immer wieder dieselben Fehler. VS Code unterstreicht sie rot. Fahr mit der Maus über die rote Stelle, dann erscheint die Meldung.</p>
+  <div id="fehler"></div>
+
+  <h2>Kurz geprüft: Was steht in der Variable?</h2>
+  <p>Geh den Code im Kopf Zeile für Zeile durch. Schreib dir bei jeder Zeile auf, welcher Wert gerade in welcher Variable steht.</p>
+  <div id="fragen"></div>
+
+  <h2>Jetzt schreibst du selbst: drei Aufgaben im Projekt</h2>
+  <p>Die Aufgaben liegen im Ordner <code>src/main/java/de/phl/crashkurs/k02</code>. Aufgabe 3 ist so aufgebaut wie die erste Aufgabe der Präsenzübung: neue Klasse, Variablen mit vorgegebenen Namen und Werten, eine Rechnung, eine Ausgabe.</p>
+  <p>Die Tests lesen bei diesen Aufgaben auch deinen Quelltext. Sie prüfen, ob die Variablen genau die verlangten Namen und Werte haben und ob du mit den Variablen rechnest, nicht mit fertigen Zahlen. Starte nach jeder Zeile, die du schreibst, das Programm oder den Test.</p>
+  <p>Manchmal unterstreicht VS Code etwas gelb statt rot. Gelb ist ein Hinweis, kein Fehler: Das Programm läuft trotzdem. In <code>RoomPlan.java</code> sind am Anfang <code>students</code> und <code>bedsPerRoom</code> gelb unterstrichen, mit der Meldung <span class="meldung">The value of the local variable students is not used</span>. Das heißt: Du benutzt die Variable noch nirgends. Sobald du mit ihr rechnest, verschwindet der Hinweis.</p>
+  <div id="aufgaben"></div>
+
+</main>
+
+<script src="kurs.js"></script>
+<script>
+(function () {
+  Kurs.start({
+    nr: 2,
+    legende: { typ: 'Typ', pink: 'Name der Variable', tuerkis: 'Wert' },
+
+    laeufe: {
+      lauf1: {
+        eingabe: { art: 'zahl', label: 'Personen', start: 24, proben: [24, 25, 30], min: 1, max: 99 },
+        code: function (v) {
+          return ['«typ:int» «pink:students» = «tuerkis:' + v + '»;', 'System.out.println(students);', 'students = students + 1;', 'System.out.println(students);'];
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf();
+          a.setze('students', v).schritt(1, 'Java legt die Variable <code>students</code> an und speichert darin ' + v + '. Unter dem Code siehst du bei „Im Speicher“, welchen Wert sich das Programm gerade merkt.');
+          a.aus(v).schritt(2, 'In den Klammern steht der Name ohne Anführungszeichen. Java holt den Wert aus der Variable und gibt ' + v + ' aus.');
+          a.setze('students', v + 1).schritt(3, 'Zuerst die rechte Seite: <code>students + 1</code>, also ' + v + ' + 1 = ' + (v + 1) + '. Dann speichert Java das Ergebnis in <code>students</code>. Der alte Wert ' + v + ' ist weg.');
+          a.aus(v + 1).schritt(4, 'Dieselbe Anweisung wie in Zeile 2, aber jetzt steht ' + (v + 1) + ' in der Variable. Also kommt ' + (v + 1) + ' heraus.');
+          return a.schritte;
+        }
+      },
+      lauf2: {
+        eingabe: { art: 'zahl', label: 'Personen', start: 24, proben: [24, 25, 30], min: 1, max: 99 },
+        code: function (v) {
+          return ['int students = ' + v + ';', 'int pricePerPerson = 85;', '«typ:int» «pink:totalCost» = «tuerkis:students * pricePerPerson»;', 'System.out.println("Gesamtkosten: " + totalCost);'];
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf(), t = v * 85;
+          a.setze('students', v).schritt(1, 'Die Variable <code>students</code> bekommt den Wert ' + v + '.');
+          a.setze('pricePerPerson', 85).schritt(2, 'Die Variable <code>pricePerPerson</code> (Preis pro Person) bekommt den Wert 85.');
+          a.setze('totalCost', t).schritt(3, 'Java setzt die Werte der beiden Variablen ein und rechnet ' + v + ' * 85 = ' + t + '. Das Ergebnis speichert es in der neuen Variable <code>totalCost</code>.');
+          a.aus('Gesamtkosten: ' + t).schritt(4, 'Links vom <code>+</code> steht ein Text. Deshalb hängt Java den Wert ' + t + ' an den Text <code>"Gesamtkosten: "</code> an. Das Leerzeichen nach dem Doppelpunkt kommt aus dem Text.');
+          return a.schritte;
+        }
+      },
+      lauf3: {
+        eingabe: { art: 'zahl', label: 'Personen', start: 26, proben: [24, 26, 27], min: 1, max: 99 },
+        code: function (v) {
+          return ['int students = ' + v + ';', 'int bedsPerRoom = 4;', 'int fullRooms = students / bedsPerRoom;', 'int leftOver = students % bedsPerRoom;', 'System.out.println("Volle Zimmer: " + fullRooms);', 'System.out.println("Rest: " + leftOver);'];
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf(), f = Math.floor(v / 4), r = v % 4, genau = String(v / 4).replace('.', ',');
+          a.setze('students', v).schritt(1, 'Die Variable <code>students</code> bekommt den Wert ' + v + '.');
+          a.setze('bedsPerRoom', 4).schritt(2, 'In jedes Zimmer passen 4 Personen.');
+          a.setze('fullRooms', f).schritt(3, r === 0
+            ? v + ' / 4 geht genau auf: ' + f + '. In <code>fullRooms</code> steht ' + f + '.'
+            : 'Genau gerechnet wäre ' + v + ' / 4 = ' + genau + '. Beide Zahlen sind ganze Zahlen, also schneidet Java alles nach dem Komma ab. In <code>fullRooms</code> steht ' + f + '.');
+          a.setze('leftOver', r).schritt(4, r === 0
+            ? '<code>%</code> gibt den Rest beim Teilen. ' + v + ' geteilt durch 4 geht auf, es bleibt nichts übrig. In <code>leftOver</code> steht 0.'
+            : '<code>%</code> gibt den Rest beim Teilen: ' + f + ' mal 4 ist ' + (f * 4) + ', bis ' + v + ' fehlen noch ' + r + '. In <code>leftOver</code> steht ' + r + '.');
+          a.aus('Volle Zimmer: ' + f).schritt(5, 'Ausgabe: Text plus der Wert von <code>fullRooms</code>.');
+          a.aus('Rest: ' + r).schritt(6, 'Ausgabe: Text plus der Wert von <code>leftOver</code>.' + (r === 0 ? ' Bei ' + v + ' Personen bleibt niemand übrig.' : ''));
+          return a.schritte;
+        }
+      }
+    },
+
+    fehler: [
+      { titel: 'Die Variable zweimal angelegt', code: ['int students = 24;', 'int students = 25;'], rot: [2],
+        meldung: 'Duplicate local variable students', quelle: 'VS Code',
+        text: '<p>Das heißt: Es gibt schon eine Variable mit dem Namen <code>students</code>. „Duplicate“ heißt doppelt. Mit dem Typ davor will Java eine zweite Variable mit demselben Namen anlegen, und das geht nicht.</p><p>Willst du den Wert ändern, lass den Typ weg: <code>students = 25;</code></p>' },
+      { titel: 'Die Variable gibt es nicht', code: ['students = 24;'], rot: [1],
+        meldung: 'students cannot be resolved to a variable', quelle: 'VS Code',
+        text: '<p>Das heißt: Java findet keine Variable mit dem Namen <code>students</code>. Entweder hast du sie nie angelegt, oder der Name ist anders geschrieben, zum Beispiel <code>Students</code> oder <code>student</code>.</p><p>Leg die Variable beim ersten Mal mit Typ an (<code>int students = 24;</code>) und prüf die Schreibweise Buchstabe für Buchstabe.</p>' },
+      { titel: 'Text in einer Variable für Zahlen', code: ['int students = "24";'], rot: [1],
+        meldung: 'Type mismatch: cannot convert from String to int', quelle: 'VS Code',
+        text: '<p>Das heißt: Die Typen passen nicht zusammen. Rechts steht in Anführungszeichen ein Text (<code>String</code>), links eine Variable für ganze Zahlen (<code>int</code>). Für Java ist <code>"24"</code> kein Zahlwert, sondern zwei Zeichen.</p><p>Lass die Anführungszeichen weg: <code>int students = 24;</code></p>' },
+      { titel: 'Die Variable hat noch keinen Wert', code: ['int totalCost;', 'System.out.println(totalCost);'], rot: [2],
+        meldung: 'The local variable totalCost may not have been initialized', quelle: 'VS Code',
+        text: '<p>Das heißt: Du hast die Variable angelegt, aber nie initialisiert, also keinen Wert gespeichert. In der Schachtel liegt noch nichts. Deshalb kann Java nichts ausgeben.</p><p>Speichere einen Wert, bevor du die Variable benutzt. Am besten gleich beim Anlegen: <code>int totalCost = students * pricePerPerson;</code></p>' },
+      { titel: 'Eine Zahl mit Tausenderpunkt', code: ['int busPrice = 1.800;'], rot: [1],
+        meldung: 'Type mismatch: cannot convert from double to int', quelle: 'VS Code',
+        text: '<p>Das heißt: Rechts steht eine Kommazahl (<code>double</code>), links eine Variable für ganze Zahlen. Java liest <code>1.800</code> als 1,8, denn der Punkt ist in Java das Komma.</p><p>Schreib Zahlen ohne Tausenderpunkt: <code>int busPrice = 1800;</code> Gefährlich wird es, wenn der Punkt keinen roten Fehler auslöst: <code>System.out.println(1.800);</code> gibt ohne Warnung <code>1.8</code> aus.</p>' }
+    ],
+
+    fragen: [
+      { art: 'wahl', frage: 'Was gibt dieses Programm aus?',
+        code: ['int students = 24;', 'System.out.println("students");', 'System.out.println(students);'],
+        optionen: [
+          { t: 'zuerst students, dann 24', ok: true, warum: 'Richtig. In Anführungszeichen ist students ein Text, den Java genau so ausgibt. Ohne Anführungszeichen ist es der Name der Variable, und Java gibt ihren Wert aus.' },
+          { t: 'zweimal 24', warum: 'Schau auf die Anführungszeichen in Zeile 2. Was in Anführungszeichen steht, ist Text. Java gibt ihn Buchstabe für Buchstabe aus und schaut nicht in die Variable.' },
+          { t: 'zweimal students', warum: 'In Zeile 3 steht students ohne Anführungszeichen. Dann ist es der Name der Variable, und Java gibt ihren Wert 24 aus.' }
+        ] },
+      { art: 'wahl', frage: 'Was gibt dieses Programm aus?',
+        code: ['int seats = 50;', 'seats = seats - 4;', 'seats = seats + 10;', 'System.out.println(seats);'],
+        optionen: [
+          { t: '56', ok: true, warum: 'Richtig. Erst 50 - 4 = 46, dann 46 + 10 = 56. Jede Zuweisung rechnet mit dem Wert, der gerade gespeichert ist.' },
+          { t: '60', warum: 'Zeile 3 rechnet nicht mit der 50 vom Anfang. Nach Zeile 2 steht schon 46 in seats. Also 46 + 10 = 56.' },
+          { t: '46', warum: 'Zeile 3 ändert den Wert noch einmal: 46 + 10 = 56. Erst danach kommt die Ausgabe.' },
+          { t: '50', warum: 'Zeile 2 und 3 ändern den Wert. seats = seats - 4 heißt: rechne 50 - 4 aus und speichere 46 in seats.' }
+        ] },
+      { art: 'wahl', frage: 'Was steht nach diesen zwei Zeilen in groups?',
+        code: ['int students = 27;', 'int groups = students / 4;'],
+        optionen: [
+          { t: '6', ok: true, warum: 'Richtig. 27 / 4 ist genau gerechnet 6,75. Beide Zahlen sind ganze Zahlen, also schneidet Java das Komma ab.' },
+          { t: '6.75', warum: 'In eine int-Variable passt keine Kommazahl. Teilst du zwei ganze Zahlen, ist das Ergebnis wieder eine ganze Zahl: Java schneidet nach dem Komma ab.' },
+          { t: '7', warum: 'Java rundet nicht, es schneidet ab. Aus 6,75 wird 6, nicht 7.' },
+          { t: '3', warum: '3 ist der Rest (27 % 4). Hier steht aber / und nicht %. Gefragt ist das Ergebnis von 27 / 4.' }
+        ] },
+      { art: 'wahl', frage: 'Was gibt diese Zeile aus?',
+        code: ['System.out.println("Plätze: " + 20 + 30);'],
+        optionen: [
+          { t: 'Plätze: 2030', ok: true, warum: 'Richtig. Java arbeitet von links nach rechts. Zuerst hängt es 20 an den Text an, dann 30. Mit (20 + 30) in Klammern käme 50 heraus.' },
+          { t: 'Plätze: 50', warum: 'Java rechnet nicht zuerst 20 + 30. Es arbeitet von links nach rechts: "Plätze: " + 20 ergibt einen Text. An diesen Text hängt Java die 30 nur an.' },
+          { t: 'ein roter Fehler', warum: 'Der Code ist gültig. Java rechnet nur nicht, sondern hängt die Zahlen nacheinander an den Text an.' }
+        ] },
+      { art: 'luecke', frage: 'Welcher Typ fehlt in der Lücke?',
+        code: ['___ city = "Hamburg";'], ok: ['String'], proben: ['string', 'int', 'String'],
+        falschBei: { 'string': 'Fast. Der Typ für Text beginnt mit einem großen S: String.' },
+        richtig: 'Stimmt. In Anführungszeichen steht ein Text, und der Typ für Text heißt String, mit großem S.',
+        falsch: 'Das passt noch nicht. Rechts steht etwas in Anführungszeichen. Welcher Typ ist für Text da?' },
+      { art: 'zuordnen', frage: 'Welche Meldung bedeutet was?',
+        paare: [
+          ['Duplicate local variable students', 'Du hast die Variable zweimal mit Typ angelegt.', '„Duplicate“ heißt doppelt: Eine Variable mit diesem Namen gibt es schon.'],
+          ['students cannot be resolved to a variable', 'Eine Variable mit diesem Namen gibt es nicht.', '„cannot be resolved“ heißt: Java findet den Namen nicht. Er ist falsch geschrieben oder nie angelegt.'],
+          ['Type mismatch: cannot convert from String to int', 'Der Wert passt nicht zum Typ der Variable.', '„Type mismatch“ heißt: Die Typen passen nicht, hier Text in einer Variable für ganze Zahlen.'],
+          ['The local variable totalCost may not have been initialized', 'Die Variable hat noch keinen Wert.', '„not initialized“ heißt: In der Variable steht noch kein Wert.']
+        ],
+        richtig: 'Alles richtig zugeordnet.', falsch: 'Noch nicht ganz. Zu den rot markierten Zeilen:' }
+    ],
+
+    aufgaben: [
+      { titel: 'Aufgabe 1: Was kostet die Fahrt?', datei: 'TripCosts.java, im Block von main', befehl: './gradlew test --tests "*k02.TripCostsTest"',
+        text: '<p>Schreib in den Block von <code>main</code>:</p><ol><li>eine Variable vom Typ <code>int</code> mit dem Namen <code>students</code> und dem Wert 24,</li><li>eine Variable vom Typ <code>int</code> mit dem Namen <code>pricePerPerson</code> und dem Wert 85,</li><li>eine Variable vom Typ <code>int</code> mit dem Namen <code>totalCost</code>, in der du <code>students</code> mal <code>pricePerPerson</code> speicherst,</li><li>eine Ausgabe, die den Text <code>Gesamtkosten: </code> und den Wert von <code>totalCost</code> verbindet.</li></ol><p>Das Programm soll genau diese Zeile ausgeben:</p><div class="konsole k02-ziel">Gesamtkosten: 2040</div>',
+        tipps: ['Jede Variable ist eine eigene Zeile nach dem Muster <code>int name = wert;</code>. Für die dritte steht rechts statt einer Zahl die Rechnung mit den beiden Namen.', 'Die Ausgabe ist <code>System.out.println("Gesamtkosten: " + totalCost);</code> Das Leerzeichen nach dem Doppelpunkt gehört in den Text.'],
+        loesung: ['public static void main(String[] args) {', '    int students = 24;', '    int pricePerPerson = 85;', '    int totalCost = students * pricePerPerson;', '    System.out.println("Gesamtkosten: " + totalCost);', '}'] },
+      { titel: 'Aufgabe 2: Zimmer verteilen', datei: 'RoomPlan.java, im Block von main', befehl: './gradlew test --tests "*k02.RoomPlanTest"',
+        text: '<p>In <code>main</code> stehen schon zwei Variablen: <code>students</code> mit 26 und <code>bedsPerRoom</code> mit 4. Lass diese beiden Zeilen unverändert. Schreib darunter:</p><ol><li>Drei Personen melden sich nach. Erhöhe <code>students</code> um 3. Leg dafür keine neue Variable an.</li><li>eine Variable <code>fullRooms</code> vom Typ <code>int</code> mit <code>students</code> geteilt durch <code>bedsPerRoom</code>,</li><li>eine Variable <code>leftOver</code> vom Typ <code>int</code> mit dem Rest dieser Division,</li><li>drei Ausgaben, sodass genau das hier erscheint:</li></ol><div class="konsole k02-ziel">Personen: 29\nVolle Zimmer: 7\nRest: 1</div>',
+        tipps: ['Erhöhen ohne neue Variable heißt: ohne <code>int</code> davor. <code>students = students + 3;</code> oder kurz <code>students += 3;</code> Diese Zeile muss vor der Rechnung stehen, sonst rechnet Java noch mit 26.', 'Den Rest bekommst du mit <code>%</code>: <code>int leftOver = students % bedsPerRoom;</code> Jede Ausgabe ist Text plus Variable, zum Beispiel <code>System.out.println("Rest: " + leftOver);</code>'],
+        loesung: ['public static void main(String[] args) {', '    int students = 26;', '    int bedsPerRoom = 4;', '    students = students + 3;', '    int fullRooms = students / bedsPerRoom;', '    int leftOver = students % bedsPerRoom;', '    System.out.println("Personen: " + students);', '    System.out.println("Volle Zimmer: " + fullRooms);', '    System.out.println("Rest: " + leftOver);', '}'] },
+      { titel: 'Aufgabe 3: Der Bus (wie in der Präsenzübung)', datei: 'neue Datei TripPlanner.java im Ordner k02', befehl: './gradlew test --tests "*k02.TripPlannerTest"',
+        text: '<p>Für die Fahrt mietet die Klasse einen Bus. Er kostet 1.800 Euro. 24 Personen fahren mit. Wie viel zahlt jede Person für den Bus?</p><ol><li>Leg im Paket <code>de.phl.crashkurs.k02</code> eine neue Klasse mit dem Namen <code>TripPlanner</code> an.</li><li>Deklariere eine <code>public static void main</code>-Methode. (Das ist der Startpunkt aus Kapitel 1. Was eine Methode ist, erklärt Kapitel 3.)</li><li>Deklariere eine lokale Variable vom Typ <code>int</code> mit dem Namen <code>busPrice</code> und initialisiere sie mit dem Wert 1.800.</li><li>Deklariere eine lokale Variable vom Typ <code>int</code> mit dem Namen <code>travelers</code> und initialisiere sie mit dem Wert 24.</li><li>Berechne den Preis pro Person, indem du <code>busPrice</code> durch <code>travelers</code> teilst. Weise das Ergebnis einer Variable vom Typ <code>int</code> mit dem Namen <code>pricePerTraveler</code> zu.</li><li>Gib <code>pricePerTraveler</code> mit <code>System.out.println</code> aus. Die Ausgabe muss <code>Bus pro Person: </code> gefolgt von der Zahl enthalten.</li></ol><p>Der Test hat für jeden Schritt einen eigenen Teil. So siehst du, welche Schritte schon stimmen.</p>',
+        tipps: ['Die Klasse legst du wie in Kapitel 1 an: Rechtsklick auf den Ordner <code>k02</code>, „New Java File“, „Class...“. Prüf danach die <code>package</code>-Zeile.', 'Achte auf den Tausenderpunkt in Schritt 3: In Java schreibst du <code>1800</code>. „Weise das Ergebnis zu“ heißt: speichere es mit <code>=</code> in der Variable.'],
+        loesung: [{ datei: 'TripPlanner.java', code: ['package de.phl.crashkurs.k02;', '', 'public class TripPlanner {', '', '    public static void main(String[] args) {', '        int busPrice = 1800;', '        int travelers = 24;', '        int pricePerTraveler = busPrice / travelers;', '        System.out.println("Bus pro Person: " + pricePerTraveler);', '    }', '}'] }] }
+    ]
+  });
+})();
+</script>
+</body>
+</html>

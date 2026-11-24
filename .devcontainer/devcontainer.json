@@ -1,0 +1,20 @@
+// Dev Container und Codespaces: Java 21 mit den Java-Erweiterungen für VS Code.
+// Die Tests laufen über den Gradle-Wrapper (./gradlew), ein eigenes Gradle ist nicht nötig.
+{
+	"name": "Java-Crashkurs",
+	"image": "mcr.microsoft.com/devcontainers/java:3-21-bookworm",
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vscjava.vscode-java-pack"
+			],
+			"settings": {
+				"java.server.launchMode": "Standard",
+				// Das Projekt gehört nicht dir, deshalb nach einem Commit nicht automatisch synchronisieren.
+				"git.autofetch": false,
+				"java.import.gradle.java.home": "/usr/local/openjdk-21"
+			}
+		}
+	}
+}

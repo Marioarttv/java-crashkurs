@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 8: Auswählen mit switch und enum – Java-Crashkurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kurs.css">
+<style>
+/* Nur in diesem Kapitel: drei Dateien nebeneinander, die lange Datei rechts über zwei Zeilen */
+@media (min-width: 761px) { .k08-drei .dateien > .datei:nth-child(2) { grid-row: span 2; } }
+</style>
+</head>
+<body>
+<main class="kurs">
+
+  <p class="vorwissen">Das solltest du schon kennen: Klassen, Objekte und Attribute aus Kapitel 4, Methoden eines anderen Objekts aufrufen aus Kapitel 5 und die Kette aus <code>if</code>, <code>else if</code> und <code>else</code> aus Kapitel 7.</p>
+
+  <p>Stell dir einen Kaffeeautomaten vor. Er hat genau drei Knöpfe: klein, mittel und groß. Einen vierten Knopf gibt es nicht. Du kannst auch nichts selbst eintippen. Du wählst immer eine der drei Größen, und der Automat weiß für jede Größe, was er tun muss.</p>
+  <p>Dieses Kapitel zeigt zwei Dinge, die genau dazu passen. Ein <strong>Enum</strong> legt fest, welche Werte erlaubt sind. Ein <strong><code>switch</code></strong> wählt je nach Wert den passenden Programmteil aus.</p>
+
+  <h2>Ein Enum: eine feste Liste erlaubter Werte</h2>
+  <p>Ein Enum ist ein Typ mit einer festen Liste erlaubter Werte. Es steht wie eine Klasse in einer eigenen Datei. Statt <code>class</code> steht dort das Wort <code>enum</code>. Die Datei für die drei Bechergrößen heißt <code>Size.java</code>:</p>
+  <div class="code" data-code='public «violett:enum» «pink:Size» {
+    «tuerkis:SMALL, MEDIUM, LARGE»
+}'></div>
+  <p class="vorlesen">Es gibt einen <span class="t-violett">Typ mit fester Liste</span> namens <span class="t-pink">Size</span>. Seine erlaubten Werte sind <span class="t-tuerkis">SMALL, MEDIUM und LARGE</span>.</p>
+  <p>Die Werte schreibst du in Großbuchstaben und trennst sie mit Kommas. Mehr steht in so einer Datei oft nicht.</p>
+  <p>Jetzt kannst du <code>Size</code> als Typ für eine Variable benutzen, genau wie <code>int</code> oder <code>String</code>. Vor den Wert schreibst du immer den Namen des Enums und einen Punkt:</p>
+  <div class="code" data-code='«typ:Size» «pink:size» = «tuerkis:Size.MEDIUM»;'></div>
+  <p class="vorlesen">Leg eine Variable vom <span class="t-typ">Typ Size</span> mit dem <span class="t-pink">Namen size</span> an und speichere darin den <span class="t-tuerkis">Wert MEDIUM aus der Liste Size</span>.</p>
+  <p>Vielleicht hast du so etwas schon abgeschrieben: In Kapitel 7, Aufgabe 3 stand <code>status = CardStatus.EMPTY;</code>. <code>CardStatus</code> ist ein Enum mit den Werten ACTIVE, EMPTY und OVERDRAWN.</p>
+
+  <h3>Warum kein Text?</h3>
+  <p>Du könntest die Größe auch als Text speichern, zum Beispiel <code>String size = "MEDUIM";</code>. Siehst du den Tippfehler? Java sieht ihn nicht. Jeder Text ist erlaubt, also läuft das Programm und rechnet mit einer Größe, die es nicht gibt.</p>
+  <p>Beim Enum passiert das nicht. Schreibst du <code>Size.MEDUIM</code>, unterstreicht VS Code die Stelle sofort rot und meldet <span class="meldung">MEDUIM cannot be resolved or is not a field</span>. Das heißt: In der Liste <code>Size</code> gibt es keinen Wert mit diesem Namen. So fällt der Tippfehler auf, bevor das Programm startet.</p>
+
+  <h3>Werte eines Enums vergleichen</h3>
+  <p>Ob eine Variable einen bestimmten Wert hat, prüfst du mit <code>==</code>, wie bei Zahlen in Kapitel 7:</p>
+  <div class="code" data-code='if (size == Size.LARGE) {
+    System.out.println("großer Becher");
+}'></div>
+  <p>Gibst du eine Enum-Variable mit <code>System.out.println(size);</code> aus, erscheint nur der Name des Werts, also <code>MEDIUM</code>.</p>
+  <p>Im Beispiel unten wählt eine Kette aus <code>if</code> und <code>else if</code> die Füllmenge für jede Größe aus. Wähl oben im Kasten eine Größe und klick dich durch.</p>
+
+  <div id="lauf-if"></div>
+
+  <p>Das funktioniert. Java prüft hier aber jede Bedingung einzeln, bis eine passt. Außerdem steht in jeder Zeile <code>size == Size.…</code>. Für diesen Fall gibt es eine kürzere Schreibweise.</p>
+
+  <h2>Dasselbe mit switch</h2>
+  <p>Mit <code>switch</code> fragst du nur einmal nach dem Wert einer Variable. Danach springt Java direkt zum passenden Fall. Ein <code>switch</code> hat vier Bauteile:</p>
+
+  <div class="aufbau">
+    <div class="teil" data-farbe="violett"><span class="stueck">switch</span><span class="heisst"><b>Das Wort „wähle aus“</b>Damit fängt die Auswahl an.</span></div>
+    <div class="teil" data-farbe="pink"><span class="stueck">(size)</span><span class="heisst"><b>Die Variable</b>Nach ihrem Wert wählt Java aus. Sie steht in runden Klammern.</span></div>
+    <div class="teil" data-farbe="tuerkis"><span class="stueck">case SMALL:</span><span class="heisst"><b>Ein Fall</b>Hinter <code>case</code> steht ein möglicher Wert, danach ein Doppelpunkt. Den Namen des Enums brauchst du hier nicht.</span></div>
+    <div class="teil" data-farbe="violett"><span class="stueck">break;</span><span class="heisst"><b>Das Ende des Falls</b>Damit springt Java aus dem <code>switch</code> heraus.</span></div>
+  </div>
+  <p>Alles zusammen steht in einem Block, also zwischen geschweiften Klammern. Lies den Anfang so:</p>
+  <p class="vorlesen"><span class="t-violett">Schau nach</span>, welchen Wert <span class="t-pink">size</span> hat. <span class="t-violett">Im Fall</span> <span class="t-tuerkis">SMALL</span>: speichere 200 in <code>ml</code> und <span class="t-violett">hör dann auf</span>.</p>
+
+  <div id="lauf-switch"></div>
+
+  <p>Java prüft hier keine Bedingungen nacheinander. Es schaut einmal auf den Wert von <code>size</code> und springt direkt zum passenden <code>case</code>. Die Fälle darüber und darunter laufen nicht.</p>
+  <p>Achte auf Zeile 2: <code>ml</code> bekommt schon vor dem <code>switch</code> einen Startwert. Der passende Fall überschreibt ihn. Nach dem <code>switch</code> benutzt du die Variable weiter. Dieses Muster brauchst du noch öfter.</p>
+
+  <h2>Was passiert ohne break?</h2>
+  <p>Das <code>break</code> am Ende jedes Falls sieht unwichtig aus. Unten steht derselbe Code wie eben, nur ohne <code>break</code>. Wähl nacheinander alle drei Größen und schau, welchen Wert <code>ml</code> am Ende hat.</p>
+
+  <div id="lauf-ohne"></div>
+
+  <p>Ein <code>case</code> ist nur eine Einsprungstelle, keine Bedingung. Java springt beim passenden Fall hinein. Danach läuft es Zeile für Zeile weiter nach unten, bis ein <code>break</code> kommt oder der <code>switch</code> endet. Jeder spätere Fall überschreibt dann den Wert von <code>ml</code>. Darum gehört ans Ende jedes Falls ein <code>break</code>, auch hinter den letzten. Dort ändert es nichts, aber so vergisst du es nie.</p>
+
+  <h2>default: alle anderen Fälle</h2>
+  <p>Manchmal sind nicht alle Fälle verschieden. Nur der große Becher bekommt zwei Portionen Kaffee, alle anderen eine. Dafür gibt es <code>default</code>. Das heißt „in allen anderen Fällen“ und ist wie das <code>else</code> am Ende einer <code>if</code>-Kette.</p>
+  <div class="code" data-code='int shots = 0;
+switch («pink:size») {
+    case «tuerkis:LARGE»:
+        shots = 2;
+        break;
+    default:
+        shots = 1;
+}'></div>
+  <p class="vorlesen"><span class="t-violett">Schau nach</span>, welchen Wert <span class="t-pink">size</span> hat. <span class="t-violett">Im Fall</span> <span class="t-tuerkis">LARGE</span> speichere 2 in <code>shots</code>. <span class="t-violett">In allen anderen Fällen</span> speichere 1.</p>
+  <p><code>default</code> steht meistens am Ende. Dort brauchst du kein <code>break</code> mehr, denn der <code>switch</code> endet direkt danach.</p>
+
+  <h2>Das Muster in einer Methode: auswählen, weitergeben, zurückgeben</h2>
+  <p>In den Aufgaben steht der <code>switch</code> in einer Methode eines Objekts. Er wählt nach einem <strong>Attribut</strong> des Objekts aus, also nach einer Variable, die zum Objekt gehört. Danach reicht die Methode das Ergebnis an ein anderes Objekt weiter und gibt einen Wert zurück.</p>
+  <p>Im Beispiel unten hat jeder Automat das Attribut <code>size</code> für die gewählte Größe. Die Methode <code>serve</code> bekommt eine Tasse (ein Objekt der Klasse <code>Mug</code>) und füllt sie. Die Klasse <code>Mug</code> hat keinen Konstruktor mit Parametern. <code>new Mug()</code> erzeugt deshalb eine Tasse, deren Attribut <code>content</code> (der Inhalt) bei 0 startet (Zeile 2 in <code>Mug.java</code>).</p>
+  <p>Wähl die Größe des Automaten und klick dich durch. Achte darauf, in welcher Datei die gelbe Zeile gerade steht.</p>
+
+  <div id="lauf-methode" class="k08-drei"></div>
+
+  <p>In Zeile 10 von <code>CoffeeMachine.java</code> steht <code>this.size</code>. Das meint das Attribut <code>size</code> dieses Objekts, wie bei <code>this.size = size;</code> im Konstruktor (Kapitel 4). Die Methode <code>serve</code> hat keinen Parameter mit dem Namen <code>size</code>. Deshalb bedeutet <code>switch (size)</code> hier dasselbe. In Vorgaben steht oft die Form mit <code>this.</code>.</p>
+  <p>Schau auch auf Zeile 3 in <code>Main.java</code>: Dem Konstruktor gibst du einen Enum-Wert mit, also <code>Size.LARGE</code>, nicht <code>"LARGE"</code> und nicht <code>LARGE</code> allein.</p>
+  <p>Die Methode <code>serve</code> folgt einem festen Ablauf in vier Schritten:</p>
+  <ol class="schritte">
+    <li>Leg vor dem <code>switch</code> eine Variable mit Startwert an: <code>int ml = 0;</code> Für Text nimmst du einen leeren Text, also zwei Anführungszeichen ohne Zeichen dazwischen: <code>String name = "";</code></li>
+    <li>Setz im <code>switch</code> für jeden Fall den neuen Wert und schließ den Fall mit <code>break;</code> ab.</li>
+    <li>Arbeite nach dem <code>switch</code> mit der Variable weiter. Hier rufst du die Methode des anderen Objekts auf: <code>mug.fill(ml);</code></li>
+    <li>Gib am Ende das Ergebnis mit <code>return</code> zurück.</li>
+  </ol>
+
+  <div class="hinweis">
+    <p><strong>Eine andere Schreibweise.</strong> Manchmal siehst du einen <code>switch</code> mit Pfeilen statt Doppelpunkten:</p>
+    <div class="code" data-legende="nein" data-code='switch (size) {
+    case SMALL -> ml = 200;
+    case MEDIUM -> ml = 300;
+    case LARGE -> ml = 400;
+}'></div>
+    <p>Mit Pfeilen brauchst du kein <code>break</code>. Du darfst beide Schreibweisen aber nicht in einem <code>switch</code> mischen. So kannst du Pfeile lesen, wenn sie dir begegnen. Schreib in diesem Kurs die Fassung mit Doppelpunkt und <code>break</code>.</p>
+  </div>
+
+  <div class="merke">
+    <h3>Sechs Regeln zum Merken</h3>
+    <ol>
+      <li>Ein Enum ist ein Typ mit einer festen Liste erlaubter Werte, zum Beispiel <code>public enum Size { SMALL, MEDIUM, LARGE }</code>.</li>
+      <li>Einen Wert schreibst du mit dem Namen des Enums davor: <code>Size.LARGE</code>. Zwei Werte vergleichst du mit <code>==</code>.</li>
+      <li><code>switch (variable)</code> schaut einmal auf den Wert und springt zum passenden <code>case</code>. Hinter <code>case</code> steht der Wert ohne Enum-Namen: <code>case LARGE:</code></li>
+      <li>Jeder Fall endet mit <code>break;</code>, auch der letzte. Ohne <code>break</code> laufen auch die Fälle darunter.</li>
+      <li><code>default:</code> heißt „in allen anderen Fällen“, wie <code>else</code>.</li>
+      <li>Muster: Leg vor dem <code>switch</code> eine Variable mit Startwert an (<code>0</code> für Zahlen, <code>""</code> für Text). Setz ihren Wert in jedem Fall und benutz ihn nach dem <code>switch</code>.</li>
+    </ol>
+  </div>
+
+  <h2>Fünf häufige Fehler verstehen und beheben</h2>
+  <p>Zwei dieser Fehler unterstreicht VS Code nicht rot. Das Programm läuft, rechnet aber falsch. Diese Fehler findest du nur mit einem Test oder indem du den Code im Kopf durchgehst.</p>
+  <div id="fehler"></div>
+
+  <h2>Kurz geprüft: Code im Kopf durchgehen</h2>
+  <p>Geh den Code im Kopf Zeile für Zeile durch, wie in den Beispielen oben. Klick erst danach auf deine Antwort.</p>
+  <div id="fragen"></div>
+
+  <h2>Jetzt schreibst du selbst: drei Aufgaben im Projekt</h2>
+  <p>Die Aufgaben liegen im Ordner <code>src/main/java/de/phl/crashkurs/k08</code>. Dort liegt auch <code>Size.java</code> mit den drei Größen. Die Klassen im Projekt sind etwas anders gebaut als in den Beispielen oben. Der Becher <code>Cup</code> zum Beispiel bekommt seine Größe im Konstruktor. Lies deshalb zuerst die Dateien im Ordner wie einen Steckbrief (Kapitel 5). Dann geh bei jeder Aufgabe so vor:</p>
+  <ol class="schritte">
+    <li>Lies die Tabelle in der Aufgabe. Jede Zeile wird ein <code>case</code>.</li>
+    <li>Leg vor dem <code>switch</code> die Variable für das Ergebnis an und gib ihr einen Startwert.</li>
+    <li>Schreib den <code>switch</code>: je Fall ein <code>case</code>, eine Zuweisung, ein <code>break</code>.</li>
+    <li>Gib nach dem <code>switch</code> das Ergebnis zurück und starte den Test. Ist er rot, lies die Meldung: Sie nennt den Fall, der noch nicht stimmt.</li>
+  </ol>
+  <p>Den Test startest du wie in Kapitel 7: Öffne die Testdatei und klick auf den grünen Pfeil neben dem Klassennamen. Oder tipp den Befehl aus der Aufgabe ins Terminal (unter Windows <code>.\gradlew.bat</code> statt <code>./gradlew</code>). Die Tests prüfen auch, ob in deiner Methode ein <code>switch</code> steht.</p>
+  <div id="aufgaben"></div>
+
+</main>
+
+<script src="kurs.js"></script>
+<script>
+(function () {
+  var SIZE = 'public enum Size {\n    SMALL, MEDIUM, LARGE\n}\n';
+  var ML = { SMALL: 200, MEDIUM: 300, LARGE: 400 };
+  var WAHL = { art: 'wahl', label: 'Größe', werte: [{ text: 'SMALL', wert: 'SMALL' }, { text: 'MEDIUM', wert: 'MEDIUM' }, { text: 'LARGE', wert: 'LARGE' }] };
+  function k08Rein(z) { return z.replace(/«[a-z]+:([^»]*)»/g, '$1'); }
+  /* Für lauf-java.py: ein Codestück ohne Klasse in main setzen und Size.java dazulegen. */
+  function k08Java(zeilen) {
+    var rumpf = zeilen.map(function (z) { return '        ' + k08Rein(z); }).join('\n');
+    return { dateien: { 'Lauf.java': 'public class Lauf {\n    public static void main(String[] args) {\n' + rumpf + '\n    }\n}\n', 'Size.java': SIZE }, main: 'Lauf' };
+  }
+  function mitWahl(start) { return { art: WAHL.art, label: WAHL.label, werte: WAHL.werte, start: start }; }
+
+  var IF_CODE = function (v) {
+    return ['«typ:Size» «pink:size» = «tuerkis:Size.' + v + '»;', 'int ml = 0;', 'if (size == Size.SMALL) {', '    ml = 200;', '} else if (size == Size.MEDIUM) {', '    ml = 300;', '} else if (size == Size.LARGE) {', '    ml = 400;', '}', 'System.out.println(ml + " ml");'];
+  };
+  var SWITCH_CODE = function (v) {
+    return ['Size size = Size.' + v + ';', 'int ml = 0;', 'switch («pink:size») {', '    case «tuerkis:SMALL»:', '        ml = 200;', '        break;', '    case «tuerkis:MEDIUM»:', '        ml = 300;', '        break;', '    case «tuerkis:LARGE»:', '        ml = 400;', '        break;', '}', 'System.out.println(ml + " ml");'];
+  };
+  var OHNE_CODE = function (v) {
+    return ['Size size = Size.' + v + ';', 'int ml = 0;', 'switch («pink:size») {', '    case «tuerkis:SMALL»:', '        ml = 200;', '    case «tuerkis:MEDIUM»:', '        ml = 300;', '    case «tuerkis:LARGE»:', '        ml = 400;', '}', 'System.out.println(ml + " ml");'];
+  };
+  var MAIN = ['public class Main {', '    public static void main(String[] args) {', '        CoffeeMachine machine = new CoffeeMachine(Size.LARGE);', '        Mug mug = new Mug();', '        String text = machine.serve(mug);', '        System.out.println(text);', '        System.out.println(mug.getContent());', '    }', '}'];
+  var MASCHINE = ['public class CoffeeMachine {', '    private Size size;', '', '    public CoffeeMachine(Size size) {', '        this.size = size;', '    }', '',
+    '    public String serve(Mug mug) {', '        int ml = 0;', '        switch («pink:this.size») {', '            case «tuerkis:SMALL»:', '                ml = 200;', '                break;', '            case «tuerkis:MEDIUM»:', '                ml = 300;', '                break;',
+    '            case «tuerkis:LARGE»:', '                ml = 400;', '                break;', '        }', '        mug.fill(ml);', '        return ml + " ml Kaffee";', '    }', '}'];
+  var MUG = ['public class Mug {', '    private int content = 0;', '', '    public void fill(int ml) {', '        content = content + ml;', '    }', '', '    public int getContent() {', '        return content;', '    }', '}'];
+  function mainFuer(v) { var m = MAIN.slice(); m[2] = '        CoffeeMachine machine = new CoffeeMachine(Size.' + v + ');'; return m; }
+
+  Kurs.start({
+    nr: 8,
+    legende: { violett: 'Schlüsselwort', pink: 'Name', tuerkis: 'Wert', typ: 'Typ' },
+
+    laeufe: {
+      'lauf-if': {
+        eingabe: mitWahl('MEDIUM'),
+        legende: { violett: 'if und else', orange: 'Bedingung', blau: 'Block', pink: 'Name', tuerkis: 'Wert' },
+        code: IF_CODE,
+        java: function (v) { return k08Java(IF_CODE(v)); },
+        schritte: function (v) {
+          var a = Kurs.ablauf(), ml = ML[v], aus = ml + ' ml';
+          a.setze('size', 'Size.' + v).schritt(1, 'Die Variable <code>size</code> vom Typ <code>Size</code> bekommt den Wert <code>Size.' + v + '</code>. Ein anderer Wert als SMALL, MEDIUM oder LARGE wäre hier nicht erlaubt.');
+          a.setze('ml', 0).schritt(2, 'Die Variable <code>ml</code> (die Füllmenge in Millilitern) bekommt einen Startwert: 0.');
+          a.schritt(3, 'Erste Bedingung: ' + Kurs.urteil('size == Size.SMALL', v === 'SMALL') + '.');
+          if (v === 'SMALL') {
+            a.setze('ml', 200).schritt(4, 'Die Bedingung war wahr. <code>ml</code> bekommt den Wert 200. Die anderen Bedingungen prüft Java nicht mehr.', { skip: [5, 6, 7, 8] });
+            a.aus(aus).schritt(10, 'Die Kette ist zu Ende. Java gibt die Füllmenge aus.', { skip: [5, 6, 7, 8] });
+          } else {
+            a.schritt(5, 'Die erste Bedingung war falsch. Java prüft die zweite: ' + Kurs.urteil('size == Size.MEDIUM', v === 'MEDIUM') + '.', { skip: [4] });
+            if (v === 'MEDIUM') {
+              a.setze('ml', 300).schritt(6, 'Die Bedingung war wahr. <code>ml</code> bekommt den Wert 300. Die letzte Bedingung prüft Java nicht mehr.', { skip: [4, 7, 8] });
+              a.aus(aus).schritt(10, 'Die Kette ist zu Ende. Java gibt die Füllmenge aus.', { skip: [4, 7, 8] });
+            } else {
+              a.schritt(7, 'Auch diese Bedingung war falsch. Java prüft die dritte: ' + Kurs.urteil('size == Size.LARGE', true) + '.', { skip: [4, 6] });
+              a.setze('ml', 400).schritt(8, 'Erst die dritte Bedingung war wahr. <code>ml</code> bekommt den Wert 400. Java musste dafür drei Bedingungen prüfen.', { skip: [4, 6] });
+              a.aus(aus).schritt(10, 'Die Kette ist zu Ende. Java gibt die Füllmenge aus.', { skip: [4, 6] });
+            }
+          }
+          return a.schritte;
+        }
+      },
+
+      'lauf-switch': {
+        eingabe: mitWahl('MEDIUM'),
+        legende: { violett: 'switch, case, break', pink: 'Variable für die Auswahl', tuerkis: 'Wert eines Falls', blau: 'Block' },
+        code: SWITCH_CODE,
+        java: function (v) { return k08Java(SWITCH_CODE(v)); },
+        schritte: function (v) {
+          var a = Kurs.ablauf(), ml = ML[v];
+          var caseZ = { SMALL: 4, MEDIUM: 7, LARGE: 10 }[v], alle = [4, 5, 6, 7, 8, 9, 10, 11, 12];
+          var davor = alle.filter(function (z) { return z < caseZ; });
+          var rest = alle.filter(function (z) { return z < caseZ || z > caseZ + 2; });
+          a.setze('size', 'Size.' + v).schritt(1, 'Die Variable <code>size</code> bekommt den Wert <code>Size.' + v + '</code>.');
+          a.setze('ml', 0).schritt(2, 'Die Variable <code>ml</code> bekommt den Startwert 0. Gleich setzt der <code>switch</code> den richtigen Wert.');
+          a.schritt(3, 'Der <code>switch</code> schaut einmal auf den Wert von <code>size</code>. Er ist <code>' + v + '</code>.');
+          a.schritt(caseZ, 'Java springt direkt zu <code>case ' + v + ':</code> in Zeile ' + caseZ + '. ' + (davor.length ? 'Die Fälle darüber überspringt es, ohne sie anzuschauen.' : 'Das ist gleich der erste Fall.'), { skip: davor });
+          a.setze('ml', ml).schritt(caseZ + 1, '<code>ml</code> bekommt den Wert ' + ml + '.', { skip: davor });
+          a.schritt(caseZ + 2, '<code>break</code>: Der Fall ist zu Ende. Java springt aus dem <code>switch</code> heraus, hinter die schließende Klammer in Zeile 13.', { skip: davor });
+          a.aus(ml + ' ml').schritt(14, 'Nach dem <code>switch</code> geht es weiter. Java gibt die Füllmenge aus. Von den Fällen ist nur einer gelaufen.', { skip: rest });
+          return a.schritte;
+        }
+      },
+
+      'lauf-ohne': {
+        eingabe: mitWahl('SMALL'),
+        legende: { violett: 'switch, case, break', pink: 'Variable für die Auswahl', tuerkis: 'Wert eines Falls', blau: 'Block' },
+        code: OHNE_CODE,
+        java: function (v) { return k08Java(OHNE_CODE(v)); },
+        schritte: function (v) {
+          var a = Kurs.ablauf();
+          var caseZ = { SMALL: 4, MEDIUM: 6, LARGE: 8 }[v];
+          var davor = [4, 5, 6, 7, 8, 9].filter(function (z) { return z < caseZ; });
+          a.setze('size', 'Size.' + v).schritt(1, 'Die Variable <code>size</code> bekommt den Wert <code>Size.' + v + '</code>.');
+          a.setze('ml', 0).schritt(2, '<code>ml</code> bekommt den Startwert 0.');
+          a.schritt(3, 'Der <code>switch</code> schaut auf den Wert von <code>size</code>: <code>' + v + '</code>.');
+          a.schritt(caseZ, 'Java springt zu <code>case ' + v + ':</code> in Zeile ' + caseZ + '.', { skip: davor });
+          a.setze('ml', ML[v]).schritt(caseZ + 1, '<code>ml</code> bekommt den Wert ' + ML[v] + '. ' + (v === 'LARGE' ? 'Das ist der letzte Fall.' : 'Jetzt müsste ein <code>break</code> kommen. Es fehlt.'), { skip: davor });
+          if (v === 'SMALL') {
+            a.setze('ml', 300).schritt(7, 'Ohne <code>break</code> läuft Java in die nächste Zeile weiter. <code>case MEDIUM:</code> in Zeile 6 ist keine Bedingung. Java schaut es gar nicht an. Zeile 7 überschreibt die 200 mit 300, obwohl die Größe SMALL ist.', { skip: davor });
+          }
+          if (v !== 'LARGE') {
+            a.setze('ml', 400).schritt(9, 'Wieder kein <code>break</code>. Java läuft weiter in den letzten Fall. Zeile 9 überschreibt <code>ml</code> mit 400.', { skip: davor });
+          }
+          a.aus('400 ml').schritt(11, v === 'LARGE'
+            ? 'Der <code>switch</code> ist zu Ende. Bei LARGE stimmt das Ergebnis zufällig, denn unter dem letzten Fall steht nichts mehr. Probier SMALL und MEDIUM.'
+            : 'Erst die schließende Klammer beendet den <code>switch</code>. Die Ausgabe ist 400 ml statt ' + ML[v] + ' ml. Ohne <code>break</code> kommt hier bei jeder Größe 400 heraus.', { skip: davor });
+          return a.schritte;
+        }
+      },
+
+      'lauf-methode': {
+        eingabe: mitWahl('LARGE'),
+        legende: { violett: 'switch, case, break', pink: 'Variable für die Auswahl', tuerkis: 'Wert eines Falls', blau: 'Block' },
+        nebeneinander: true,
+        dateien: function (v) { return [{ name: 'Main.java', code: mainFuer(v) }, { name: 'CoffeeMachine.java', code: MASCHINE }, { name: 'Mug.java', code: MUG }]; },
+        java: function (v) {
+          var d = { 'Main.java': mainFuer(v).join('\n') + '\n', 'CoffeeMachine.java': MASCHINE.map(k08Rein).join('\n') + '\n', 'Mug.java': MUG.join('\n') + '\n', 'Size.java': SIZE };
+          return { dateien: d, main: 'Main' };
+        },
+        schritte: function (v) {
+          var a = Kurs.ablauf().datei('Main.java'), ml = ML[v];
+          var caseZ = { SMALL: 11, MEDIUM: 14, LARGE: 17 }[v], alle = [11, 12, 13, 14, 15, 16, 17, 18, 19];
+          var davor = alle.filter(function (z) { return z < caseZ; });
+          var rest = alle.filter(function (z) { return z < caseZ || z > caseZ + 2; });
+          a.objekt('1', 'CoffeeMachine', [['size', 'Size.' + v]]).setze('machine', { ref: '1' })
+            .schritt(3, 'Ein neuer Automat entsteht. Der Konstruktor speichert <code>Size.' + v + '</code> im Attribut <code>size</code>, wie in Kapitel 4. Der Ablauf überspringt den Sprung in den Konstruktor.');
+          a.objekt('2', 'Mug', [['content', 0]]).setze('mug', { ref: '2' }).schritt(4, 'Eine leere Tasse entsteht. Ihr Attribut <code>content</code> ist 0.');
+          a.schritt(5, 'Jetzt ruft <code>main</code> die Methode <code>serve</code> des Automaten auf und gibt ihr die Tasse mit.');
+          a.bereich('serve(mug)', 'CoffeeMachine.java').setze('this', { ref: '1' }).setze('mug', { ref: '2' })
+            .schritt(8, 'Java springt in die Methode <code>serve</code>. <code>this</code> ist der Automat ①, der Parameter <code>mug</code> zeigt auf die Tasse ②. Zeile 5 in <code>Main.java</code> wartet.');
+          a.setze('ml', 0).schritt(9, 'Schritt 1 des Musters: <code>ml</code> bekommt vor dem <code>switch</code> den Startwert 0.');
+          a.schritt(10, 'Der <code>switch</code> schaut auf <code>this.size</code>, das Attribut <code>size</code> dieses Automaten. Auf Karte ① steht <code>Size.' + v + '</code>.');
+          a.schritt(caseZ, 'Java springt direkt zu <code>case ' + v + ':</code>.', { skip: davor });
+          a.setze('ml', ml).schritt(caseZ + 1, 'Schritt 2: Im passenden Fall bekommt <code>ml</code> den Wert ' + ml + '.', { skip: davor });
+          a.schritt(caseZ + 2, '<code>break</code> beendet den Fall. Java springt hinter den <code>switch</code>.', { skip: davor });
+          a.schritt(21, 'Schritt 3: Mit dem Ergebnis ruft <code>serve</code> eine Methode der Tasse auf: <code>mug.fill(' + ml + ')</code>.', { skip: rest });
+          a.bereich('fill(ml)', 'Mug.java').setze('this', { ref: '2' }).setze('ml', ml)
+            .schritt(4, 'Java springt in die Methode <code>fill</code> der Tasse ②. Ihr Parameter <code>ml</code> hat den Wert ' + ml + '.');
+          a.attr('2', 'content', ml).schritt(5, 'Der Inhalt der Tasse wird um ' + ml + ' größer: 0 + ' + ml + ' = ' + ml + '.');
+          a.verlasse().schritt(21, '<code>fill</code> ist fertig. Java springt zurück in Zeile 21 von <code>serve</code>.', { skip: rest });
+          a.schritt(22, 'Schritt 4: <code>serve</code> gibt einen Text zurück.', { skip: rest, gibt: '"' + ml + ' ml Kaffee"' });
+          a.verlasse().setze('text', '"' + ml + ' ml Kaffee"').schritt(5, 'Zurück in <code>main</code>. Der Rückgabewert landet in der Variable <code>text</code>.');
+          a.aus(ml + ' ml Kaffee').schritt(6, 'Ausgabe des Texts.');
+          a.aus(String(ml)).schritt(7, '<code>mug.getContent()</code> fragt die Tasse nach ihrem Inhalt: ' + ml + '. Die Methode <code>serve</code> hat also das andere Objekt verändert.');
+          return a.schritte;
+        }
+      }
+    },
+
+    fehler: [
+      { titel: 'break vergessen', code: ['switch (size) {', '    case SMALL:', '        ml = 200;', '    case MEDIUM:', '        ml = 300;', '        break;', '    case LARGE:', '        ml = 400;', '        break;', '}'],
+        rot: [3], quelle: 'Test', meldung: 'Ein kleiner Becher (SMALL) fasst 200 ml. Steht am Ende von case SMALL ein break? ==> expected: <200> but was: <300>',
+        text: '<p>VS Code unterstreicht nichts. Erst der Test aus Aufgabe 2 findet den Fehler. Seine Meldung heißt: Erwartet waren 200, herausgekommen ist 300. Bei SMALL setzt Zeile 3 zwar 200, aber ohne <code>break</code> läuft Java weiter in Zeile 5 und überschreibt den Wert mit 300. Ans Ende jedes Falls gehört ein <code>break;</code>.</p>' },
+      { titel: 'Variable ohne Startwert', code: ['int ml;', 'switch (size) {', '    case SMALL:', '        ml = 200;', '        break;', '    case MEDIUM:', '        ml = 300;', '        break;', '    case LARGE:', '        ml = 400;', '        break;', '}', 'return ml;'], rot: [13],
+        meldung: 'The local variable ml may not have been initialized. Note that a problem regarding missing \'default:\' on \'switch\' has been suppressed, which is perhaps related to this problem',
+        text: '<p>Das heißt: <code>ml</code> hat vielleicht noch keinen Wert, wenn Zeile 13 ihn zurückgeben will. Du siehst, dass alle drei Größen da sind. Java prüft das hier aber nicht so genau und nimmt an, dass auch kein Fall passen könnte. Gib der Variable deshalb gleich beim Anlegen einen Startwert: <code>int ml = 0;</code></p>' },
+      { titel: 'Ein Fall fehlt', code: ['int ml = 0;', 'switch (size) {', '    case SMALL:', '        ml = 200;', '        break;', '    case LARGE:', '        ml = 400;', '        break;', '}'],
+        text: '<p>Hier fehlt der Fall MEDIUM. VS Code unterstreicht <code>size</code> höchstens gelb, als Warnung: <code>The enum constant MEDIUM needs a corresponding case label in this enum switch on Size</code>. Gelb ist kein Fehler. Das Programm läuft. Bei MEDIUM passt aber kein Fall, und <code>ml</code> bleibt 0. Prüf deshalb: Hat jede Zeile der Tabelle aus der Aufgabe ihr eigenes <code>case</code>?</p>' },
+      { titel: 'return in jedem Fall', code: ['public static int millilitres(Size size) {', '    switch (size) {', '        case SMALL:', '            return 200;', '        case MEDIUM:', '            return 300;', '        case LARGE:', '            return 400;', '    }', '}'], rot: [1],
+        meldung: 'This method must return a result of type int. Note that a problem regarding missing \'default:\' on \'switch\' has been suppressed, which is perhaps related to this problem',
+        text: '<p>Ein <code>return</code> in jedem Fall sieht kürzer aus. Java nimmt aber wieder an, dass vielleicht kein Fall passt. Dann käme die Methode unten an, ohne etwas zurückzugeben. VS Code unterstreicht deshalb den Methodenkopf rot. Nimm das Muster: <code>int ml = 0;</code> vor dem <code>switch</code>, in jedem Fall <code>ml</code> setzen und <code>break;</code>, nach dem <code>switch</code> <code>return ml;</code>.</p>' },
+      { titel: 'Ein Enum mit Text vergleichen', code: ['if (size == "LARGE") {'], rot: [1], meldung: 'Incompatible operand types Size and String',
+        text: '<p>Das heißt: Links steht ein Wert vom Typ <code>Size</code>, rechts ein Text (<code>String</code>). Diese beiden Typen kann Java nicht vergleichen. Ein Enum-Wert ist kein Text. Richtig ist <code>if (size == Size.LARGE) {</code>.</p>' }
+    ],
+
+    fragen: [
+      { art: 'wahl', frage: 'Was gibt dieses Programm aus?',
+        code: ['Size size = Size.LARGE;', 'int ml = 0;', 'switch (size) {', '    case SMALL:', '        ml = 200;', '        break;', '    case MEDIUM:', '        ml = 300;', '        break;', '    default:', '        ml = 500;', '}', 'System.out.println(ml);'],
+        optionen: [
+          { t: '0', warum: '<code>ml</code> startet zwar mit 0. Aber bei LARGE passt keiner der beiden Fälle, also läuft <code>default</code> und setzt 500.' },
+          { t: '400', warum: '400 steht nirgends im Code. Für LARGE gibt es hier kein eigenes <code>case</code>. Deshalb läuft der <code>default</code>-Fall: „in allen anderen Fällen“.' },
+          { t: '500', ok: true, warum: 'Richtig. Für LARGE gibt es kein eigenes <code>case</code>. Also läuft <code>default</code> und setzt 500.' }
+        ] },
+      { art: 'wahl', frage: 'Hier fehlen alle break. Was gibt das Programm aus?',
+        code: ['Size size = Size.MEDIUM;', 'switch (size) {', '    case SMALL:', '        System.out.println("klein");', '    case MEDIUM:', '        System.out.println("mittel");', '    case LARGE:', '        System.out.println("groß");', '}'],
+        optionen: [
+          { t: 'mittel', warum: 'Java springt zwar zu <code>case MEDIUM:</code> und gibt „mittel“ aus. Ohne <code>break</code> läuft es danach aber weiter in die Zeilen darunter und gibt auch „groß“ aus.' },
+          { t: 'mittel groß', ok: true, warum: 'Richtig. Java springt zu <code>case MEDIUM:</code>. Ohne <code>break</code> läuft es weiter nach unten bis zum Ende des <code>switch</code>. Der Fall SMALL darüber läuft nicht.' },
+          { t: 'klein mittel groß', warum: 'Java springt direkt zu <code>case MEDIUM:</code>. Was darüber steht, läuft nicht. Ohne <code>break</code> geht es nur nach unten weiter.' }
+        ] },
+      { art: 'zeile', frage: 'Eine dieser Zeilen unterstreicht VS Code rot. Klick auf die fehlerhafte Zeile.',
+        code: ['Size size = "SMALL";', 'int shots = 0;', 'switch (size) {', '    case LARGE:', '        shots = 2;', '        break;', '    default:', '        shots = 1;', '}'],
+        ok: 1,
+        richtig: 'Richtig. <code>"SMALL"</code> ist ein Text, kein Wert aus der Liste <code>Size</code>. VS Code meldet: „Type mismatch: cannot convert from String to Size“. Richtig wäre <code>Size size = Size.SMALL;</code>.',
+        falsch: 'Diese Zeile ist in Ordnung. Schau dir an, welchen Wert die Variable <code>size</code> bekommt. Passt er zum Typ <code>Size</code>?',
+        warum: { 4: 'Diese Zeile ist in Ordnung. Hinter <code>case</code> steht der Wert ohne den Namen des Enums davor. Der Fehler steckt weiter oben.' } },
+      { art: 'luecke', frage: 'Nach dem Fall LARGE soll Java aus dem switch herausspringen. Welches Wort fehlt?',
+        code: ['switch (size) {', '    case LARGE:', '        shots = 2;', '        ___;', '    default:', '        shots = 1;', '}'], ok: ['break'], proben: ['return', 'stop', 'break'],
+        falschBei: { stop: 'Das Wort <code>stop</code> kennt Java nicht. Gesucht ist das Wort, das einen Fall beendet.', 'return': '<code>return</code> beendet die ganze Methode, nicht nur den Fall. Gesucht ist das Wort, das nur den <code>switch</code> verlässt.' },
+        richtig: 'Stimmt. <code>break</code> beendet den Fall. Ohne <code>break</code> würde auch <code>shots = 1;</code> laufen, und aus 2 würde 1.',
+        falsch: 'Das passt noch nicht. Gesucht ist das Wort, mit dem jeder Fall endet.' },
+      { art: 'luecke', frage: 'In main soll ein Automat entstehen, auf dem die Größe SMALL gewählt ist. Was gehört in die Lücke?',
+        code: ['CoffeeMachine machine = new CoffeeMachine(___);'], ok: ['Size.SMALL'], proben: ['"SMALL"', 'SMALL', 'Size.SMALL'],
+        falschBei: { '"SMALL"': 'Das ist ein Text, kein Enum-Wert. VS Code würde den Aufruf rot unterstreichen. Ein Enum-Wert hat keine Anführungszeichen.', 'SMALL': 'Fast. Allein steht <code>SMALL</code> nur hinter <code>case</code>. Sonst schreibst du den Namen des Enums mit Punkt davor.' },
+        richtig: 'Stimmt. Außerhalb eines <code>case</code> schreibst du einen Enum-Wert immer mit dem Namen des Enums davor: <code>Size.SMALL</code>.',
+        falsch: 'Das passt noch nicht. Gesucht ist ein Wert aus der Liste <code>Size</code>, so geschrieben wie in Zeile 3 von <code>Main.java</code> im Beispiel oben.' },
+      { art: 'zuordnen', frage: 'Was bedeutet welches Wort?',
+        paare: [['switch (size)', 'Schau nach, welchen Wert size hat.', '<code>switch</code> leitet die Auswahl ein. In den Klammern steht die Variable, nach deren Wert Java auswählt.'],
+                ['case SMALL:', 'Hier geht es los, wenn der Wert SMALL ist.', 'Hinter <code>case</code> steht ein möglicher Wert. Passt er, springt Java hierhin.'],
+                ['break;', 'Der Fall ist zu Ende, raus aus dem switch.', '<code>break</code> beendet den Fall. Ohne <code>break</code> laufen die Fälle darunter mit.'],
+                ['default:', 'Hier geht es los, wenn kein anderer Fall passt.', '<code>default</code> ist wie <code>else</code>: in allen anderen Fällen.']],
+        richtig: 'Alles richtig zugeordnet.', falsch: 'Noch nicht ganz.' }
+    ],
+
+    aufgaben: [
+      { titel: 'Aufgabe 1: Wie viele Portionen?', datei: 'Espresso.java, Methode shots', befehl: './gradlew test --tests "*k08.EspressoTest"',
+        text: '<p>Die Methode bekommt eine Bechergröße im Parameter <code>size</code> und gibt zurück, wie viele Portionen Espresso in den Becher kommen:</p><table><tr><th>Größe</th><th>Portionen</th></tr><tr><td><code>LARGE</code></td><td>2</td></tr><tr><td>alle anderen</td><td>1</td></tr></table><p>Benutze einen <code>switch</code> mit <code>default</code>. Die Zeile <code>public static int shots(Size size) {</code> bleibt unverändert. Die Zeile <code>return 0;</code> darfst du ersetzen.</p>',
+        tipps: ['Fang mit <code>int shots = 0;</code> an. Dann kommt <code>switch (size) {</code> mit einem <code>case LARGE:</code> und einem <code>default:</code>. Ganz am Ende steht <code>return shots;</code>.', 'Im Fall <code>LARGE</code> speicherst du 2 und schließt mit <code>break;</code> ab. Unter <code>default:</code> speicherst du 1.'],
+        loesung: ['public static int shots(Size size) {', '    int shots = 0;', '    switch (size) {', '        case LARGE:', '            shots = 2;', '            break;', '        default:', '            shots = 1;', '    }', '    return shots;', '}'] },
+      { titel: 'Aufgabe 2: Wie viel passt in den Becher?', datei: 'Cup.java, Methode capacity', befehl: './gradlew test --tests "*k08.CupTest"',
+        text: '<p>Neu in dieser Aufgabe: Der <code>switch</code> wählt nach einem Attribut aus. Jeder Becher hat ein Attribut <code>size</code>, das der Konstruktor füllt. Die Methode <code>capacity</code> gibt zurück, wie viele Milliliter in diesen Becher passen:</p><table><tr><th>Größe</th><th>Milliliter</th></tr><tr><td><code>SMALL</code></td><td>200</td></tr><tr><td><code>MEDIUM</code></td><td>300</td></tr><tr><td><code>LARGE</code></td><td>400</td></tr></table><p>Die Zeile <code>public int capacity() {</code> bleibt unverändert.</p>',
+        tipps: ['Die Methode hat keinen Parameter. Du schreibst <code>switch (this.size)</code> und meinst damit das Attribut des Bechers, wie im Beispiel <code>serve</code> oben. <code>switch (size)</code> geht hier genauso.', 'Drei Größen heißen drei Fälle: <code>case SMALL:</code>, <code>case MEDIUM:</code> und <code>case LARGE:</code>, jeder mit Zuweisung und <code>break;</code>.'],
+        loesung: ['public int capacity() {', '    int ml = 0;', '    switch (this.size) {', '        case SMALL:', '            ml = 200;', '            break;', '        case MEDIUM:', '            ml = 300;', '            break;', '        case LARGE:', '            ml = 400;', '            break;', '    }', '    return ml;', '}'] },
+      { titel: 'Aufgabe 3: Kaffee verkaufen', datei: 'CoffeeMachine.java, Methode sell', befehl: './gradlew test --tests "*k08.CoffeeMachineTest"',
+        text: '<p>Diese Aufgabe ist so aufgebaut wie eine typische Aufgabe in der Präsenzübung. Der Automat hat ein Attribut <code>size</code>: die gewählte Größe. Die Methode <code>sell</code> bekommt eine Kaffeekarte (ein Objekt der Klasse <code>CoffeeCard</code>) und soll</p><ol><li>mit einem <code>switch</code> über das Attribut <code>size</code> den Preis in Cent und den Namen des Getränks festlegen (Tabelle),</li><li>den Preis mit der Methode <code>pay</code> der Karte bezahlen: <code>card.pay(...)</code>,</li><li>den Namen des Getränks zurückgeben.</li></ol><table><tr><th>Größe</th><th>Preis in Cent</th><th>Name</th></tr><tr><td><code>SMALL</code></td><td>150</td><td>kleiner Kaffee</td></tr><tr><td><code>MEDIUM</code></td><td>200</td><td>mittlerer Kaffee</td></tr><tr><td><code>LARGE</code></td><td>250</td><td>großer Kaffee</td></tr></table><p>Die Zeile <code>public String sell(CoffeeCard card) {</code> bleibt unverändert. Ändere <code>CoffeeCard.java</code> nicht.</p>',
+        tipps: ['Du brauchst diesmal zwei Variablen vor dem <code>switch</code>: <code>int price = 0;</code> und <code>String name = "";</code>. In jedem Fall setzt du beide, dann folgt <code>break;</code>.', 'Nach dem <code>switch</code> kommen zwei Zeilen: <code>card.pay(price);</code> und <code>return name;</code>. Die Karte zieht den Preis selbst von ihrem Guthaben ab.'],
+        loesung: ['public String sell(CoffeeCard card) {', '    int price = 0;', '    String name = "";', '    switch (this.size) {', '        case SMALL:', '            price = 150;', '            name = "kleiner Kaffee";', '            break;', '        case MEDIUM:', '            price = 200;', '            name = "mittlerer Kaffee";', '            break;', '        case LARGE:', '            price = 250;', '            name = "großer Kaffee";', '            break;', '    }', '    card.pay(price);', '    return name;', '}'] }
+    ]
+  });
+})();
+</script>
+</body>
+</html>
