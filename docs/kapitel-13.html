@@ -38,9 +38,9 @@
   <p class="vorwissen">Das solltest du schon kennen: alles aus den Kapiteln 1 bis 12. Am wichtigsten sind die Regeln für die Präsenzübung aus Kapitel 12.</p>
 
   <p>Dieses Kapitel ist eine Generalprobe. Du bekommst eine Probe-Präsenzübung zum Thema Musikfestival. Sie ist so aufgebaut, wie eine Präsenzübung aussehen kann: drei Übungen, von einer neuen Klasse bis zu Schleifen und Listen.</p>
-  <p>Die echte Präsenzübung kann anders aussehen und andere Schwerpunkte setzen. In der Probe musst du zum Beispiel keine Exception selbst werfen oder abfangen. In der echten Präsenzübung kann das vorkommen, wiederhole dafür Kapitel 11.</p>
+  <p>Die echte Präsenzübung kann anders aussehen und andere Schwerpunkte setzen. In dieser Probe musst du zum Beispiel keine Exception selbst werfen oder abfangen. In der echten Präsenzübung kann das vorkommen. Wiederhole dafür Kapitel 11.</p>
   <p>Mach die Probe unter echten Bedingungen: allein, 60 Minuten, ohne Suchmaschine, ohne KI und ohne die anderen Kapitel dieser Seite. Deine eigenen Notizen darfst du benutzen. Erst wenn die Zeit um ist, liest du die Auswertung und die Lösung weiter unten.</p>
-  <p>Die Probe hat drei Übungen mit zusammen 110 Punkten. Bestanden hast du ab 66 Punkten, das sind 60 Prozent.</p>
+  <p>Die Probe hat drei Übungen mit zusammen 110 Punkten. Bestanden hast du ab 66 Punkten. Das sind 60 Prozent.</p>
 
   <h2>Vorher: kurze Checkliste</h2>
   <p>Geh die Liste durch, bevor du die Uhr startest. Dann verlierst du in den 60 Minuten keine Zeit mit dem Einrichten.</p>
@@ -64,111 +64,112 @@
     <p>Die Probe hat drei Übungen. Übung 1 beginnt mit einer Klasse, die es noch nicht gibt. Übung 3 endet mit Schleifen und einer Liste.</p>
 
     <h4>Deine Dateien</h4>
-    <p>Du schreibst nur im Ordner <code>src/main/java/de/phl/crashkurs/k13/</code>, und dort nur in fünf Dateien: <code>tickets/TicketCalculator.java</code> (legst du neu an), <code>stage/FestivalApp.java</code>, <code>jam/Musician.java</code>, <code>jam/Crowd.java</code> und <code>jam/Festival.java</code>.</p>
-    <p>Alles andere ist fertig, auch die Tests. Lass es so, wie es ist. In deinen fünf Dateien bleibt jede vorgegebene Zeile stehen: der Klassenname, die Attribute und die Methodenköpfe.</p>
+    <p>Du schreibst nur im Ordner <code>src/main/java/de/phl/crashkurs/k13/</code>. Dort bearbeitest du nur fünf Dateien: <code>tickets/TicketCalculator.java</code> (diese Datei legst du neu an), <code>stage/FestivalApp.java</code>, <code>jam/Musician.java</code>, <code>jam/Crowd.java</code> und <code>jam/Festival.java</code>.</p>
+    <p>Alle anderen Dateien sind fertig, auch die Tests. Ändere sie nicht. In den vorgegebenen Dateien lässt du den Klassennamen, die Attribute, die Konstruktoren und die Methodenköpfe unverändert. Schreib deinen Code nur an die markierten TODO-Stellen (und ersetze dort eventuelle Platzhalter, wie im Kommentar angegeben).</p>
+    <p>Die Tests lesen teilweise auch deinen Quelltext. Schreib deshalb die Werte, die in der Aufgabe stehen, direkt in den Aufruf, zum Beispiel <code>new Stage("Seebühne", 4)</code>, und nicht zuerst in eigene Hilfsvariablen. Lies jede Übung einmal ganz, bevor du anfängst: Manchmal musst du dir einen Wert schon vor einem späteren Schritt merken.</p>
 
     <h3>Übung 1: Ticketpreis ausrechnen (20 Punkte)</h3>
     <p>Fünf Leute aus deinem Semester fahren zusammen aufs Festival. Ein kleines Programm soll ausrechnen, was ihre Tickets zusammen kosten.</p>
     <ol>
-      <li>Im Ordner <code>k13/tickets</code> gibt es noch keine Klasse. Leg dort die Klasse <code>TicketCalculator</code> an. Ihre <code>package</code>-Zeile lautet <code>package de.phl.crashkurs.k13.tickets;</code>. <span class="k13-pkt">(4 Punkte)</span></li>
+      <li>Im Ordner <code>k13/tickets</code> gibt es noch keine Klasse. Leg dort eine neue Java-Datei für die Klasse <code>TicketCalculator</code> an. Ihre <code>package</code>-Zeile lautet <code>package de.phl.crashkurs.k13.tickets;</code>. <span class="k13-pkt">(4 Punkte)</span></li>
       <li>Das Programm braucht einen Startpunkt. Schreib in die Klasse die Methode <code>public static void main(String[] args)</code>. <span class="k13-pkt">(3 Punkte)</span></li>
       <li>Ein Ticket kostet 79 Euro. Deklariere dafür in <code>main</code> die lokale Variable <code>ticketPrice</code> vom Typ <code>int</code>. Initialisiere sie in derselben Zeile mit <code>79</code>. <span class="k13-pkt">(2 Punkte)</span></li>
-      <li>Für die Größe der Gruppe brauchst du eine zweite lokale <code>int</code>-Variable: <code>groupSize</code> mit dem Startwert <code>5</code>. <span class="k13-pkt">(2 Punkte)</span></li>
-      <li>Der Gesamtpreis ist der Ticketpreis mal die Größe der Gruppe. Speichere das Ergebnis in einer neuen <code>int</code>-Variable namens <code>totalPrice</code>. Nimm für die Rechnung die beiden Variablen, keine festen Zahlen. <span class="k13-pkt">(4 Punkte)</span></li>
-      <li>Zum Schluss zeigt das Programm den Gesamtpreis in der Konsole an, mit <code>System.out.println</code>. Die Zeile beginnt mit <code>Gesamtpreis:</code>. Danach steht der Wert von <code>totalPrice</code>. <span class="k13-pkt">(5 Punkte)</span></li>
+      <li>Deklariere in <code>main</code> eine zweite lokale <code>int</code>-Variable mit dem Namen <code>groupSize</code>. Initialisiere sie in derselben Zeile mit dem Startwert <code>5</code>. <span class="k13-pkt">(2 Punkte)</span></li>
+      <li>Berechne in <code>main</code> den Gesamtpreis: Ticketpreis mal Gruppengröße. Speichere das Ergebnis in einer neuen lokalen <code>int</code>-Variable mit dem Namen <code>totalPrice</code>. Rechne dabei mit den beiden Variablen, nicht mit festen Zahlen. <span class="k13-pkt">(4 Punkte)</span></li>
+      <li>Gib zum Schluss den Gesamtpreis mit <code>System.out.println</code> aus. Die Ausgabe beginnt mit <code>Gesamtpreis:</code>. Danach folgen ein Leerzeichen und der Wert von <code>totalPrice</code>. <span class="k13-pkt">(5 Punkte)</span></li>
     </ol>
 
     <h3>Übung 2: Bands auf die Bühne (30 Punkte)</h3>
-    <p>Im Paket <code>de.phl.crashkurs.k13.stage</code> liegt ein fertiges kleines Programm über Bands, Songs und eine Bühne. Du benutzt seine Klassen, ohne sie zu ändern.</p>
+    <p>Im Paket <code>de.phl.crashkurs.k13.stage</code> liegen fertige Klassen für Bands, Songs und eine Bühne. Du benutzt diese Klassen, ohne sie zu ändern.</p>
     <h4>Die vorgegebenen Klassen</h4>
-    <p>Drei Klassen sind vorgegeben: <code>Band</code>, <code>Song</code> und <code>Stage</code>. Hier steht, was jede kann.</p>
+    <p>Drei Klassen sind vorgegeben: <code>Band</code>, <code>Song</code> und <code>Stage</code>. Hier steht, welche Konstruktoren und Methoden jede Klasse hat.</p>
     <p><strong><code>Band</code>: eine Band.</strong> Jede Band hat einen Namen (<code>name</code>), eine Musikrichtung (<code>genre</code>) und eine Zahl von Fans (<code>fans</code>).</p>
     <ul>
-      <li><code>Band(final String name, final String genre, final int fans)</code>: der Konstruktor. Er bekommt den Namen, die Musikrichtung und die Fans am Anfang, in dieser Reihenfolge.</li>
-      <li><code>void play(final Song song)</code>: Die Band spielt den übergebenen Song. Dabei gewinnt sie so viele Fans dazu, wie der Song beliebt ist. Außerdem schreibt die Methode in die Konsole, welchen Song die Band spielt.</li>
-      <li><code>String getInfo()</code>: liefert einen Text über die Band, mit Name, Musikrichtung und Fans.</li>
+      <li><code>Band(final String name, final String genre, final int fans)</code>: der Konstruktor. Du übergibst ihm den Namen, die Musikrichtung und die Zahl der Fans am Anfang in genau dieser Reihenfolge.</li>
+      <li><code>void play(final Song song)</code>: Die Band spielt den übergebenen Song. Dabei gewinnt sie so viele Fans dazu, wie der Song beliebt ist. Außerdem gibt die Methode aus, welchen Song die Band spielt.</li>
+      <li><code>String getInfo()</code>: gibt einen Text über die Band als Rückgabewert zurück, mit Name, Musikrichtung und aktueller Zahl der Fans.</li>
       <li><code>String getName()</code>, <code>String getGenre()</code> und <code>int getFans()</code>: Getter für den Namen, die Musikrichtung und die aktuelle Zahl der Fans.</li>
     </ul>
     <p><strong><code>Song</code>: ein Song.</strong> Ein Song hat einen Titel (<code>title</code>) und eine Beliebtheit (<code>popularity</code>). Die Beliebtheit ist die Zahl der Fans, die eine Band mit diesem Song dazugewinnt.</p>
     <ul>
-      <li><code>Song(final String title, final int popularity)</code>: der Konstruktor. Erst kommt der Titel, dann die Beliebtheit.</li>
-      <li><code>String getInfo()</code>: liefert einen Text mit Titel und Beliebtheit.</li>
+      <li><code>Song(final String title, final int popularity)</code>: der Konstruktor. Du übergibst zuerst den Titel, dann die Beliebtheit.</li>
+      <li><code>String getInfo()</code>: gibt einen Text mit Titel und Beliebtheit als Rückgabewert zurück.</li>
     </ul>
     <p><strong><code>Stage</code>: eine Bühne.</strong> Eine Bühne hat einen Namen (<code>name</code>) und eine feste Zahl von Plätzen im Programm (<code>capacity</code>). In der Liste <code>bands</code> merkt sie sich, welche Bands auf ihr spielen.</p>
     <ul>
-      <li><code>Stage(final String name, final int capacity)</code>: der Konstruktor. Erst kommt der Name, dann die Zahl der Plätze.</li>
-      <li><code>List&lt;Band&gt; getBands()</code>: liefert die Liste der Bands auf dieser Bühne.</li>
-      <li><code>void addBand(final Band band)</code>: setzt die Band aufs Programm und meldet das in der Konsole. Ist kein Platz mehr frei, wirft die Methode eine <code>IllegalStateException</code>.</li>
-      <li><code>String getInfo()</code>: liefert einen Text mit dem Namen der Bühne, den Plätzen und der Zahl der Bands.</li>
+      <li><code>Stage(final String name, final int capacity)</code>: der Konstruktor. Du übergibst zuerst den Namen, dann die Zahl der Plätze.</li>
+      <li><code>List&lt;Band&gt; getBands()</code>: gibt die Liste der Bands auf dieser Bühne als Rückgabewert zurück.</li>
+      <li><code>void addBand(final Band band)</code>: nimmt die Band ins Programm auf und gibt eine Meldung dazu aus. Ist kein Platz mehr frei, wirft die Methode eine <code>IllegalStateException</code>.</li>
+      <li><code>String getInfo()</code>: gibt einen Text mit dem Namen der Bühne, der Zahl der Plätze und der Zahl der Bands als Rückgabewert zurück.</li>
     </ul>
     <h4>Was du tust</h4>
-    <p>Alles kommt in die <code>main</code>-Methode von <code>FestivalApp</code> im Paket <code>de.phl.crashkurs.k13.stage</code>. Halte die Reihenfolge ein.</p>
+    <p>Schreib deinen ganzen Code für Übung 2 in die <code>main</code>-Methode von <code>FestivalApp</code> im Paket <code>de.phl.crashkurs.k13.stage</code>. Halte die Reihenfolge der Schritte ein.</p>
     <ol>
-      <li>Bau die Bühne: ein <code>Stage</code>-Objekt für die <code>"Seebühne"</code> mit 4 Plätzen. <span class="k13-pkt">(3 Punkte)</span></li>
-      <li>Zwei Bands treten auf. Leg für jede ein <code>Band</code>-Objekt an. Gib danach für jede Band das Ergebnis von <code>getInfo()</code> in der Konsole aus. <span class="k13-pkt">(6 Punkte)</span>
+      <li>Erzeuge die Bühne: ein <code>Stage</code>-Objekt mit dem Namen <code>"Seebühne"</code> und 4 Plätzen. Speichere es in einer Variable. <span class="k13-pkt">(3 Punkte)</span></li>
+      <li>Erzeuge zwei <code>Band</code>-Objekte und speichere jedes in einer Variable. Gib danach für beide Bands den Rückgabewert von <code>getInfo()</code> aus. <span class="k13-pkt">(6 Punkte)</span>
         <ul><li><code>"The Lindens"</code>, Musikrichtung <code>"Indie"</code>, 1.200 Fans</li><li><code>"Neon Cats"</code>, Musikrichtung <code>"Pop"</code>, 950 Fans</li></ul></li>
-      <li>Setz beide Bands mit <code>addBand</code> aufs Programm der Seebühne. <span class="k13-pkt">(4 Punkte)</span></li>
-      <li>Leg zwei <code>Song</code>-Objekte an: <span class="k13-pkt">(4 Punkte)</span>
+      <li>Nimm beide Bands ins Programm der Seebühne auf. Ruf dafür zweimal <code>addBand</code> an deiner Bühne auf. <span class="k13-pkt">(4 Punkte)</span></li>
+      <li>Erzeuge zwei <code>Song</code>-Objekte und speichere jedes in einer Variable: <span class="k13-pkt">(4 Punkte)</span>
         <ul><li><code>"Summer Lights"</code> mit der Beliebtheit 150</li><li><code>"Night Drive"</code> mit der Beliebtheit 320</li></ul></li>
-      <li>Dann spielen die Bands: „The Lindens“ spielen „Summer Lights“, „Neon Cats“ spielen „Night Drive“. Ruf dafür <code>play</code> an der jeweiligen Band auf. Gib danach von beiden Bands noch einmal <code>getInfo()</code> aus. <span class="k13-pkt">(5 Punkte)</span></li>
-      <li>Wie viele Fans hat jede Band mit ihrem Song gewonnen? Rechne es aus: Fans nachher minus Fans vorher. Gib das Ergebnis in genau dieser Form aus: <span class="k13-pkt">(8 Punkte)</span>
+      <li>Lass beide Bands ihren Song spielen: „The Lindens“ spielen „Summer Lights“, und „Neon Cats“ spielen „Night Drive“. Ruf dafür <code>play</code> an der jeweiligen Band auf und übergib den passenden Song. Gib danach von beiden Bands noch einmal den Rückgabewert von <code>getInfo()</code> aus. <span class="k13-pkt">(5 Punkte)</span></li>
+      <li>Berechne für jede Band, wie viele Fans sie mit ihrem Song gewonnen hat: Fans nachher minus Fans vorher. Hol dafür die Zahl der Fans jeweils mit <code>getFans()</code> (einmal vor dem Spielen und einmal nach dem Spielen) und rechne nicht mit festen Zahlen. Gib das Ergebnis in genau dieser Form aus: <span class="k13-pkt">(8 Punkte)</span>
         <ul><li><code>Neue Fans The Lindens: &lt;Zahl&gt;</code></li><li><code>Neue Fans Neon Cats: &lt;Zahl&gt;</code></li></ul>
-        <p>Den Namen der Band tippst du nicht selbst in den Text. Du holst ihn mit <code>getName()</code>. An der Stelle von <code>&lt;Zahl&gt;</code> steht die Zahl, die du ausgerechnet hast.</p></li>
+        <p>Den Namen der Band tippst du nicht selbst in den Text. Hol ihn mit <code>getName()</code>. An der Stelle von <code>&lt;Zahl&gt;</code> steht dein berechnetes Ergebnis.</p></li>
     </ol>
 
     <h3>Übung 3: Der Auftritt (60 Punkte)</h3>
-    <p>Jetzt geht es um <code>switch</code>, <code>if</code> und Schleifen. Bei einem Auftritt spielt ein Musiker Soli, und das Publikum jubelt und will Zugaben. Beides kostet Kraft: Jedes Solo kostet das Publikum Energie, jeder Jubel kostet den Musiker Energie. Die Klassen liegen im Paket <code>de.phl.crashkurs.k13.jam</code>.</p>
+    <p>In dieser Übung arbeitest du mit <code>switch</code>, <code>if</code> und Schleifen. Bei einem Auftritt spielt ein Musiker Soli, und das Publikum jubelt für Zugaben. Beides kostet Kraft: Jedes Solo kostet das Publikum Energie. Jeder Jubel kostet den Musiker Energie. Die Klassen liegen im Paket <code>de.phl.crashkurs.k13.jam</code>.</p>
     <h4>Die vorgegebenen Klassen</h4>
-    <p>Im Paket stehen drei Klassen, <code>Musician</code>, <code>Crowd</code> und <code>Festival</code>. Dazu kommen zwei Enums: <code>Instrument</code> mit den Werten <code>GUITAR</code>, <code>DRUMS</code> und <code>KEYBOARD</code>, und <code>Status</code> mit <code>READY</code>, <code>BREAK</code> und <code>DONE</code>.</p>
-    <p><strong><code>Musician</code>: ein Musiker.</strong> Er hat einen Namen (<code>name</code>), ein Instrument (<code>instrument</code>), Energie (<code>energy</code>) und einen Status (<code>status</code>). Der Status steht am Anfang auf <code>READY</code>.</p>
+    <p>Im Paket liegen drei Klassen: <code>Musician</code>, <code>Crowd</code> und <code>Festival</code>. Dazu kommen zwei Enums: <code>Instrument</code> mit den Werten <code>GUITAR</code>, <code>DRUMS</code> und <code>KEYBOARD</code> sowie <code>Status</code> mit den Werten <code>READY</code>, <code>BREAK</code> und <code>DONE</code>.</p>
+    <p><strong><code>Musician</code>: ein Musiker.</strong> Er hat die Attribute Name (<code>name</code>), Instrument (<code>instrument</code>), Energie (<code>energy</code>) und Status (<code>status</code>). Der Status steht am Anfang auf <code>READY</code>.</p>
     <ul>
-      <li><code>Musician(final String name, final Instrument instrument, final int energy)</code>: der Konstruktor. Die Reihenfolge ist Name, Instrument, Energie.</li>
-      <li><code>String playSolo(final Crowd crowd)</code>: Der Musiker spielt ein Solo für das übergebene Publikum, und das Publikum verliert Energie. Zurück kommt die Beschreibung des Solos. Das schreibst du in 3.1.</li>
-      <li><code>void loseEnergy(final int amount)</code>: zieht <code>amount</code> von der Energie des Musikers ab und setzt danach den Status. Das schreibst du in 3.2.</li>
+      <li><code>Musician(final String name, final Instrument instrument, final int energy)</code>: der Konstruktor. Du übergibst Name, Instrument und Energie in genau dieser Reihenfolge.</li>
+      <li><code>String playSolo(final Crowd crowd)</code>: Der Musiker spielt ein Solo für das übergebene Publikum. Dabei verliert das Publikum Energie. Der Rückgabewert ist die Beschreibung des Solos. Diese Methode schreibst du in 3.1.</li>
+      <li><code>void loseEnergy(final int amount)</code>: zieht <code>amount</code> von der Energie des Musikers ab und setzt danach den Status neu. Diese Methode schreibst du in 3.2.</li>
       <li>Getter: <code>getName()</code>, <code>getInstrument()</code>, <code>getEnergy()</code> und <code>getStatus()</code>.</li>
     </ul>
-    <p><strong><code>Crowd</code>: das Publikum vor einer Bühne.</strong> Es hat einen Namen (<code>name</code>), Energie (<code>energy</code>), eine Lautstärke (<code>volume</code>) und einen Status (<code>status</code>, am Anfang <code>READY</code>).</p>
+    <p><strong><code>Crowd</code>: das Publikum vor einer Bühne.</strong> Es hat die Attribute Name (<code>name</code>), Energie (<code>energy</code>), Lautstärke (<code>volume</code>) und Status (<code>status</code>, am Anfang <code>READY</code>).</p>
     <ul>
-      <li><code>Crowd(final String name, final int energy, final int volume)</code>: der Konstruktor. Die Reihenfolge ist Name, Energie, Lautstärke.</li>
-      <li><code>String cheer(final Musician musician)</code>: Das Publikum jubelt dem übergebenen Musiker zu und will eine Zugabe. Der Musiker verliert dabei so viel Energie, wie das Publikum laut ist. Zurück kommt ein Satz, der den Jubel beschreibt. Diese Methode ist fertig.</li>
-      <li><code>void loseEnergy(final int amount)</code>: wie beim Musiker, nur für das Publikum. Auch das schreibst du in 3.2.</li>
+      <li><code>Crowd(final String name, final int energy, final int volume)</code>: der Konstruktor. Du übergibst Name, Energie und Lautstärke in genau dieser Reihenfolge.</li>
+      <li><code>String cheer(final Musician musician)</code>: Das Publikum jubelt dem übergebenen Musiker zu und will eine Zugabe. Der Musiker verliert dabei so viel Energie, wie das Publikum laut ist. Der Rückgabewert ist ein Satz, der den Jubel beschreibt. Diese Methode ist fertig. Ändere sie nicht.</li>
+      <li><code>void loseEnergy(final int amount)</code>: arbeitet genau wie beim Musiker, nur für das Publikum. Diese Methode schreibst du in 3.2.</li>
       <li>Getter: <code>getName()</code>, <code>getEnergy()</code>, <code>getVolume()</code> und <code>getStatus()</code>.</li>
     </ul>
     <p><strong><code>Festival</code></strong> hat das Array <code>names</code> mit den Namen von 20 Bühnen und drei <code>static</code>-Methoden:</p>
     <ul>
       <li><code>public static void main(final String[] args)</code>: startet einen Auftritt (3.4).</li>
       <li><code>public static void jam(final Musician musician, final Crowd crowd)</code>: lässt den Auftritt laufen, bis der Musiker oder das Publikum nicht mehr kann (3.3).</li>
-      <li><code>public static List&lt;Crowd&gt; createCrowds()</code>: plant das Publikum für 20 Auftritte und gibt es als Liste zurück (3.5).</li>
+      <li><code>public static List&lt;Crowd&gt; createCrowds()</code>: erzeugt das Publikum für 20 Auftritte und gibt es als Liste zurück (3.5).</li>
     </ul>
     <h4>Was du tust</h4>
-    <p>Du schreibst in <code>Musician</code>, <code>Crowd</code> und <code>Festival</code>. Die Methodenköpfe sind vorgegeben.</p>
+    <p>Du schreibst deinen Code in <code>Musician</code>, <code>Crowd</code> und <code>Festival</code>. Alle Methodenköpfe sind vorgegeben.</p>
     <ol>
-      <li><strong><code>playSolo</code> in <code>Musician</code>.</strong> Wie stark ein Solo ist und wie es heißt, hängt vom Instrument ab. Entscheide das mit einem <code>switch</code> über <code>instrument</code>:
+      <li><strong><code>playSolo</code> in <code>Musician</code>.</strong> Die Stärke und die Beschreibung des Solos hängen vom Attribut <code>instrument</code> ab. Entscheide beides mit einem <code>switch</code> über <code>instrument</code>:
         <div class="k13-rahmen"><table><tr><th>Instrument</th><th>Stärke</th><th>Beschreibung</th></tr><tr><td><code>GUITAR</code></td><td>12</td><td><code>Gitarrensolo</code></td></tr><tr><td><code>DRUMS</code></td><td>18</td><td><code>Schlagzeugsolo</code></td></tr><tr><td><code>KEYBOARD</code></td><td>8</td><td><code>Keyboardsolo</code></td></tr></table></div>
-        Das Publikum verliert so viel Energie, wie das Solo stark ist. Ruf dafür <code>loseEnergy</code> am übergebenen Publikum <code>crowd</code> auf. Am Ende gibt die Methode die Beschreibung zurück, zum Beispiel <code>"Gitarrensolo"</code>. <span class="k13-pkt">(18 Punkte)</span></li>
-      <li><strong><code>loseEnergy</code> in <code>Musician</code> und in <code>Crowd</code>.</strong> Beide Methoden arbeiten gleich. Zuerst ziehen sie <code>amount</code> von <code>energy</code> ab. Danach setzen sie den Status mit einer Kette aus <code>if</code>, <code>else if</code> und <code>else</code>: <span class="k13-pkt">(je 6 Punkte)</span>
-        <div class="k13-rahmen"><table><tr><th>Energie danach</th><th>Status</th></tr><tr><td>mehr als 10</td><td><code>READY</code></td></tr><tr><td>0 bis 10</td><td><code>BREAK</code></td></tr><tr><td>weniger als 0</td><td><code>DONE</code></td></tr></table></div></li>
-      <li><strong><code>jam</code> in <code>Festival</code>.</strong> Ein Auftritt besteht aus Runden. Schreib dafür eine <code>while</code>-Schleife. Sie läuft, solange der Musiker <strong>und</strong> das Publikum <code>READY</code> sind. In jeder Runde passiert zweierlei: <span class="k13-pkt">(14 Punkte)</span>
-        <ul><li>Der Musiker spielt mit <code>playSolo</code> ein Solo für das Publikum. Schreib dazu eine Zeile in die Konsole: den Namen des Musikers, das Wort <code>spielt</code> und die Beschreibung des Solos. Ein Beispiel: <code>Mia Stern spielt Schlagzeugsolo</code>.</li>
-          <li>Ist das Publikum danach immer noch <code>READY</code>, jubelt es dem Musiker mit <code>cheer</code> zu. Den Satz, den <code>cheer</code> zurückgibt, schreibst du ebenfalls in die Konsole.</li></ul>
-        <p>Nach der Schleife kommt eine letzte Zeile mit dem Status von beiden, etwa <code>Ende: Mia Stern ist READY, Zeltbühne ist BREAK</code>.</p></li>
-      <li><strong><code>main</code> in <code>Festival</code>.</strong> Leg für einen Auftritt zwei Objekte an und starte ihn mit <code>jam</code>: <span class="k13-pkt">(6 Punkte)</span>
-        <ul><li>den Musiker <code>"Mia Stern"</code> mit dem Instrument <code>DRUMS</code> und 95 Energie,</li><li>das Publikum <code>"Zeltbühne"</code> mit 75 Energie und der Lautstärke 12.</li></ul></li>
-      <li><strong><code>createCrowds</code> in <code>Festival</code>.</strong> Die Methode plant 20 Auftritte. Schreib eine <code>for</code>-Schleife, die genau 20 <code>Crowd</code>-Objekte anlegt und jedes mit <code>crowds.add(…)</code> in die Liste <code>crowds</code> legt. Die Werte hängen vom Index der Schleife ab: <span class="k13-pkt">(10 Punkte)</span>
-        <ul><li>Name: der Eintrag im Array <code>names</code> mit demselben Index,</li><li>Energie: 30 plus 4 mal der Index,</li><li>Lautstärke: 8 plus 3 mal der Index.</li></ul>
-        <p>Zur Kontrolle: Das erste Objekt heißt „Zeltbühne“ und hat 30 Energie und die Lautstärke 8. Das zweite heißt „Seebühne“ und hat 34 Energie und die Lautstärke 11.</p></li>
+        Das Publikum verliert so viel Energie, wie das Solo stark ist. Ruf dafür <code>loseEnergy</code> am übergebenen Parameter <code>crowd</code> auf und übergib die Stärke. Am Ende gibt die Methode die Beschreibung als Rückgabewert zurück, zum Beispiel <code>"Gitarrensolo"</code>. Sie erzeugt selbst keine Ausgabe. <span class="k13-pkt">(18 Punkte)</span></li>
+      <li><strong><code>loseEnergy</code> in <code>Musician</code> und in <code>Crowd</code>.</strong> Beide Methoden arbeiten genau gleich. Zuerst ziehst du <code>amount</code> vom Attribut <code>energy</code> ab. Der Wert darf dabei negativ werden. Danach setzt du das Attribut <code>status</code> mit einer Kette aus <code>if</code>, <code>else if</code> und <code>else</code>: <span class="k13-pkt">(je 6 Punkte)</span>
+        <div class="k13-rahmen"><table><tr><th>Energie danach</th><th>Status</th></tr><tr><td>mehr als 10</td><td><code>READY</code></td></tr><tr><td>0 bis 10 (0 und 10 zählen mit)</td><td><code>BREAK</code></td></tr><tr><td>weniger als 0</td><td><code>DONE</code></td></tr></table></div></li>
+      <li><strong><code>jam</code> in <code>Festival</code>.</strong> Ein Auftritt läuft in Runden. Schreib dafür eine <code>while</code>-Schleife. Sie läuft, solange der Musiker <strong>und</strong> das Publikum den Status <code>READY</code> haben. In jeder Runde passiert zweierlei, in dieser Reihenfolge: <span class="k13-pkt">(14 Punkte)</span>
+        <ul><li>Der Musiker spielt genau ein Solo für das Publikum: Ruf <code>playSolo</code> einmal am Musiker auf. Gib dazu eine Zeile genau in dieser Form aus: Name des Musikers, ein Leerzeichen, <code>spielt</code>, ein Leerzeichen und der Rückgabewert von <code>playSolo</code>. Beispiel: <code>Mia Stern spielt Schlagzeugsolo</code>.</li>
+          <li>Prüfe danach, ob das Publikum immer noch den Status <code>READY</code> hat. Nur dann jubelt es dem Musiker mit <code>cheer</code> zu. Gib den Rückgabewert von <code>cheer</code> ebenfalls aus.</li></ul>
+        <p>Nach der Schleife gibst du genau eine letzte Zeile aus, die den Status von beiden enthält. Beispiel: <code>Ende: Mia Stern ist READY, Zeltbühne ist BREAK</code>.</p></li>
+      <li><strong><code>main</code> in <code>Festival</code>.</strong> Erzeuge zwei Objekte und ruf danach <code>jam</code> mit dem Musiker und dem Publikum auf: <span class="k13-pkt">(6 Punkte)</span>
+        <ul><li>einen Musiker mit dem Namen <code>"Mia Stern"</code>, dem Instrument <code>DRUMS</code> und 95 Energie,</li><li>ein Publikum mit dem Namen <code>"Zeltbühne"</code>, 75 Energie und der Lautstärke 12.</li></ul></li>
+      <li><strong><code>createCrowds</code> in <code>Festival</code>.</strong> Die Methode legt die Liste <code>crowds</code> schon an und gibt sie am Ende zurück. Schreib dazwischen eine <code>for</code>-Schleife mit einem Index von 0 bis 19. Sie erzeugt genau 20 <code>Crowd</code>-Objekte und fügt jedes mit <code>crowds.add(…)</code> in die Liste <code>crowds</code> ein. Die drei Werte für den Konstruktor hängen vom aktuellen Index der Schleife ab: <span class="k13-pkt">(10 Punkte)</span>
+        <ul><li>Name: der Wert aus dem Array <code>names</code> an diesem Index,</li><li>Energie: 30 plus 4 mal den Index,</li><li>Lautstärke: 8 plus 3 mal den Index.</li></ul>
+        <p>Zur Kontrolle: Das erste Objekt (Index 0) heißt „Zeltbühne“, hat 30 Energie und die Lautstärke 8. Das zweite Objekt (Index 1) heißt „Seebühne“, hat 34 Energie und die Lautstärke 11.</p></li>
     </ol>
   </div>
 
   <h2>Nach 60 Minuten: Auswertung</h2>
-  <p>Ist die Zeit um, hörst du auf zu schreiben. Speichere alle Dateien. Dann startest du alle Tests des Probelaufs. In VS Code findest du sie in der Ansicht „Testing“ (das Symbol mit dem Reagenzglas links) unter den Paketen, die mit <code>de.phl.crashkurs.k13</code> beginnen. Starte jedes mit dem Pfeil daneben. Alle auf einmal startest du im Terminal mit:</p>
+  <p>Ist die Zeit um, hörst du auf zu schreiben. Speichere alle Dateien. Dann startest du alle Tests des Probelaufs. In VS Code findest du sie in der Ansicht „Testing“ (das Symbol mit dem Reagenzglas links) unter den Paketen, die mit <code>de.phl.crashkurs.k13</code> beginnen. Starte jedes Paket mit dem grünen Pfeil daneben. Alle Tests auf einmal startest du im Terminal mit diesem Befehl:</p>
   <div class="code" data-code='./gradlew test --tests "*k13*"'></div>
   <p>Jeder Test gehört zu einer Teilaufgabe und bringt deren Punkte, wenn er grün ist. Ein Test zählt ganz oder gar nicht. Hak unten an, welche Tests bei dir grün sind. Der Rechner zählt deine Punkte zusammen.</p>
   <div class="k13-punkte" id="punkte"></div>
   <p>Zwei Dinge musst du dabei wissen:</p>
   <ul>
-    <li><strong>Ist irgendwo im Projekt etwas rot unterstrichen, läuft mit <code>./gradlew</code> kein einziger Test.</strong> Dann hast du in der Probe 0 Punkte, auch für Aufgaben, die stimmen. Das ist ein sehr häufiger Grund für verlorene Punkte. Deshalb steht in Kapitel 12: Was nicht kompiliert, kommentierst du aus.</li>
-    <li><strong>3.3 baut auf 3.1 und 3.2 auf.</strong> Der Test für <code>jam</code> lässt den Musiker wirklich spielen. Er kann nur grün werden, wenn <code>playSolo</code> und beide <code>loseEnergy</code> stimmen. Ist 3.3 rot, schau deshalb zuerst, ob 3.1 und 3.2 grün sind.</li>
+    <li><strong>Ist irgendwo im Projekt etwas rot unterstrichen, läuft mit <code>./gradlew</code> kein einziger Test.</strong> Dann hast du in der Probe 0 Punkte, auch für Aufgaben, die stimmen. Das ist ein häufiger Grund für verlorene Punkte. Deshalb steht in Kapitel 12: Was nicht kompiliert, kommentierst du aus.</li>
+    <li><strong>3.3 baut auf 3.1 und 3.2 auf.</strong> Der Test für <code>jam</code> lässt den Musiker wirklich spielen. Er kann nur grün werden, wenn <code>playSolo</code> und beide <code>loseEnergy</code>-Methoden stimmen. Ist 3.3 rot, schau deshalb zuerst, ob 3.1 und 3.2 grün sind.</li>
   </ul>
 
   <h2>Lösung mit Erklärung</h2>
@@ -176,7 +177,7 @@
   <div id="aufgaben"></div>
 
   <h2>Wie geht es weiter?</h2>
-  <p>Unter 66 Punkten? Dann such dir in der Tabelle die Teilaufgaben, bei denen du Punkte verloren hast, und wiederhole genau diese Kapitel. Mach die Probe danach noch einmal. Setz dafür die Dateien in <code>k13</code> zurück: In VS Code klickst du in der Ansicht „Source Control“ (Quellcodeverwaltung) bei jeder geänderten Datei auf den gebogenen Pfeil „Discard Changes“ (Änderungen verwerfen). Die neue Datei <code>TicketCalculator.java</code> löschst du. Das klappt nur, solange du die Probe nicht committet hast.</p>
+  <p>Hast du unter 66 Punkte erreicht? Dann such dir in der Tabelle die Teilaufgaben, bei denen du Punkte verloren hast. Wiederhole genau diese Kapitel. Mach die Probe danach noch einmal. Setz dafür die Dateien in <code>k13</code> zurück: Öffne in VS Code die Ansicht „Source Control“ (Quellcodeverwaltung). Klick dort bei jeder geänderten Datei auf den gebogenen Pfeil „Discard Changes“ (Änderungen verwerfen). Die neue Datei <code>TicketCalculator.java</code> löschst du. Das klappt nur, solange du die Probe nicht committet hast.</p>
   <div class="k13-rahmen">
   <table class="zeichen">
     <tr><th>Teilaufgabe</th><th>Thema</th><th>Kapitel</th></tr>
@@ -271,7 +272,7 @@
     haken.forEach(function (c) { if (c.checked) s += c._punkte; });
     summeEl.textContent = s + ' von 110 Punkten';
     urteilEl.innerHTML = s >= 66 ? '<span class="urteil wahr">bestanden</span> Ab 66 Punkten (60 Prozent) ist die Probe bestanden.'
-      : '<span class="urteil falsch">noch nicht bestanden</span> Es fehlen ' + (66 - s) + ' Punkte bis 66 (60 Prozent).';
+      : '<span class="urteil falsch">noch nicht bestanden</span> Es ' + (66 - s === 1 ? 'fehlt 1 Punkt' : 'fehlen ' + (66 - s) + ' Punkte') + ' bis 66 (60 Prozent).';
   }
 
   /* ---------- Lösungen ---------- */
@@ -288,17 +289,17 @@
         text: '<p>Die Aufgabe steht oben im Aufgabenblatt.</p>',
         tipps: ['Rechtsklick auf den Ordner <code>tickets</code>, dann „New Java File“ und „Class“. Als Namen tippst du <code>TicketCalculator</code>. VS Code schreibt die <code>package</code>-Zeile selbst (Kapitel 1).', 'Der Test sucht genau die Zeilen <code>int ticketPrice = 79;</code>, <code>int groupSize = 5;</code> und <code>int totalPrice = ticketPrice * groupSize;</code>. Rechne mit den Variablen, nicht mit den Zahlen (Kapitel 2).'],
         loesung: [{ datei: 'TicketCalculator.java', code: ['package de.phl.crashkurs.k13.tickets;', '', 'public class TicketCalculator {', '', '    public static void main(String[] args) {', '        int ticketPrice = 79;', '        int groupSize = 5;', '        int totalPrice = ticketPrice * groupSize;', '        System.out.println("Gesamtpreis: " + totalPrice);', '    }', '}'] }],
-        erklaerung: '<ul><li><strong>1.1 und 1.2</strong> (Kapitel 1): Die Datei heißt wie die Klasse, und die <code>package</code>-Zeile passt zum Ordner <code>k13/tickets</code>. Die Zeile mit <code>main</code> schreibst du genau so ab.</li><li><strong>1.3 bis 1.5</strong> (Kapitel 2): Typ, Name, <code>=</code>, Wert. Für den Gesamtpreis rechnet Java rechts 79 * 5 aus und speichert 395 in <code>totalPrice</code>.</li><li><strong>1.6</strong> (Kapitel 2): Text und Zahl verbindest du mit <code>+</code>. Die Ausgabe heißt dann „Gesamtpreis: 395“.</li></ul>' },
+        erklaerung: '<ul><li><strong>1.1 und 1.2</strong> (Kapitel 1): Die Datei heißt wie die Klasse, und die <code>package</code>-Zeile passt zum Ordner <code>k13/tickets</code>. Die Zeile mit <code>main</code> schreibst du genau so ab.</li><li><strong>1.3 bis 1.5</strong> (Kapitel 2): Typ, Name, <code>=</code>, Wert. Für den Gesamtpreis rechnet Java rechts 79 * 5 aus und speichert 395 in <code>totalPrice</code>.</li><li><strong>1.6</strong> (Kapitel 2): Text und Zahl verbindest du mit <code>+</code>. Die Ausgabe lautet dann „Gesamtpreis: 395“.</li></ul>' },
       { titel: 'Übung 2: Bands auf die Bühne (30 Punkte)', datei: 'k13/stage/FestivalApp.java, Methode main', befehl: './gradlew test --tests "*k13.stage*"',
         text: '<p>Die Aufgabe und die Beschreibung der Klassen stehen oben im Aufgabenblatt.</p>',
         tipps: ['Lies zuerst die Konstruktoren in der Beschreibung: Welche Werte, in welcher Reihenfolge? Dann gilt für jedes Objekt dasselbe Muster: <code>Band lindens = new Band("The Lindens", "Indie", 1200);</code> (Kapitel 4 und 5).', 'Für 2.6 merkst du dir die Fans, <strong>bevor</strong> die Band spielt: <code>int lindensBefore = lindens.getFans();</code>. Nach <code>play</code> rechnest du <code>lindens.getFans() - lindensBefore</code> (Kapitel 5).'],
         loesung: [{ datei: 'FestivalApp.java, Methode main', code: ['public static void main(String[] args) {', '    Stage stage = new Stage("Seebühne", 4);', '', '    Band lindens = new Band("The Lindens", "Indie", 1200);', '    Band neonCats = new Band("Neon Cats", "Pop", 950);', '    System.out.println(lindens.getInfo());', '    System.out.println(neonCats.getInfo());', '', '    stage.addBand(lindens);', '    stage.addBand(neonCats);', '', '    Song summerLights = new Song("Summer Lights", 150);', '    Song nightDrive = new Song("Night Drive", 320);', '', '    int lindensBefore = lindens.getFans();', '    int neonCatsBefore = neonCats.getFans();', '', '    lindens.play(summerLights);', '    neonCats.play(nightDrive);', '    System.out.println(lindens.getInfo());', '    System.out.println(neonCats.getInfo());', '', '    int lindensGain = lindens.getFans() - lindensBefore;', '    int neonCatsGain = neonCats.getFans() - neonCatsBefore;', '    System.out.println("Neue Fans " + lindens.getName() + ": " + lindensGain);', '    System.out.println("Neue Fans " + neonCats.getName() + ": " + neonCatsGain);', '}'] }],
-        erklaerung: '<ul><li><strong>2.1, 2.2 und 2.4</strong> (Kapitel 4): Jedes <code>new</code> baut ein Objekt. Die Werte stehen in der Reihenfolge des Konstruktors. 1.200 Fans schreibst du ohne Punkt als <code>1200</code>.</li><li><strong>2.3 und 2.5</strong> (Kapitel 5): Der Punkt heißt „frag dieses Objekt“. <code>stage.addBand(lindens)</code> gibt das Band-Objekt an die Bühne, <code>lindens.play(summerLights)</code> gibt den Song an die Band.</li><li><strong>2.6</strong> (Kapitel 5): Du musst dir den Wert vorher merken, bevor <code>play</code> ihn ändert. Merkst du ihn dir erst danach, kommt 0 heraus.</li></ul>' },
+        erklaerung: '<ul><li><strong>2.1, 2.2 und 2.4</strong> (Kapitel 4): Jedes <code>new</code> erzeugt ein Objekt. Die Werte stehen in der Reihenfolge des Konstruktors. 1.200 Fans schreibst du ohne Punkt als <code>1200</code>.</li><li><strong>2.3 und 2.5</strong> (Kapitel 5): Der Punkt heißt „frag dieses Objekt“. <code>stage.addBand(lindens)</code> übergibt das Band-Objekt an die Bühne. <code>lindens.play(summerLights)</code> übergibt den Song an die Band.</li><li><strong>2.6</strong> (Kapitel 5): Du merkst dir den Wert mit <code>getFans()</code>, bevor <code>play</code> ihn ändert. Holst du ihn erst danach, kommt 0 heraus.</li></ul>' },
       { titel: 'Übung 3: Der Auftritt (60 Punkte)', datei: 'k13/jam: Musician.java, Crowd.java, Festival.java', befehl: './gradlew test --tests "*k13.jam*"',
         text: '<p>Die Aufgabe und die Beschreibung der Klassen stehen oben im Aufgabenblatt.</p>',
-        tipps: ['3.1: Leg vor dem <code>switch</code> zwei Variablen an, <code>String description = "";</code> und <code>int strength = 0;</code>. Setz sie in jedem <code>case</code> und vergiss das <code>break</code> nicht. Nach dem <code>switch</code> rufst du <code>crowd.loseEnergy(strength);</code> auf und gibst <code>description</code> zurück (Kapitel 8).', '3.3: Die Bedingung der Schleife lautet <code>musician.getStatus() == Status.READY &amp;&amp; crowd.getStatus() == Status.READY</code>. Im Block erst das Solo ausgeben, dann mit <code>if</code> prüfen, ob das Publikum noch <code>READY</code> ist (Kapitel 9).'],
+        tipps: ['3.1: Leg vor dem <code>switch</code> zwei Variablen an: <code>String description = "";</code> und <code>int strength = 0;</code>. Setz sie in jedem <code>case</code> und vergiss das <code>break</code> nicht. Nach dem <code>switch</code> rufst du <code>crowd.loseEnergy(strength);</code> auf und gibst <code>description</code> zurück (Kapitel 8).', '3.3: Die Bedingung der Schleife lautet <code>musician.getStatus() == Status.READY &amp;&amp; crowd.getStatus() == Status.READY</code>. Im Block gibst du zuerst das Solo aus. Danach prüfst du mit <code>if</code>, ob das Publikum noch <code>READY</code> ist (Kapitel 9).'],
         loesung: [{ datei: 'Musician.java', code: MUSICIAN }, { datei: 'Crowd.java', code: CROWD }, { datei: 'Festival.java', code: FESTIVAL }],
-        erklaerung: '<ul><li><strong>3.1</strong> (Kapitel 8): Hier nutzt du das Muster „Variable vor dem <code>switch</code> anlegen, in jedem Fall setzen, danach benutzen“. Ohne <code>break</code> würde Java in den nächsten <code>case</code> weiterlaufen.</li><li><strong>3.2</strong> (Kapitel 7): Erst abziehen, dann prüfen. Die Kette aus <code>if</code>, <code>else if</code> und <code>else</code> setzt genau einen Status. Die Reihenfolge der Bedingungen zählt: Bei <code>else if (energy &gt;= 0)</code> kommt Java nur an, wenn <code>energy &gt; 10</code> falsch war. Deshalb reicht dort eine einzige Bedingung für „0 bis 10“.</li><li><strong>3.3</strong> (Kapitel 9): Die Schleife endet, sobald einer der beiden nicht mehr <code>READY</code> ist. Sie endet, weil <code>playSolo</code> und <code>cheer</code> bei jeder Runde Energie abziehen. Das <code>if</code> im Block verhindert, dass ein erschöpftes Publikum noch jubelt. Mit Mia Stern gibt es vier Soli. Danach hat das Publikum noch 3 Energie (<code>BREAK</code>), und Mia hat noch 59.</li><li><strong>3.4</strong> (Kapitel 4, 6 und 8): Ein Enum-Wert steht mit dem Namen des Enums davor: <code>Instrument.DRUMS</code>. <code>jam</code> ist <code>static</code> und steht in derselben Klasse, deshalb reicht <code>jam(mia, crowd);</code>.</li><li><strong>3.5</strong> (Kapitel 10): „Genau 20 Mal“ heißt <code>i &lt; 20</code> mit Start bei 0. <code>names[i]</code> holt den Namen aus dem Fach <code>i</code>, und Java rechnet Punkt vor Strich: <code>30 + i * 4</code>.</li></ul>' }
+        erklaerung: '<ul><li><strong>3.1</strong> (Kapitel 8): Hier nutzt du das Muster „Variable vor dem <code>switch</code> anlegen, in jedem Fall setzen, danach benutzen“. Ohne <code>break</code> würde Java in den nächsten <code>case</code> weiterlaufen.</li><li><strong>3.2</strong> (Kapitel 7): Erst abziehen, dann prüfen. Die Kette aus <code>if</code>, <code>else if</code> und <code>else</code> setzt genau einen Status. Die Reihenfolge der Bedingungen zählt: Bei <code>else if (energy &gt;= 0)</code> kommt Java nur an, wenn <code>energy &gt; 10</code> falsch war. Deshalb reicht dort eine einzige Bedingung für „0 bis 10“.</li><li><strong>3.3</strong> (Kapitel 9): Die Schleife endet, sobald einer der beiden nicht mehr <code>READY</code> ist. Sie endet, weil <code>playSolo</code> und <code>cheer</code> bei jeder Runde Energie abziehen. Das <code>if</code> im Block verhindert, dass ein erschöpftes Publikum noch jubelt. Mit Mia Stern gibt es vier Soli. Danach hat das Publikum noch 3 Energie (<code>BREAK</code>), und Mia hat noch 59.</li><li><strong>3.4</strong> (Kapitel 4, 6 und 8): Ein Enum-Wert steht mit dem Namen des Enums davor: <code>Instrument.DRUMS</code>. <code>jam</code> ist <code>static</code> und steht in derselben Klasse. Deshalb reicht <code>jam(mia, crowd);</code>.</li><li><strong>3.5</strong> (Kapitel 10): „Genau 20 Mal“ heißt <code>i &lt; 20</code> mit Start bei 0. <code>names[i]</code> holt den Namen aus dem Fach <code>i</code>, und Java rechnet Punkt vor Strich: <code>30 + i * 4</code>.</li></ul>' }
     ],
     selbsttest: function (log) {
       var vorher = Kurs.holen(SCHLUESSEL);
