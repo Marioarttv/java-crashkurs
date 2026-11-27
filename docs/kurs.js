@@ -11,25 +11,26 @@ var Kurs = (function () {
     { id: 'B', titel: 'Klassen und Objekte' },
     { id: 'C', titel: 'Den Ablauf steuern' },
     { id: 'D', titel: 'Wenn etwas schiefgeht' },
-    { id: 'E', titel: 'Probe' }
+    { id: 'E', titel: 'Alles zusammen' }
   ];
   var KAPITEL = [
     { nr: 1, titel: 'Dein erstes Programm', teil: 'A', aufgaben: 3, sichtbar: true },
-    { nr: 2, titel: 'Variablen und Rechnen', teil: 'A', aufgaben: 3, sichtbar: true },
+    { nr: 2, titel: 'Variablen und Rechnen', teil: 'A', aufgaben: 3, sichtbar: true, stand: 2 },
     { nr: 3, titel: 'Methoden', teil: 'A', aufgaben: 3, sichtbar: true },
     { nr: 4, titel: 'Klassen und Objekte', teil: 'B', aufgaben: 3, sichtbar: true },
-    { nr: 5, titel: 'Objekte benutzen', teil: 'B', aufgaben: 3, sichtbar: true },
+    { nr: 5, titel: 'Objekte benutzen', teil: 'B', aufgaben: 3, sichtbar: true, stand: 2 },
     { nr: 6, titel: 'static: einmal für alle', teil: 'B', aufgaben: 2, sichtbar: true },
-    { nr: 7, titel: 'Entscheiden mit if und else', teil: 'C', aufgaben: 3, sichtbar: true },
-    { nr: 8, titel: 'Auswählen mit switch und enum', teil: 'C', aufgaben: 3, sichtbar: true },
-    { nr: 9, titel: 'Wiederholen mit while', teil: 'C', aufgaben: 3, sichtbar: true },
-    { nr: 10, titel: 'Zählen mit for, Arrays und Listen', teil: 'C', aufgaben: 3, sichtbar: true },
+    { nr: 7, titel: 'Entscheiden mit if und else', teil: 'C', aufgaben: 3, sichtbar: true, stand: 2 },
+    { nr: 8, titel: 'Auswählen mit switch und enum', teil: 'C', aufgaben: 3, sichtbar: true, stand: 2 },
+    { nr: 9, titel: 'Wiederholen mit while', teil: 'C', aufgaben: 3, sichtbar: true, stand: 2 },
+    { nr: 10, titel: 'Zählen mit for, Arrays und Listen', teil: 'C', aufgaben: 3, sichtbar: true, stand: 2 },
     { nr: 11, titel: 'Exceptions', teil: 'D', aufgaben: 2, sichtbar: true },
     { nr: 12, titel: 'Wenn es rot wird', teil: 'D', aufgaben: 3, sichtbar: true },
-    { nr: 13, titel: 'Probelauf auf Zeit', teil: 'E', aufgaben: 3, sichtbar: true }
+    { nr: 13, titel: 'Alles zusammen', teil: 'E', aufgaben: 5, sichtbar: true, stand: 2 }
   ];
   function zwei(n) { return (n < 10 ? '0' : '') + n; }
-  KAPITEL.forEach(function (k) { k.datei = 'kapitel-' + zwei(k.nr) + '.html'; k.paket = 'k' + zwei(k.nr); });
+  // stand: bei neu geschriebenen Aufgaben erhöhen, damit alte Häkchen (localStorage) nicht für die neuen Aufgaben gelten.
+  KAPITEL.forEach(function (k) { k.datei = 'kapitel-' + zwei(k.nr) + '.html'; k.paket = 'k' + zwei(k.nr); k.merkname = k.paket + (k.stand ? '-s' + k.stand : ''); });
 
   /* Ausgeblendete Kapitel zeigt die Liste nur mit ?alle in der Adresse (zum Prüfen). */
   var ALLE = /[?&]alle\b/.test(location.search);
@@ -663,7 +664,8 @@ var Kurs = (function () {
         : n + ' von ' + liste_.length + ' Aufgaben geschafft.';
     }
     liste_.forEach(function (a, i) {
-      var id = a.id || ('k' + zwei(kapitelNr) + '-' + (i + 1));
+      var kap = KAPITEL.filter(function (k) { return k.nr === kapitelNr; })[0];
+      var id = a.id || ((kap ? kap.merkname : 'k' + zwei(kapitelNr)) + '-' + (i + 1));
       var box = el('div', 'aufgabe');
       box.appendChild(el('h3', null, a.titel));
       if (a.datei) box.appendChild(el('div', 'datei', esc(a.datei)));
@@ -700,7 +702,7 @@ var Kurs = (function () {
   }
   function geschafft(k) {
     var n = 0;
-    for (var i = 1; i <= k.aufgaben; i++) if (holen('crashkurs-' + k.paket + '-' + i) === '1') n++;
+    for (var i = 1; i <= k.aufgaben; i++) if (holen('crashkurs-' + k.merkname + '-' + i) === '1') n++;
     return n;
   }
   function kapitelListe(hier, mitStand) {

@@ -8,15 +8,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="kurs.css">
-<style>
-/* Nur in diesem Kapitel: drei Dateien nebeneinander, die lange Datei rechts über zwei Zeilen */
-@media (min-width: 761px) { .k08-drei .dateien > .datei:nth-child(2) { grid-row: span 2; } }
-</style>
 </head>
 <body>
 <main class="kurs">
 
-  <p class="vorwissen">Das solltest du schon kennen: Klassen, Objekte und Attribute aus Kapitel 4, Methoden eines anderen Objekts aufrufen aus Kapitel 5 und die Kette aus <code>if</code>, <code>else if</code> und <code>else</code> aus Kapitel 7.</p>
+  <p class="vorwissen">Das solltest du schon kennen: Methoden mit <code>return</code> aus Kapitel 3, Klassen, Objekte und Attribute aus Kapitel 4 und die Kette aus <code>if</code>, <code>else if</code> und <code>else</code> aus Kapitel 7.</p>
 
   <p>Stell dir einen Kaffeeautomaten vor. Er hat genau drei Knöpfe: klein, mittel und groß. Einen vierten Knopf gibt es nicht. Du kannst auch nichts selbst eintippen. Du wählst immer eine der drei Größen, und der Automat weiß für jede Größe, was er tun muss.</p>
   <p>Dieses Kapitel zeigt zwei Dinge, die genau dazu passen. Ein <strong>Enum</strong> legt fest, welche Werte erlaubt sind. Ein <strong><code>switch</code></strong> wählt je nach Wert den passenden Programmteil aus.</p>
@@ -31,7 +27,6 @@
   <p>Jetzt kannst du <code>Size</code> als Typ für eine Variable benutzen, genau wie <code>int</code> oder <code>String</code>. Vor den Wert schreibst du immer den Namen des Enums und einen Punkt:</p>
   <div class="code" data-code='«typ:Size» «pink:size» = «tuerkis:Size.MEDIUM»;'></div>
   <p class="vorlesen">Leg eine Variable vom <span class="t-typ">Typ Size</span> mit dem <span class="t-pink">Namen size</span> an und speichere darin den <span class="t-tuerkis">Wert MEDIUM aus der Liste Size</span>.</p>
-  <p>Vielleicht hast du so etwas schon abgeschrieben: In Kapitel 7, Aufgabe 3 stand <code>status = CardStatus.EMPTY;</code>. <code>CardStatus</code> ist ein Enum mit den Werten ACTIVE, EMPTY und OVERDRAWN.</p>
 
   <h3>Warum kein Text?</h3>
   <p>Du könntest die Größe auch als Text speichern, zum Beispiel <code>String size = "MEDUIM";</code>. Siehst du den Tippfehler? Java sieht ihn nicht. Jeder Text ist erlaubt, also läuft das Programm und rechnet mit einer Größe, die es nicht gibt.</p>
@@ -86,21 +81,43 @@ switch («pink:size») {
   <p class="vorlesen"><span class="t-violett">Schau nach</span>, welchen Wert <span class="t-pink">size</span> hat. <span class="t-violett">Im Fall</span> <span class="t-tuerkis">LARGE</span> speichere 2 in <code>shots</code>. <span class="t-violett">In allen anderen Fällen</span> speichere 1.</p>
   <p><code>default</code> steht meistens am Ende. Dort brauchst du kein <code>break</code> mehr, denn der <code>switch</code> endet direkt danach.</p>
 
-  <h2>Das Muster in einer Methode: auswählen, weitergeben, zurückgeben</h2>
-  <p>In den Aufgaben steht der <code>switch</code> in einer Methode eines Objekts. Er wählt nach einem <strong>Attribut</strong> des Objekts aus, also nach einer Variable, die zum Objekt gehört. Danach reicht die Methode das Ergebnis an ein anderes Objekt weiter und gibt einen Wert zurück.</p>
-  <p>Im Beispiel unten hat jeder Automat das Attribut <code>size</code> für die gewählte Größe. Die Methode <code>serve</code> bekommt eine Tasse (ein Objekt der Klasse <code>Mug</code>) und füllt sie. Die Klasse <code>Mug</code> hat keinen Konstruktor mit Parametern. <code>new Mug()</code> erzeugt deshalb eine Tasse, deren Attribut <code>content</code> (der Inhalt) bei 0 startet (Zeile 2 in <code>Mug.java</code>).</p>
-  <p>Wähl die Größe des Automaten und klick dich durch. Achte darauf, in welcher Datei die gelbe Zeile gerade steht.</p>
+  <h2>switch in einer Methode: einen Wert zurückgeben</h2>
+  <p>Bisher stand der <code>switch</code> mitten in einem Programm. In den Aufgaben steht er in einer Methode, und die Methode gibt das Ergebnis mit <code>return</code> zurück (Kapitel 3).</p>
+  <p>Oft wählt der <code>switch</code> dabei nach einem <strong>Attribut</strong> aus, also nach einer Variable, die zum Objekt gehört (Kapitel 4). Im Beispiel hat jeder Knopf am Automaten das Attribut <code>size</code>. Die Methode <code>label</code> gibt die Aufschrift des Knopfs zurück:</p>
+  <div class="code" data-code='public class Button {
+    private Size size;
 
-  <div id="lauf-methode" class="k08-drei"></div>
+    public Button(Size size) {
+        this.size = size;
+    }
 
-  <p>In Zeile 10 von <code>CoffeeMachine.java</code> steht <code>this.size</code>. Das meint das Attribut <code>size</code> dieses Objekts, wie bei <code>this.size = size;</code> im Konstruktor (Kapitel 4). Die Methode <code>serve</code> hat keinen Parameter mit dem Namen <code>size</code>. Deshalb bedeutet <code>switch (size)</code> hier dasselbe. In Vorgaben steht oft die Form mit <code>this.</code>.</p>
-  <p>Schau auch auf Zeile 3 in <code>Main.java</code>: Dem Konstruktor gibst du einen Enum-Wert mit, also <code>Size.LARGE</code>, nicht <code>"LARGE"</code> und nicht <code>LARGE</code> allein.</p>
-  <p>Die Methode <code>serve</code> folgt einem festen Ablauf in vier Schritten:</p>
+    public String label() {
+        String text = "";
+        switch («pink:this.size») {
+            case «tuerkis:SMALL»:
+                text = "klein";
+                break;
+            case «tuerkis:MEDIUM»:
+                text = "mittel";
+                break;
+            case «tuerkis:LARGE»:
+                text = "groß";
+                break;
+        }
+        return text;
+    }
+}'></div>
+  <p class="vorlesen">Speichere zuerst einen leeren Text in <code>text</code>. <span class="t-violett">Schau nach</span>, welchen Wert <span class="t-pink">das Attribut size dieses Knopfs</span> hat. <span class="t-violett">Im Fall</span> <span class="t-tuerkis">SMALL</span> speichere „klein“ in <code>text</code> und <span class="t-violett">hör dann auf</span>. Genauso bei MEDIUM und LARGE. Gib danach <code>text</code> zurück.</p>
+  <p>In Zeile 10 steht <code>this.size</code>. Das meint das Attribut <code>size</code> dieses Objekts, wie bei <code>this.size = size;</code> im Konstruktor (Kapitel 4). Die Methode <code>label</code> hat keinen Parameter mit dem Namen <code>size</code>. Deshalb bedeutet <code>switch (size)</code> hier dasselbe. Beide Schreibweisen sind richtig.</p>
+  <p>So benutzt du die Klasse:</p>
+  <div class="code" data-legende="nein" data-code='Button button = new Button(Size.LARGE);
+System.out.println(button.label());'></div>
+  <p>Die Ausgabe ist <code>groß</code>. Dem Konstruktor gibst du einen Enum-Wert mit, also <code>Size.LARGE</code>, nicht <code>"LARGE"</code> und nicht <code>LARGE</code> allein.</p>
+  <p>Eine Methode mit <code>switch</code> baust du in drei Schritten:</p>
   <ol class="schritte">
-    <li>Leg vor dem <code>switch</code> eine Variable mit Startwert an: <code>int ml = 0;</code> Für Text nimmst du einen leeren Text, also zwei Anführungszeichen ohne Zeichen dazwischen: <code>String name = "";</code></li>
+    <li>Leg vor dem <code>switch</code> eine Variable mit Startwert an: <code>int ml = 0;</code> Für Text nimmst du einen leeren Text, also zwei Anführungszeichen ohne Zeichen dazwischen: <code>String text = "";</code></li>
     <li>Setz im <code>switch</code> für jeden Fall den neuen Wert und schließ den Fall mit <code>break;</code> ab.</li>
-    <li>Arbeite nach dem <code>switch</code> mit der Variable weiter. Hier rufst du die Methode des anderen Objekts auf: <code>mug.fill(ml);</code></li>
-    <li>Gib am Ende das Ergebnis mit <code>return</code> zurück.</li>
+    <li>Gib nach dem <code>switch</code> das Ergebnis mit <code>return</code> zurück.</li>
   </ol>
 
   <div class="hinweis">
@@ -134,7 +151,7 @@ switch («pink:size») {
   <div id="fragen"></div>
 
   <h2>Jetzt schreibst du selbst: drei Aufgaben im Projekt</h2>
-  <p>Die Aufgaben liegen im Ordner <code>src/main/java/de/phl/crashkurs/k08</code>. Dort liegt auch <code>Size.java</code> mit den drei Größen. Die Klassen im Projekt sind etwas anders gebaut als in den Beispielen oben. Der Becher <code>Cup</code> zum Beispiel bekommt seine Größe im Konstruktor. Lies deshalb zuerst die Dateien im Ordner wie einen Steckbrief (Kapitel 5). Dann geh bei jeder Aufgabe so vor:</p>
+  <p>Die Aufgaben liegen im Ordner <code>src/main/java/de/phl/crashkurs/k08</code>. Dort liegt auch <code>Size.java</code> mit den drei Größen. Die Klassen <code>Cup</code> und <code>CoffeeMachine</code> sind aufgebaut wie <code>Button</code> oben: Sie bekommen ihre Größe im Konstruktor. Anders als <code>Button</code> haben beide zusätzlich einen Getter <code>getSize</code>. Lies zuerst die Dateien im Ordner wie einen Steckbrief (Kapitel 5). Dann geh bei jeder Aufgabe so vor:</p>
   <ol class="schritte">
     <li>Lies die Tabelle in der Aufgabe. Jede Zeile wird ein <code>case</code>.</li>
     <li>Leg vor dem <code>switch</code> die Variable für das Ergebnis an und gib ihr einen Startwert.</li>
@@ -169,12 +186,6 @@ switch («pink:size») {
   var OHNE_CODE = function (v) {
     return ['Size size = Size.' + v + ';', 'int ml = 0;', 'switch («pink:size») {', '    case «tuerkis:SMALL»:', '        ml = 200;', '    case «tuerkis:MEDIUM»:', '        ml = 300;', '    case «tuerkis:LARGE»:', '        ml = 400;', '}', 'System.out.println(ml + " ml");'];
   };
-  var MAIN = ['public class Main {', '    public static void main(String[] args) {', '        CoffeeMachine machine = new CoffeeMachine(Size.LARGE);', '        Mug mug = new Mug();', '        String text = machine.serve(mug);', '        System.out.println(text);', '        System.out.println(mug.getContent());', '    }', '}'];
-  var MASCHINE = ['public class CoffeeMachine {', '    private Size size;', '', '    public CoffeeMachine(Size size) {', '        this.size = size;', '    }', '',
-    '    public String serve(Mug mug) {', '        int ml = 0;', '        switch («pink:this.size») {', '            case «tuerkis:SMALL»:', '                ml = 200;', '                break;', '            case «tuerkis:MEDIUM»:', '                ml = 300;', '                break;',
-    '            case «tuerkis:LARGE»:', '                ml = 400;', '                break;', '        }', '        mug.fill(ml);', '        return ml + " ml Kaffee";', '    }', '}'];
-  var MUG = ['public class Mug {', '    private int content = 0;', '', '    public void fill(int ml) {', '        content = content + ml;', '    }', '', '    public int getContent() {', '        return content;', '    }', '}'];
-  function mainFuer(v) { var m = MAIN.slice(); m[2] = '        CoffeeMachine machine = new CoffeeMachine(Size.' + v + ');'; return m; }
 
   Kurs.start({
     nr: 8,
@@ -255,44 +266,6 @@ switch («pink:size») {
             : 'Erst die schließende Klammer beendet den <code>switch</code>. Die Ausgabe ist 400 ml statt ' + ML[v] + ' ml. Ohne <code>break</code> kommt hier bei jeder Größe 400 heraus.', { skip: davor });
           return a.schritte;
         }
-      },
-
-      'lauf-methode': {
-        eingabe: mitWahl('LARGE'),
-        legende: { violett: 'switch, case, break', pink: 'Variable für die Auswahl', tuerkis: 'Wert eines Falls', blau: 'Block' },
-        nebeneinander: true,
-        dateien: function (v) { return [{ name: 'Main.java', code: mainFuer(v) }, { name: 'CoffeeMachine.java', code: MASCHINE }, { name: 'Mug.java', code: MUG }]; },
-        java: function (v) {
-          var d = { 'Main.java': mainFuer(v).join('\n') + '\n', 'CoffeeMachine.java': MASCHINE.map(k08Rein).join('\n') + '\n', 'Mug.java': MUG.join('\n') + '\n', 'Size.java': SIZE };
-          return { dateien: d, main: 'Main' };
-        },
-        schritte: function (v) {
-          var a = Kurs.ablauf().datei('Main.java'), ml = ML[v];
-          var caseZ = { SMALL: 11, MEDIUM: 14, LARGE: 17 }[v], alle = [11, 12, 13, 14, 15, 16, 17, 18, 19];
-          var davor = alle.filter(function (z) { return z < caseZ; });
-          var rest = alle.filter(function (z) { return z < caseZ || z > caseZ + 2; });
-          a.objekt('1', 'CoffeeMachine', [['size', 'Size.' + v]]).setze('machine', { ref: '1' })
-            .schritt(3, 'Ein neuer Automat entsteht. Der Konstruktor speichert <code>Size.' + v + '</code> im Attribut <code>size</code>, wie in Kapitel 4. Der Ablauf überspringt den Sprung in den Konstruktor.');
-          a.objekt('2', 'Mug', [['content', 0]]).setze('mug', { ref: '2' }).schritt(4, 'Eine leere Tasse entsteht. Ihr Attribut <code>content</code> ist 0.');
-          a.schritt(5, 'Jetzt ruft <code>main</code> die Methode <code>serve</code> des Automaten auf und gibt ihr die Tasse mit.');
-          a.bereich('serve(mug)', 'CoffeeMachine.java').setze('this', { ref: '1' }).setze('mug', { ref: '2' })
-            .schritt(8, 'Java springt in die Methode <code>serve</code>. <code>this</code> ist der Automat ①, der Parameter <code>mug</code> zeigt auf die Tasse ②. Zeile 5 in <code>Main.java</code> wartet.');
-          a.setze('ml', 0).schritt(9, 'Schritt 1 des Musters: <code>ml</code> bekommt vor dem <code>switch</code> den Startwert 0.');
-          a.schritt(10, 'Der <code>switch</code> schaut auf <code>this.size</code>, das Attribut <code>size</code> dieses Automaten. Auf Karte ① steht <code>Size.' + v + '</code>.');
-          a.schritt(caseZ, 'Java springt direkt zu <code>case ' + v + ':</code>.', { skip: davor });
-          a.setze('ml', ml).schritt(caseZ + 1, 'Schritt 2: Im passenden Fall bekommt <code>ml</code> den Wert ' + ml + '.', { skip: davor });
-          a.schritt(caseZ + 2, '<code>break</code> beendet den Fall. Java springt hinter den <code>switch</code>.', { skip: davor });
-          a.schritt(21, 'Schritt 3: Mit dem Ergebnis ruft <code>serve</code> eine Methode der Tasse auf: <code>mug.fill(' + ml + ')</code>.', { skip: rest });
-          a.bereich('fill(ml)', 'Mug.java').setze('this', { ref: '2' }).setze('ml', ml)
-            .schritt(4, 'Java springt in die Methode <code>fill</code> der Tasse ②. Ihr Parameter <code>ml</code> hat den Wert ' + ml + '.');
-          a.attr('2', 'content', ml).schritt(5, 'Der Inhalt der Tasse wird um ' + ml + ' größer: 0 + ' + ml + ' = ' + ml + '.');
-          a.verlasse().schritt(21, '<code>fill</code> ist fertig. Java springt zurück in Zeile 21 von <code>serve</code>.', { skip: rest });
-          a.schritt(22, 'Schritt 4: <code>serve</code> gibt einen Text zurück.', { skip: rest, gibt: '"' + ml + ' ml Kaffee"' });
-          a.verlasse().setze('text', '"' + ml + ' ml Kaffee"').schritt(5, 'Zurück in <code>main</code>. Der Rückgabewert landet in der Variable <code>text</code>.');
-          a.aus(ml + ' ml Kaffee').schritt(6, 'Ausgabe des Texts.');
-          a.aus(String(ml)).schritt(7, '<code>mug.getContent()</code> fragt die Tasse nach ihrem Inhalt: ' + ml + '. Die Methode <code>serve</code> hat also das andere Objekt verändert.');
-          return a.schritte;
-        }
       }
     },
 
@@ -338,11 +311,11 @@ switch («pink:size») {
         falschBei: { stop: 'Das Wort <code>stop</code> kennt Java nicht. Gesucht ist das Wort, das einen Fall beendet.', 'return': '<code>return</code> beendet die ganze Methode, nicht nur den Fall. Gesucht ist das Wort, das nur den <code>switch</code> verlässt.' },
         richtig: 'Stimmt. <code>break</code> beendet den Fall. Ohne <code>break</code> würde auch <code>shots = 1;</code> laufen, und aus 2 würde 1.',
         falsch: 'Das passt noch nicht. Gesucht ist das Wort, mit dem jeder Fall endet.' },
-      { art: 'luecke', frage: 'In main soll ein Automat entstehen, auf dem die Größe SMALL gewählt ist. Was gehört in die Lücke?',
-        code: ['CoffeeMachine machine = new CoffeeMachine(___);'], ok: ['Size.SMALL'], proben: ['"SMALL"', 'SMALL', 'Size.SMALL'],
+      { art: 'luecke', frage: 'In main soll ein Knopf für die Größe SMALL entstehen. Was gehört in die Lücke?',
+        code: ['Button button = new Button(___);'], ok: ['Size.SMALL'], proben: ['"SMALL"', 'SMALL', 'Size.SMALL'],
         falschBei: { '"SMALL"': 'Das ist ein Text, kein Enum-Wert. VS Code würde den Aufruf rot unterstreichen. Ein Enum-Wert hat keine Anführungszeichen.', 'SMALL': 'Fast. Allein steht <code>SMALL</code> nur hinter <code>case</code>. Sonst schreibst du den Namen des Enums mit Punkt davor.' },
         richtig: 'Stimmt. Außerhalb eines <code>case</code> schreibst du einen Enum-Wert immer mit dem Namen des Enums davor: <code>Size.SMALL</code>.',
-        falsch: 'Das passt noch nicht. Gesucht ist ein Wert aus der Liste <code>Size</code>, so geschrieben wie in Zeile 3 von <code>Main.java</code> im Beispiel oben.' },
+        falsch: 'Das passt noch nicht. Gesucht ist ein Wert aus der Liste <code>Size</code>, so geschrieben wie im Beispiel mit dem Knopf oben.' },
       { art: 'zuordnen', frage: 'Was bedeutet welches Wort?',
         paare: [['switch (size)', 'Schau nach, welchen Wert size hat.', '<code>switch</code> leitet die Auswahl ein. In den Klammern steht die Variable, nach deren Wert Java auswählt.'],
                 ['case SMALL:', 'Hier geht es los, wenn der Wert SMALL ist.', 'Hinter <code>case</code> steht ein möglicher Wert. Passt er, springt Java hierhin.'],
@@ -358,12 +331,12 @@ switch («pink:size») {
         loesung: ['public static int shots(Size size) {', '    int shots = 0;', '    switch (size) {', '        case LARGE:', '            shots = 2;', '            break;', '        default:', '            shots = 1;', '    }', '    return shots;', '}'] },
       { titel: 'Aufgabe 2: Wie viel passt in den Becher?', datei: 'Cup.java, Methode capacity', befehl: './gradlew test --tests "*k08.CupTest"',
         text: '<p>Neu in dieser Aufgabe: Der <code>switch</code> wählt nach einem Attribut aus. Jeder Becher hat ein Attribut <code>size</code>, das der Konstruktor füllt. Die Methode <code>capacity</code> gibt zurück, wie viele Milliliter in diesen Becher passen:</p><table><tr><th>Größe</th><th>Milliliter</th></tr><tr><td><code>SMALL</code></td><td>200</td></tr><tr><td><code>MEDIUM</code></td><td>300</td></tr><tr><td><code>LARGE</code></td><td>400</td></tr></table><p>Die Zeile <code>public int capacity() {</code> bleibt unverändert.</p>',
-        tipps: ['Die Methode hat keinen Parameter. Du schreibst <code>switch (this.size)</code> und meinst damit das Attribut des Bechers, wie im Beispiel <code>serve</code> oben. <code>switch (size)</code> geht hier genauso.', 'Drei Größen heißen drei Fälle: <code>case SMALL:</code>, <code>case MEDIUM:</code> und <code>case LARGE:</code>, jeder mit Zuweisung und <code>break;</code>.'],
+        tipps: ['Die Methode hat keinen Parameter. Du schreibst <code>switch (this.size)</code> und meinst damit das Attribut des Bechers, wie im Beispiel <code>label</code> oben. <code>switch (size)</code> geht hier genauso.', 'Drei Größen heißen drei Fälle: <code>case SMALL:</code>, <code>case MEDIUM:</code> und <code>case LARGE:</code>, jeder mit Zuweisung und <code>break;</code>.'],
         loesung: ['public int capacity() {', '    int ml = 0;', '    switch (this.size) {', '        case SMALL:', '            ml = 200;', '            break;', '        case MEDIUM:', '            ml = 300;', '            break;', '        case LARGE:', '            ml = 400;', '            break;', '    }', '    return ml;', '}'] },
-      { titel: 'Aufgabe 3: Kaffee verkaufen', datei: 'CoffeeMachine.java, Methode sell', befehl: './gradlew test --tests "*k08.CoffeeMachineTest"',
-        text: '<p>Diese Aufgabe ist so aufgebaut wie eine typische Aufgabe in der Präsenzübung. Der Automat hat ein Attribut <code>size</code>: die gewählte Größe. Die Methode <code>sell</code> bekommt eine Kaffeekarte (ein Objekt der Klasse <code>CoffeeCard</code>) und soll</p><ol><li>mit einem <code>switch</code> über das Attribut <code>size</code> den Preis in Cent und den Namen des Getränks festlegen (Tabelle),</li><li>den Preis mit der Methode <code>pay</code> der Karte bezahlen: <code>card.pay(...)</code>,</li><li>den Namen des Getränks zurückgeben.</li></ol><table><tr><th>Größe</th><th>Preis in Cent</th><th>Name</th></tr><tr><td><code>SMALL</code></td><td>150</td><td>kleiner Kaffee</td></tr><tr><td><code>MEDIUM</code></td><td>200</td><td>mittlerer Kaffee</td></tr><tr><td><code>LARGE</code></td><td>250</td><td>großer Kaffee</td></tr></table><p>Die Zeile <code>public String sell(CoffeeCard card) {</code> bleibt unverändert. Ändere <code>CoffeeCard.java</code> nicht.</p>',
-        tipps: ['Du brauchst diesmal zwei Variablen vor dem <code>switch</code>: <code>int price = 0;</code> und <code>String name = "";</code>. In jedem Fall setzt du beide, dann folgt <code>break;</code>.', 'Nach dem <code>switch</code> kommen zwei Zeilen: <code>card.pay(price);</code> und <code>return name;</code>. Die Karte zieht den Preis selbst von ihrem Guthaben ab.'],
-        loesung: ['public String sell(CoffeeCard card) {', '    int price = 0;', '    String name = "";', '    switch (this.size) {', '        case SMALL:', '            price = 150;', '            name = "kleiner Kaffee";', '            break;', '        case MEDIUM:', '            price = 200;', '            name = "mittlerer Kaffee";', '            break;', '        case LARGE:', '            price = 250;', '            name = "großer Kaffee";', '            break;', '    }', '    card.pay(price);', '    return name;', '}'] }
+      { titel: 'Aufgabe 3: Was kostet der Kaffee?', datei: 'CoffeeMachine.java, Methode price', befehl: './gradlew test --tests "*k08.CoffeeMachineTest"',
+        text: '<p>Diese Aufgabe verbindet den <code>switch</code> mit einem <code>if</code> aus Kapitel 7. Der Automat hat ein Attribut <code>size</code>: die gewählte Größe. Die Methode <code>price</code> gibt zurück, was der Kaffee in Cent kostet.</p><p>Zuerst legst du mit einem <code>switch</code> über das Attribut <code>size</code> den Grundpreis fest:</p><table><tr><th>Größe</th><th>Grundpreis in Cent</th></tr><tr><td><code>SMALL</code></td><td>150</td></tr><tr><td><code>MEDIUM</code></td><td>200</td></tr><tr><td><code>LARGE</code></td><td>250</td></tr></table><p>Danach prüfst du den Parameter <code>ownCup</code>. Er ist <code>true</code> (wahr), wenn jemand einen eigenen Becher mitbringt. In diesem Fall kostet der Kaffee 20 Cent weniger. Sonst bleibt es beim Grundpreis.</p><p>Die Zeile <code>public int price(boolean ownCup) {</code> bleibt unverändert. Die Zeile <code>return 0;</code> darfst du ersetzen.</p>',
+        tipps: ['Fang mit <code>int price = 0;</code> an. Danach kommt der <code>switch</code> mit drei Fällen. Ohne Startwert meldet VS Code bei <code>return price;</code> „may not have been initialized“, wie im Fehlerkasten „Variable ohne Startwert“ oben.', 'Nach dem <code>switch</code> steht das <code>if</code>. Ein <code>boolean</code> ist schon wahr oder falsch, deshalb reicht <code>if (ownCup) {</code>. Im Block ziehst du 20 ab: <code>price = price - 20;</code>. Ganz am Ende steht <code>return price;</code>.'],
+        loesung: ['public int price(boolean ownCup) {', '    int price = 0;', '    switch (this.size) {', '        case SMALL:', '            price = 150;', '            break;', '        case MEDIUM:', '            price = 200;', '            break;', '        case LARGE:', '            price = 250;', '            break;', '    }', '    if (ownCup) {', '        price = price - 20;', '    }', '    return price;', '}'] }
     ]
   });
 })();

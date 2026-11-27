@@ -15,7 +15,7 @@
 .start-wege b { display: block; margin-bottom: 4px; }
 .start-wege span { font-size: 16px; color: var(--k-muted); }
 @media (max-width: 600px) { .start-wege { grid-template-columns: minmax(0, 1fr); } }
-.start-tabelle td:last-child, .start-tabelle th:last-child { white-space: nowrap; }
+.start-tabelle td:first-child, .start-tabelle th:first-child { white-space: nowrap; }
 .start-pfad { overflow-wrap: anywhere; }
 .start-adresse { font-family: var(--k-mono); font-size: 15px; background: var(--k-code); border-radius: var(--k-radius); padding: 10px 14px; margin: 0 0 14px; overflow-x: auto; white-space: nowrap; }
 </style>
@@ -28,7 +28,7 @@
 
   <h2>Für wen und wozu</h2>
   <p>Dieser Kurs ist für dich, wenn du Java lernen willst und in den Grundlagen noch unsicher bist. Vielleicht hast du bisher wenig selbst getippt. Vielleicht kennst du einige Begriffe, kannst aber noch kein Programm allein schreiben. Beides ist ein guter Ausgangspunkt.</p>
-  <p>In der Präsenzübung arbeitest du allein in VS Code, ohne Hilfe. Dafür musst du jeden Schritt selbst können: eine Klasse anlegen, Variablen und Methoden schreiben, Objekte erzeugen und benutzen. Du steuerst den Ablauf mit <code>if</code>, <code>switch</code> und Schleifen und liest Fehlermeldungen. Genau das übst du hier, ab Kapitel 1.</p>
+  <p>In der Präsenzübung arbeitest du allein in VS Code, ohne Hilfe. Deshalb machst du in diesem Kurs jeden Schritt selbst: Du schreibst Klassen, Variablen und Methoden. Du erzeugst Objekte und benutzt sie. Du steuerst den Ablauf mit <code>if</code>, <code>switch</code> und Schleifen und lernst, Fehlermeldungen zu lesen. Das fängt in Kapitel 1 an.</p>
 
   <h2>Die Kapitel</h2>
   <p>Die Kapitel bauen aufeinander auf. Fang mit Kapitel 1 an, auch wenn dir die ersten Schritte bekannt vorkommen. Unter jedem Kapitel siehst du, wie viele Aufgaben du geschafft hast. Das merkt sich dein Browser.</p>
@@ -43,7 +43,7 @@
     <li><b>Selbst schreiben</b><span>Drei Aufgaben im Übungsprojekt in VS Code. Ein Test sagt dir, ob deine Lösung stimmt.</span></li>
   </ul>
   <p>Für ein Kapitel brauchst du etwa 20 bis 40 Minuten. Arbeite die Kapitel der Reihe nach durch, denn sie bauen aufeinander auf. Lass die Aufgaben nicht aus. Vom Lesen allein lernst du das Programmieren nicht. Erst beim eigenen Tippen merkst du, was schon sitzt.</p>
-  <p>Jedes Kapitel hat einen Kasten „Regeln zum Merken“. Übertrag diese Regeln in deine eigenen Notizen. In der Präsenzübung darfst du nur die Vorlesungsfolien mit deinen eigenen Notizen benutzen, nicht diese Seite.</p>
+  <p>Jedes Kapitel hat einen Kasten „Regeln zum Merken“. Übertrag diese Regeln in deine eigenen Notizen. Was du selbst aufschreibst, behältst du besser.</p>
 
   <h2 id="projekt">Das Übungsprojekt holen</h2>
   <p>Die Aufgaben schreibst du in einem eigenen Projekt in VS Code. Dafür brauchst du VS Code mit der Erweiterung „Extension Pack for Java“ und Java 21, genau wie für die Übungen. Das Projekt liegt auf GitHub unter dieser Adresse:</p>
@@ -79,23 +79,23 @@
   </ol>
   <p>GitHub gibt jedem Konto pro Monat eine begrenzte Zahl kostenloser Stunden für Codespaces. Schließ den Browser-Tab, wenn du fertig bist. Deinen Codespace findest du später unter „Code“, „Codespaces“ wieder.</p>
 
-  <h2>Typische Aufgaben und wo du sie übst</h2>
-  <p>Die Präsenzübung besteht aus Aufgaben, die immer wieder ähnlich aufgebaut sind. Hier siehst du, welches Kapitel welche Art von Aufgabe übt. Wenn du weißt, was dir noch schwerfällt, kannst du gezielt wiederholen. Die Fachwörter in der Tabelle musst du jetzt noch nicht kennen. Die Kapitel erklären sie.</p>
+  <h2>Was du wo lernst</h2>
+  <p>Hier siehst du, welche Begriffe und Bausteine jedes Kapitel einführt. Wenn du weißt, was dir noch schwerfällt, kannst du gezielt wiederholen. Die Fachwörter musst du jetzt noch nicht kennen. Die Kapitel erklären sie.</p>
   <div class="tabelle-rahmen"><table class="tabelle start-tabelle">
-    <tr><th>Aufgabe in dieser Art</th><th>übst du in</th></tr>
-    <tr><td>Eine neue Klasse im richtigen Paket anlegen und den Startpunkt <code>main</code> schreiben</td><td><a href="kapitel-01.html">Kapitel 1</a></td></tr>
-    <tr><td>Lokale Variablen mit vorgegebenem Namen und Wert anlegen, damit rechnen, Text und Ergebnis ausgeben</td><td><a href="kapitel-02.html">Kapitel 2</a></td></tr>
-    <tr><td>Zu einem vorgegebenen Methodenkopf den Inhalt schreiben und ein Ergebnis mit <code>return</code> zurückgeben</td><td><a href="kapitel-03.html">Kapitel 3</a></td></tr>
-    <tr><td>Eine Klasse mit Attributen und Konstruktor verstehen, Objekte mit <code>new</code> erzeugen, Getter schreiben</td><td><a href="kapitel-04.html">Kapitel 4</a></td></tr>
-    <tr><td>Vorgegebene Klassen nach einer Beschreibung benutzen: Objekte mit den richtigen Werten erzeugen, Methoden aufrufen, ein Objekt an ein anderes übergeben, einen Wert vorher und nachher vergleichen</td><td><a href="kapitel-05.html">Kapitel 5</a></td></tr>
-    <tr><td>Mitzählen, wie viele Objekte einer Klasse entstehen</td><td><a href="kapitel-06.html">Kapitel 6</a></td></tr>
-    <tr><td>Mit <code>if</code>, <code>else if</code> und <code>else</code> entscheiden, ein Attribut ändern und einen Status setzen</td><td><a href="kapitel-07.html">Kapitel 7</a></td></tr>
-    <tr><td>Mit <code>switch</code> nach einem Enum-Wert auswählen und einen Text zurückgeben</td><td><a href="kapitel-08.html">Kapitel 8</a></td></tr>
-    <tr><td>Eine <code>while</code>-Schleife mit zwei Bedingungen schreiben, in der sich zwei Objekte abwechseln</td><td><a href="kapitel-09.html">Kapitel 9</a></td></tr>
-    <tr><td>Mit <code>for</code> durch ein Array zählen, in der Schleife Objekte erzeugen und in eine Liste legen</td><td><a href="kapitel-10.html">Kapitel 10</a></td></tr>
-    <tr><td>Ungültige Werte mit einer Exception abweisen und einen Fehler abfangen</td><td><a href="kapitel-11.html">Kapitel 11</a></td></tr>
-    <tr><td>Rot unterstrichene Stellen und rote Tests verstehen und beheben, zum Schluss Commit und Sync</td><td><a href="kapitel-12.html">Kapitel 12</a></td></tr>
-    <tr><td>Alles zusammen in einer Probe auf Zeit</td><td><a href="kapitel-13.html">Kapitel 13</a></td></tr>
+    <tr><th>Kapitel</th><th>Das lernst du</th></tr>
+    <tr><td><a href="kapitel-01.html">Kapitel 1</a></td><td>Programm und Anweisung, Text ausgeben, Klasse und Paket (Ordner), Startpunkt <code>main</code>, Block, Test</td></tr>
+    <tr><td><a href="kapitel-02.html">Kapitel 2</a></td><td>Variable, Typ (<code>int</code>, <code>double</code>, <code>String</code>, <code>boolean</code>), Zuweisung, Rechnen, Text und Zahl mit <code>+</code> verbinden</td></tr>
+    <tr><td><a href="kapitel-03.html">Kapitel 3</a></td><td>Methode schreiben und aufrufen, Parameter, Rückgabewert, <code>return</code>, <code>void</code></td></tr>
+    <tr><td><a href="kapitel-04.html">Kapitel 4</a></td><td>Klasse als Bauplan, Objekt, Attribut, <code>private</code>, Konstruktor, <code>new</code>, <code>this</code>, Getter, <code>null</code></td></tr>
+    <tr><td><a href="kapitel-05.html">Kapitel 5</a></td><td>Fremde Klassen nach einer Beschreibung benutzen, <code>objekt.methode(…)</code>, Objekte übergeben, Rückgabewerte weiterverwenden, <code>final</code></td></tr>
+    <tr><td><a href="kapitel-06.html">Kapitel 6</a></td><td><code>static</code>: was zur Klasse gehört statt zu einem Objekt</td></tr>
+    <tr><td><a href="kapitel-07.html">Kapitel 7</a></td><td>Bedingung, Vergleich, <code>if</code>, <code>else if</code> und <code>else</code>, <code>&amp;&amp;</code>, <code>||</code>, <code>!</code></td></tr>
+    <tr><td><a href="kapitel-08.html">Kapitel 8</a></td><td>Enum, <code>switch</code>, <code>case</code>, <code>break</code>, <code>default</code></td></tr>
+    <tr><td><a href="kapitel-09.html">Kapitel 9</a></td><td>Schleife, <code>while</code>, Endlosschleife</td></tr>
+    <tr><td><a href="kapitel-10.html">Kapitel 10</a></td><td><code>for</code>, Array, Liste, <code>import</code>, <code>ArrayList</code>, for-each</td></tr>
+    <tr><td><a href="kapitel-11.html">Kapitel 11</a></td><td>Exception, Stacktrace lesen, <code>throw</code>, <code>try</code> und <code>catch</code></td></tr>
+    <tr><td><a href="kapitel-12.html">Kapitel 12</a></td><td>Arten von Rot, Testmeldungen lesen, Vorgehen bei Fehlern, Auskommentieren, Commit und Sync</td></tr>
+    <tr><td><a href="kapitel-13.html">Kapitel 13</a></td><td>Alles zusammen: die Bausteine aus allen Kapiteln gemischt in einem kleinen Projekt</td></tr>
   </table></div>
 
 </main>

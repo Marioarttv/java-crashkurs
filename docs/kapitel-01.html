@@ -108,7 +108,7 @@ public class «pink:MensaBoard» «blau:{»
   <p>Speichere nach jeder Änderung mit <kbd>Strg</kbd> + <kbd>S</kbd> (am Mac <kbd>Cmd</kbd> + <kbd>S</kbd>). Ein Punkt im Reiter der Datei, oben neben ihrem Namen, heißt: noch nicht gespeichert.</p>
 
   <h2>Eine neue Klasse anlegen</h2>
-  <p>In der Präsenzübung legst du eine Klasse selbst an, im richtigen Ordner. So geht es:</p>
+  <p>Oft gibt es die Datei für eine Klasse noch nicht. Dann legst du sie selbst an, im richtigen Ordner. So geht es:</p>
   <ol class="schritte">
     <li>Klick im Explorer mit der rechten Maustaste auf den Ordner, in den die Klasse soll, zum Beispiel <code>k01</code>.</li>
     <li>Wähl im Menü „New Java File“ und dann „Class...“.</li>
@@ -282,7 +282,7 @@ public class «pink:Welcome» «blau:{»
         tipps: ['Eine Zeile verschiebst du in VS Code so: Klick in die Zeile und drück <kbd>Alt</kbd> + Pfeil nach oben oder unten (am Mac <kbd>Option</kbd> + Pfeil).', 'Die Überschrift „Zeiten der Mensa“ muss die erste Anweisung im Block von <code>main</code> sein. Die Kommentarzeilen mit <code>//</code> darfst du stehen lassen oder löschen.'],
         loesung: ['public static void main(String[] args) {', '    System.out.println("Zeiten der Mensa");', '    System.out.println("Montag bis Donnerstag: 11 bis 14 Uhr");', '    System.out.println("Freitag: 11 bis 13 Uhr");', '    System.out.println("Samstag und Sonntag: geschlossen");', '}'] },
       { titel: 'Aufgabe 3: Eine neue Klasse anlegen', datei: 'neue Datei Welcome.java im Ordner k01', befehl: './gradlew test --tests "*k01.WelcomeTest"',
-        text: '<p>Diese Datei gibt es noch nicht. Leg sie selbst an, genau wie in der Präsenzübung:</p><ol><li>Leg im Paket <code>de.phl.crashkurs.k01</code> eine neue Klasse mit dem Namen <code>Welcome</code> an.</li><li>Schreib in die Klasse den Startpunkt <code>main</code>.</li><li>Gib in <code>main</code> genau diese zwei Zeilen aus: <code>Willkommen in der Mensa</code> und darunter <code>Guten Appetit</code>.</li></ol><p>Der Test prüft auch, ob die Datei im richtigen Ordner liegt und die richtige <code>package</code>-Zeile hat. Solange es die Klasse nicht gibt, sind alle drei Tests von <code>WelcomeTest</code> rot.</p>',
+        text: '<p>Diese Datei gibt es noch nicht. Leg sie selbst an:</p><ol><li>Leg im Paket <code>de.phl.crashkurs.k01</code> eine neue Klasse mit dem Namen <code>Welcome</code> an.</li><li>Schreib in die Klasse den Startpunkt <code>main</code>.</li><li>Gib in <code>main</code> genau diese zwei Zeilen aus: <code>Willkommen in der Mensa</code> und darunter <code>Guten Appetit</code>.</li></ol><p>Der Test prüft auch, ob die Datei im richtigen Ordner liegt und die richtige <code>package</code>-Zeile hat. Solange es die Klasse nicht gibt, sind alle drei Tests von <code>WelcomeTest</code> rot.</p>',
         tipps: ['Rechtsklick im Explorer auf den Ordner <code>k01</code>, dann „New Java File“ und „Class...“. Tippe <code>Welcome</code> und drück <kbd>Enter</kbd>.', 'Zwischen die Klammern der Klasse kommt <code>public static void main(String[] args) {</code>, darunter zwei Anweisungen mit <code>System.out.println</code>, dann die schließende Klammer von <code>main</code>. Am Ende stehen zwei schließende Klammern untereinander.'],
         loesung: [{ datei: 'Welcome.java', code: ['package de.phl.crashkurs.k01;', '', 'public class Welcome {', '', '    public static void main(String[] args) {', '        System.out.println("Willkommen in der Mensa");', '        System.out.println("Guten Appetit");', '    }', '}'] }] }
     ]

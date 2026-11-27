@@ -20,12 +20,12 @@ class SeatsTest {
     }
 
     @Test
-    @DisplayName("20 Plätze: erste und letzte Zeile")
-    void zwanzigPlaetze() {
-        String[] zeilen = Pruefen.ausgabe(() -> Seats.printSeats(20)).split("\n");
-        assertEquals(20, zeilen.length, "Bei printSeats(20) müssen genau 20 Zeilen kommen. Prüfe die Bedingung im Kopf der Schleife: i < count.");
+    @DisplayName("12 Plätze: erste und letzte Zeile")
+    void zwoelfPlaetze() {
+        String[] zeilen = Pruefen.ausgabe(() -> Seats.printSeats(12)).split("\n");
+        assertEquals(12, zeilen.length, "Bei printSeats(12) müssen genau 12 Zeilen kommen. Prüfe die Bedingung im Kopf der Schleife: i < count.");
         assertEquals("Platz 1", zeilen[0], "Die erste Zeile muss \"Platz 1\" heißen.");
-        assertEquals("Platz 20", zeilen[19], "Die letzte Zeile muss \"Platz 20\" heißen.");
+        assertEquals("Platz 12", zeilen[11], "Die letzte Zeile muss \"Platz 12\" heißen.");
     }
 
     @Test

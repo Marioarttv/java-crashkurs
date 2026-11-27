@@ -62,7 +62,7 @@
       <dt>Was das heißt</dt>
       <dd>Der Code ist kein gültiges Java, zum Beispiel weil ein Semikolon fehlt. Java kann ihn nicht übersetzen. Das heißt: Der Code kompiliert nicht.</dd>
       <dt>Was dann läuft</dt>
-      <dd><strong>Nichts.</strong> Bewertet nach der Präsenzübung ein Programm deine Tests, übersetzt es in der Regel zuerst das ganze Projekt, genau wie <code>./gradlew</code> im Terminal. Scheitert das an einer einzigen Stelle, läuft kein einziger Test. Auch die Tests von Aufgaben, die stimmen, laufen dann nicht. So sieht das im Terminal aus, wenn du einen Test aus Kapitel 7 startest, der Fehler aber in Kapitel 12 steckt (Pfad gekürzt):</dd>
+      <dd><strong>Nichts.</strong> Jeder Testlauf mit <code>./gradlew</code> im Terminal übersetzt zuerst das ganze Projekt. Scheitert das an einer einzigen Stelle, läuft kein einziger Test. Auch die Tests von Aufgaben, die stimmen, laufen dann nicht. So sieht das im Terminal aus, wenn du einen Test aus Kapitel 7 startest, der Fehler aber in Kapitel 12 steckt (Pfad gekürzt):</dd>
     </dl>
     <pre class="k12-aus">&gt; Task :compileJava <span class="k12-rot">FAILED</span>
 …/src/main/java/de/phl/crashkurs/k12/WeatherStation.java:23: <span class="k12-rot">error: ';' expected</span>
@@ -70,7 +70,7 @@
                   ^
 1 error
 FAILURE: Build failed with an exception.</pre>
-    <p>Startest du in VS Code einen Test, während etwas rot unterstrichen ist, fragt VS Code: <span class="meldung">Build failed, do you want to continue?</span> (Das Übersetzen ist gescheitert, willst du trotzdem weitermachen?) Zur Wahl stehen „Continue“, „Always Continue“ und „Fix...“. Klick nicht auf „Continue“. VS Code startet die Tests dann trotzdem, und manche werden bei dir sogar grün. Bei einer Bewertung mit <code>./gradlew</code> zählen sie aber nicht, weil dort nichts läuft. Behebe zuerst die rote Stelle.</p>
+    <p>Startest du in VS Code einen Test, während etwas rot unterstrichen ist, fragt VS Code: <span class="meldung">Build failed, do you want to continue?</span> (Das Übersetzen ist gescheitert, willst du trotzdem weitermachen?) Zur Wahl stehen „Continue“, „Always Continue“ und „Fix...“. Klick nicht auf „Continue“. VS Code startet die Tests dann trotzdem, und manche werden bei dir sogar grün. Mit <code>./gradlew</code> läuft dagegen kein einziger Test, denn dort scheitert schon das Übersetzen. Behebe zuerst die rote Stelle.</p>
   </div>
 
   <div class="k12-art">
@@ -81,7 +81,7 @@ FAILURE: Build failed with an exception.</pre>
       <dt>Was das heißt</dt>
       <dd>Java versteht deinen Code und führt ihn aus. Nur liefert er für mindestens ein Beispiel nicht das, was der Test erwartet. Das ist ein Denkfehler, kein Schreibfehler.</dd>
       <dt>Was dann läuft</dt>
-      <dd>Alle Tests. Die anderen Tests können grün sein und bringen ihre Punkte.</dd>
+      <dd>Alle Tests. Die anderen Tests können grün sein.</dd>
     </dl>
   </div>
 
@@ -98,9 +98,9 @@ FAILURE: Build failed with an exception.</pre>
   </div>
 
   <h2>So gehst du vor</h2>
-  <p>Egal welche Art von Rot: Geh immer in derselben Reihenfolge vor. Das spart dir in der Präsenzübung die meiste Zeit.</p>
+  <p>Egal welche Art von Rot: Geh immer in derselben Reihenfolge vor. Das spart dir die meiste Zeit.</p>
   <ol class="schritte">
-    <li><strong>Welche Art von Rot ist es?</strong> Ist irgendwo etwas rot unterstrichen, kümmerst du dich zuerst darum. Sonst läuft bei der Bewertung kein einziger Test.</li>
+    <li><strong>Welche Art von Rot ist es?</strong> Ist irgendwo etwas rot unterstrichen, kümmerst du dich zuerst darum. Sonst läuft mit <code>./gradlew</code> kein einziger Test.</li>
     <li><strong>Die oberste Meldung zuerst.</strong> Ein einziger Fehler kann mehrere Meldungen auslösen. Die späteren verschwinden oft von selbst, wenn du den ersten behebst.</li>
     <li><strong>Geh zur Datei und Zeile.</strong> In der Ansicht „Problems“ springt VS Code mit einem Klick auf die Meldung an die Stelle. Bei einer Exception steht die Zeile in der Klammer hinter <code>at</code>.</li>
     <li><strong>Lies die Zeile und die Zeile davor.</strong> Oft liegt die Ursache eine Zeile höher. Ein fehlendes Zeichen fällt Java manchmal erst in der nächsten Zeile auf. Und bei einer Exception entsteht der falsche Wert oft eine Zeile, bevor Java abbricht.</li>
@@ -148,7 +148,7 @@ FAILURE: Build failed with an exception.</pre>
   <p>Die Regel: Such die <strong>erste <code>at</code>-Zeile mit einer Datei, die du bearbeitest</strong>. Überspring alles mit <code>java.base</code> oder <code>org.junit</code> und die Testdatei (Name endet auf <code>Test.java</code>). Hier ist es <code>WeatherStation.java</code>, Zeile 35. Je nachdem, wo du die Meldung liest, stehen unten noch mehr solche fremden Zeilen. Wo der Fehler genau steckt, findest du in Aufgabe 2 selbst heraus. Denk an die Zeile davor.</p>
 
   <h2>Wenn du nicht fertig wirst: auskommentieren</h2>
-  <p>In der Präsenzübung kann es passieren: Die Zeit wird knapp, und eine Methode ist halb fertig und rot unterstrichen. Dann gilt: <strong>Was nicht kompiliert, kommentierst du aus.</strong> Ein Kommentar ist Text hinter <code>//</code>. Java überliest ihn. So wird das Projekt wieder übersetzbar, und alle anderen Tests laufen.</p>
+  <p>Es kann passieren: Die Zeit wird knapp, und eine Methode ist halb fertig und rot unterstrichen. Dann gilt: <strong>Was nicht kompiliert, kommentierst du aus.</strong> Ein Kommentar ist Text hinter <code>//</code>. Java überliest ihn. So wird das Projekt wieder übersetzbar, und alle anderen Tests laufen.</p>
   <p>Schreib dafür <code>//</code> vor jede Zeile. Oder markiere die Zeilen und wähle im Menü „Edit“ den Befehl „Toggle Line Comment“. Derselbe Befehl nimmt die <code>//</code> auch wieder weg.</p>
   <p>Aber Vorsicht bei Methoden mit Rückgabewert (Kapitel 3). Kommentierst du alles zwischen den geschweiften Klammern aus, fehlt das <code>return</code>:</p>
   <div class="code" data-code='public static int highest(int[] temps) {
@@ -192,10 +192,10 @@ FAILURE: Build failed with an exception.</pre>
     <tr><td><span class="meldung">The method scale(int, int) in the type Recipe is not applicable for the arguments (int)</span><small>method scale in class Recipe cannot be applied to given types;</small></td><td>Beim Aufruf passen Zahl oder Art der Werte nicht zum Methodenkopf. In der ersten Klammer steht, was verlangt ist, in der zweiten, was du gibst. <span class="k12-kap">Kapitel 3</span></td><td>Den Methodenkopf lesen und genau so viele Werte in derselben Reihenfolge übergeben.</td></tr>
     <tr><td><span class="meldung">The constructor Book(int, String) is undefined</span><small>incompatible types: int cannot be converted to String</small></td><td>Einen Konstruktor mit diesen Werten gibt es nicht. Oft ist die Reihenfolge vertauscht. <span class="k12-kap">Kapitel 4 und 5</span></td><td>In der Beschreibung oder der Klasse nachsehen, in welcher Reihenfolge der Konstruktor die Werte will.</td></tr>
     <tr><td><span class="meldung">The method getBaterry() is undefined for the type Bike</span><small>cannot find symbol</small></td><td>Diese Methode gibt es in der Klasse nicht. Meist ein Tippfehler oder falsche Groß- und Kleinschreibung. <span class="k12-kap">Kapitel 5</span></td><td>Den Namen in der Klasse nachsehen und genau so schreiben, hier <code>getBattery()</code>.</td></tr>
-    <tr><td><span class="meldung">Cannot make a static reference to the non-static method getBattery() from the type Bike</span><small>non-static method getBattery() cannot be referenced from a static context</small></td><td>Du hast die Methode an der Klasse aufgerufen (<code>Bike.getBattery()</code>) statt an einem Objekt. <span class="k12-kap">Kapitel 5 und 6</span></td><td>Am Objekt aufrufen: <code>bike.getBattery()</code>.</td></tr>
+    <tr><td><span class="meldung">Cannot make a static reference to the non-static method getRange() from the type Bike</span><small>non-static method getRange() cannot be referenced from a static context</small></td><td>Du hast die Methode an der Klasse aufgerufen (<code>Bike.getRange()</code>) statt an einem Objekt. <span class="k12-kap">Kapitel 5 und 6</span></td><td>Am Objekt aufrufen: <code>bike.getRange()</code>.</td></tr>
     <tr><td><span class="meldung">Type mismatch: cannot convert from int to boolean</span><small>incompatible types: int cannot be converted to boolean</small></td><td>In einer Bedingung steht <code>=</code> (speichern) statt <code>==</code> (vergleichen). <span class="k12-kap">Kapitel 7</span></td><td><code>==</code> schreiben.</td></tr>
     <tr><td><span class="meldung">ArrayList cannot be resolved to a type</span><small>cannot find symbol</small></td><td>Java kennt <code>ArrayList</code> nicht, weil der <code>import</code> fehlt. <span class="k12-kap">Kapitel 10</span></td><td>Ganz oben unter die <code>package</code>-Zeile <code>import java.util.ArrayList;</code> schreiben.</td></tr>
-    <tr><td><span class="meldung">The operator - is undefined for the argument type(s) String, int</span><small>bad operand types for binary operator '-'</small></td><td>Java rechnet von links nach rechts. <code>"Diff: " + a</code> ist schon Text, und von Text kann Java nichts abziehen. <span class="k12-kap">Kapitel 5</span></td><td>Die Rechnung in Klammern setzen: <code>"Diff: " + (a - b)</code>.</td></tr>
+    <tr><td><span class="meldung">The operator - is undefined for the argument type(s) String, int</span><small>bad operand types for binary operator '-'</small></td><td>Java arbeitet die Zeile von links nach rechts ab. In <code>"Freie Plätze: " + seats - students</code> ergibt <code>"Freie Plätze: " + seats</code> schon einen Text. Von einem Text kann Java nichts abziehen. <span class="k12-kap">Kapitel 2</span></td><td>Die Rechnung in Klammern setzen: <code>"Freie Plätze: " + (seats - students)</code>.</td></tr>
     <tr><td><span class="meldung">Unreachable code</span><small>unreachable statement</small></td><td>Diese Zeile kann nie laufen, weil direkt davor <code>return</code> oder <code>throw</code> steht. <span class="k12-kap">Kapitel 11</span></td><td>Die Zeile vor das <code>return</code> setzen oder löschen.</td></tr>
     <tr><td><span class="meldung">MEDUIM cannot be resolved or is not a field</span><small>cannot find symbol</small></td><td>Diesen Enum-Wert gibt es nicht. Meist ein Tippfehler. <span class="k12-kap">Kapitel 8</span></td><td>Den Wert in der Enum-Datei nachsehen und genau so schreiben.</td></tr>
     <tr><td><span class="meldung">Incompatible operand types Size and String</span><small>incomparable types: Size and String</small></td><td>Ein Enum-Wert wird mit Text verglichen. <span class="k12-kap">Kapitel 8</span></td><td>Mit dem Enum-Wert vergleichen: <code>size == Size.SMALL</code>.</td></tr>
@@ -223,34 +223,34 @@ FAILURE: Build failed with an exception.</pre>
   </table>
   </div>
 
-  <h2>Regeln für die Präsenzübung</h2>
+  <h2>Regeln für die Arbeit allein in VS Code</h2>
   <div class="merke">
     <h3>Sieben Regeln zum Merken</h3>
     <ol>
-      <li>Ist etwas rot unterstrichen, läuft bei der Bewertung kein einziger Test. Kompilieren geht vor allem anderen.</li>
+      <li>Ist etwas rot unterstrichen, läuft mit <code>./gradlew</code> kein einziger Test. Kompilieren geht vor allem anderen.</li>
       <li>Was du nicht fertig bekommst, kommentierst du aus. Bei Methoden mit Rückgabewert schreibst du einen Platzhalter wie <code>return 0;</code> hin.</li>
       <li>Vorgegebene Zeilen, Dateien und Tests änderst du nicht: keinen Methodenkopf, keinen Klassennamen, keine Testdatei.</li>
       <li>Nach jedem kleinen Schritt speicherst du und startest den Test.</li>
       <li>Bei einer Meldung: die oberste zuerst, dann die Zeile und die Zeile davor.</li>
       <li>Bei einem roten Test: Erwartet und geliefert vergleichen, dann den Code mit diesem Beispiel im Kopf durchgehen.</li>
-      <li>Am Ende committest und synchronisierst du. Erst dann ist deine Abgabe angekommen.</li>
+      <li>Am Ende committest und synchronisierst du. Erst dann ist dein Stand auf GitHub angekommen.</li>
     </ol>
   </div>
 
   <h3>Commit und Sync, Schritt für Schritt</h3>
-  <p>Gespeichert ist noch nicht abgegeben. Deine Änderungen liegen dann nur auf deinem Rechner. Die Bewertung prüft nur, was auf GitHub ankommt. So lädst du deinen Stand hoch:</p>
+  <p>Gespeichert ist noch nicht hochgeladen. Deine Änderungen liegen dann nur auf deinem Rechner. Auf GitHub kommt nur an, was du committest und synchronisierst. So lädst du deinen Stand hoch:</p>
   <ol class="schritte">
     <li><strong>Alles speichern.</strong> Im Menü „File“ auf „Save All“. Steht im Reiter einer Datei ein Punkt statt des ×, ist sie noch nicht gespeichert.</li>
     <li><strong>Quellcodeverwaltung öffnen.</strong> Links in der Leiste das Symbol „Source Control“ anklicken, die verbundenen Kreise. Unter „Changes“ stehen alle Dateien, die du geändert oder neu angelegt hast.</li>
-    <li><strong>Nachricht schreiben.</strong> Oben ins Feld „Message“ kurz schreiben, was du gemacht hast, zum Beispiel <code>Übung 1 und 2 fertig</code>.</li>
+    <li><strong>Nachricht schreiben.</strong> Oben ins Feld „Message“ kurz schreiben, was du gemacht hast, zum Beispiel <code>Aufgabe 1 und 2 fertig</code>.</li>
     <li><strong>Committen.</strong> Auf den blauen Knopf „Commit“ klicken. Fragt VS Code <span class="meldung">There are no staged changes to commit. Would you like to stage all your changes and commit them directly?</span>, klickst du auf „Yes“. Das heißt: Alle geänderten Dateien kommen in den Commit.</li>
     <li><strong>Synchronisieren.</strong> Jetzt heißt der blaue Knopf „Sync Changes“, daneben steht ein Pfeil nach oben mit einer Zahl. Klick darauf. Erst damit lädst du den Commit zu GitHub hoch. Beim ersten Mal fragt VS Code <span class="meldung">This action will pull and push commits from and to "origin/main".</span> (Das holt und lädt Commits von und nach GitHub.) Klick auf „OK“. In einem Codespace heißt der Knopf in Schritt 4 oft schon „Commit &amp; Sync“. Dann passiert beides auf einmal.</li>
     <li><strong>Prüfen.</strong> Unter „Changes“ steht nichts mehr, und der Knopf „Sync Changes“ ist verschwunden. Am sichersten öffnest du dein Repository auf GitHub im Browser und schaust, ob oben deine Nachricht beim letzten Commit steht.</li>
   </ol>
-  <p>Mach das nicht erst in der letzten Minute. Committe und synchronisiere nach jeder fertigen Übung. Dann ist auch bei einem Absturz von VS Code das meiste schon angekommen.</p>
-  <p>Eine Einschränkung beim Üben: Das Übungsprojekt dieses Crashkurses gehört nicht dir, du hast es nur kopiert. Dort kannst du committen, aber nicht zu GitHub hochladen. Üb die Schritte 1 bis 4 also im Crashkurs. In der Präsenzübung arbeitest du in deinem eigenen Repository, dort klappt auch Schritt 5.</p>
+  <p>Mach das nicht erst in der letzten Minute. Committe und synchronisiere nach jeder fertigen Aufgabe. Dann ist auch bei einem Absturz von VS Code das meiste schon angekommen.</p>
+  <p>Eine Einschränkung beim Üben: Das Übungsprojekt dieses Crashkurses gehört nicht dir, du hast es nur kopiert. Dort kannst du committen, aber nicht zu GitHub hochladen. Üb die Schritte 1 bis 4 also im Crashkurs. In deinen eigenen Repositorys, etwa bei den Übungen im Kurs, klappt auch Schritt 5.</p>
 
-  <h2>Drei Fehler, die Punkte kosten</h2>
+  <h2>Drei Fehler, bei denen kein Test läuft oder nichts ankommt</h2>
   <div id="fehler"></div>
 
   <h2>Kurz geprüft: Rot lesen</h2>
@@ -354,7 +354,7 @@ FAILURE: Build failed with an exception.</pre>
         meldung: 'The method isFrost() is undefined for the type Measurement',
         text: '<p>Die Methode hieß <code>isFrost</code> und hat jetzt einen anderen Namen. In deiner Datei ist alles in Ordnung. VS Code unterstreicht stattdessen die Testdatei rot, denn der Test ruft <code>isFrost()</code> auf. Damit kompiliert das Projekt nicht mehr, und kein Test läuft. Methodenköpfe bleiben deshalb immer genau so, wie sie vorgegeben sind: Name, Rückgabetyp und Parameter.</p>' },
       { titel: 'Bei „Build failed“ auf Continue geklickt',
-        text: '<p>VS Code fragt <span class="meldung">Build failed, do you want to continue?</span>, und du klickst auf „Continue“. Einige Tests laufen dann bei dir und werden vielleicht grün. Das ist trügerisch: Eine Bewertung mit <code>./gradlew</code> übersetzt das ganze Projekt und scheitert an der roten Stelle. Dann zählt kein einziger Test. Schau stattdessen in die Ansicht „Problems“ und behebe oder kommentiere die rote Stelle.</p>' },
+        text: '<p>VS Code fragt <span class="meldung">Build failed, do you want to continue?</span>, und du klickst auf „Continue“. Einige Tests laufen dann bei dir und werden vielleicht grün. Das ist trügerisch: Ein Testlauf mit <code>./gradlew</code> übersetzt das ganze Projekt und scheitert an der roten Stelle. Dann läuft kein einziger Test. Schau stattdessen in die Ansicht „Problems“ und behebe die rote Stelle oder kommentiere sie aus.</p>' },
       { titel: 'Gespeichert, aber nicht synchronisiert',
         text: '<p>Alle Tests sind grün, die Dateien sind gespeichert, und trotzdem kommt nichts an. Gespeichert ist nur auf deinem Rechner. Erst „Commit“ und danach „Sync Changes“ bringen deinen Stand zu GitHub. Prüf am Ende, ob unter „Changes“ nichts mehr steht und der Knopf „Sync Changes“ verschwunden ist.</p>' }
     ],
@@ -401,12 +401,12 @@ FAILURE: Build failed with an exception.</pre>
         warum: { 11: 'Die 11 gehört zu RainTest.java, nicht zu Rain.java. Das ist die Zeile im Test, die average aufruft.' } },
       { art: 'wahl', frage: 'Noch fünf Minuten. Eine Methode mit dem Rückgabetyp int ist halb fertig und rot unterstrichen. Was tust du?',
         optionen: [
-          { t: 'Den Inhalt auskommentieren und return 0; hinschreiben', ok: true, warum: 'Richtig. Dann kompiliert das Projekt wieder, und alle anderen Tests bringen ihre Punkte. Nur der Test dieser Methode bleibt rot.' },
-          { t: 'So lassen, vielleicht gibt es Teilpunkte', warum: 'Solange etwas rot unterstrichen ist, läuft bei einer Bewertung mit <code>./gradlew</code> kein einziger Test. Dann gibt es meist 0 Punkte.' },
+          { t: 'Den Inhalt auskommentieren und return 0; hinschreiben', ok: true, warum: 'Richtig. Dann kompiliert das Projekt wieder, und alle anderen Tests laufen. Nur der Test dieser Methode bleibt rot.' },
+          { t: 'So lassen, die anderen Tests laufen ja trotzdem', warum: 'Solange etwas rot unterstrichen ist, läuft mit <code>./gradlew</code> kein einziger Test. Auch die Tests der Methoden, die stimmen, laufen dann nicht.' },
           { t: 'Die ganze Methode samt Kopf löschen', warum: 'Dann unterstreicht VS Code den Test rot, weil er die Methode aufruft. Das Projekt kompiliert wieder nicht. Der Kopf bleibt immer stehen.' },
-          { t: 'Den Test für diese Methode auskommentieren', warum: 'Tests änderst du nie. Die Bewertung nutzt immer die originalen Tests. Die rote Stelle in deiner Methode bliebe trotzdem.' }
+          { t: 'Den Test für diese Methode auskommentieren', warum: 'Tests änderst du nie. Ein geänderter Test sagt nichts mehr darüber aus, ob dein Code stimmt. Außerdem bleibt die rote Stelle in deiner Methode.' }
         ] },
-      { art: 'reihenfolge', frage: 'Bring die Schritte zum Abgeben in die richtige Reihenfolge.',
+      { art: 'reihenfolge', frage: 'Bring die Schritte zum Hochladen in die richtige Reihenfolge.',
         zeilen: ['Alle Dateien speichern (File, Save All)', 'Source Control öffnen', 'Nachricht ins Feld Message schreiben', 'Auf Commit klicken', 'Auf Sync Changes klicken', 'Auf GitHub nachsehen, ob der Commit da ist'],
         richtig: 'Richtig. Erst speichern, dann committen, dann synchronisieren. Erst nach dem Sync ist alles auf GitHub.',
         falsch: 'Die rot markierten Schritte stehen noch am falschen Platz. Denk daran: Ohne Speichern kennt der Commit deine Änderungen nicht, und erst Sync lädt den Commit hoch.' }

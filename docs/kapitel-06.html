@@ -69,7 +69,7 @@
     <li><strong>Warum <code>main</code> <code>static</code> ist:</strong> Beim Start eines Programms gibt es noch kein einziges Objekt. Java muss <code>main</code> aufrufen können, ohne vorher etwas zu bauen. Das geht nur, weil <code>main</code> der Klasse gehört.</li>
     <li><strong>Warum die Methoden in Kapitel 3 <code>static</code> hatten:</strong> Sie haben nur mit ihren Parametern gerechnet, nicht mit Attributen eines Objekts. Deshalb brauchten sie kein Objekt, und <code>main</code> konnte sie direkt aufrufen.</li>
     <li><strong>Warum Getter in Kapitel 4 kein <code>static</code> hatten:</strong> <code>getTitle()</code> gibt den Titel eines bestimmten Buchs zurück. Dafür braucht die Methode das Objekt, also <code>this</code>.</li>
-    <li><strong>Die Meldung aus Kapitel 5:</strong> <code>Bike.getBattery()</code> ergab „Cannot make a static reference to the non-static method“. Übersetzt: Du rufst über den Klassennamen auf (wie bei <code>static</code>), aber die Methode ist nicht <code>static</code>. Sie braucht ein Objekt.</li>
+    <li><strong>Die Meldung aus Kapitel 5:</strong> <code>Bike.getRange()</code> ergab „Cannot make a static reference to the non-static method“. Übersetzt: Du rufst über den Klassennamen auf (wie bei <code>static</code>), aber die Methode ist nicht <code>static</code>. Sie braucht ein Objekt.</li>
   </ul>
   <p>Als Faustregel: Arbeitet etwas mit den Werten eines einzelnen Objekts, kein <code>static</code>. Gehört etwas allen Objekten gemeinsam oder braucht gar kein Objekt, <code>static</code>.</p>
 
@@ -224,7 +224,7 @@
         text: '<p><code>main</code> ist <code>static</code> und hat kein Objekt. <code>greet</code> ist eine normale Methode, die ein Objekt braucht. Wenn die Methode nicht mit Attributen eines Objekts arbeitet, schreib <code>static</code> dazu: <code>public static void greet()</code>. So hast du die Methoden in Kapitel 3 geschrieben.</p>' },
       { titel: 'Klassenname vor einer normalen Methode', code: ['WaitingTicket t1 = new WaitingTicket();', 'System.out.println(WaitingTicket.getNumber());'], rot: [2], quelle: 'VS Code',
         meldung: 'Cannot make a static reference to the non-static method getNumber() from the type WaitingTicket',
-        text: '<p>Das ist dieselbe Meldung wie bei <code>Bike.getBattery()</code> in Kapitel 5. <code>getNumber()</code> ist nicht <code>static</code>: Jede Marke hat ihre eigene Nummer. Also musst du eine bestimmte Marke fragen: <code>t1.getNumber()</code>. Den Klassennamen vor dem Punkt darfst du nur bei <code>static</code>-Methoden schreiben.</p>' }
+        text: '<p>Das ist dieselbe Meldung wie bei <code>Bike.getRange()</code> in Kapitel 5. <code>getNumber()</code> ist nicht <code>static</code>: Jede Marke hat ihre eigene Nummer. Also musst du eine bestimmte Marke fragen: <code>t1.getNumber()</code>. Den Klassennamen vor dem Punkt darfst du nur bei <code>static</code>-Methoden schreiben.</p>' }
     ],
 
     fragen: [

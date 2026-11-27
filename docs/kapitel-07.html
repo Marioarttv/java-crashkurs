@@ -65,7 +65,7 @@
 
   <h2>Drei Fälle unterscheiden: if, else if und else</h2>
   <p>Manchmal reichen zwei Fälle nicht. Dann baust du eine Kette mit <code>else if</code> („sonst, wenn“) für eine zweite Bedingung. Java prüft die Bedingungen von oben nach unten. Sobald eine Bedingung wahr ist (Antwort Ja), läuft genau dieser Block. Alle weiteren Bedingungen darunter prüft Java gar nicht mehr. War keine Bedingung wahr, läuft der <code>else</code>-Block.</p>
-  <p>Ein Beispiel: Auf einer Prepaid-Karte sind 10 Euro. Davon zieht das Programm einen Betrag ab. Danach gibt es den neuen Status der Karte aus, also ihren Zustand: noch Geld drauf (ACTIVE), genau leer (EMPTY) oder überzogen (OVERDRAWN). Probier im Kasten die Beträge 4, 10 und 15 Euro aus.</p>
+  <p>Ein Beispiel zur Klausur: Ab 85 Punkten gibt es „sehr gut“, ab 50 Punkten „bestanden“, darunter „nicht bestanden“. Probier im Kasten 90, 60 und 30 Punkte aus. Achte bei 90 darauf: 90 ist auch mindestens 50. Trotzdem läuft nur der erste passende Block.</p>
 
   <div id="lauf2"></div>
 
@@ -204,22 +204,20 @@
         }
       },
       lauf2: {
-        eingabe: { art: 'zahl', label: 'Betrag', start: 4, proben: [4, 10, 15], min: 0, max: 99 },
+        eingabe: { art: 'zahl', label: 'Punkte', start: 90, proben: [90, 60, 30], min: 0, max: 100 },
         code: function (v) {
-          return ['int balance = 10;', 'int amount = ' + v + ';', 'balance = balance - amount;', 'if (balance > 0) {', '    System.out.println("ACTIVE");', '} else if (balance == 0) {', '    System.out.println("EMPTY");', '} else {', '    System.out.println("OVERDRAWN");', '}'];
+          return ['int points = ' + v + ';', 'if (points >= 85) {', '    System.out.println("sehr gut");', '} else if (points >= 50) {', '    System.out.println("bestanden");', '} else {', '    System.out.println("nicht bestanden");', '}'];
         },
         schritte: function (v) {
-          var b = 10 - v, s = [], nach = [['balance', b], ['amount', v]];
-          s.push({ z: 1, vars: [['balance', 10]], sagt: 'Die Variable <code>balance</code> (das Guthaben) bekommt den Wert 10.' });
-          s.push({ z: 2, vars: [['balance', 10], ['amount', v]], sagt: 'Die Variable <code>amount</code> (der Betrag) bekommt den Wert ' + v + '.' });
-          s.push({ z: 3, vars: nach, sagt: 'Zuweisung mit <code>=</code>: Java rechnet zuerst rechts aus, also 10 - ' + v + ' = ' + b + '. Das Ergebnis speichert es in <code>balance</code>. Der alte Wert 10 ist damit weg.' });
-          s.push({ z: 4, vars: nach, sagt: 'Erste Bedingung: ' + urteil(b + ' > 0', b > 0) + '.' });
-          if (b > 0) {
-            s.push({ z: 5, skip: [6, 7, 8, 9], vars: nach, aus: ['ACTIVE'], sagt: 'Die erste Bedingung war wahr (Antwort Ja). Deshalb läuft Zeile 5 und gibt „ACTIVE“ aus. Die Bedingungen darunter prüft Java gar nicht mehr.' });
+          var s = [], vars = [['points', v]];
+          s.push({ z: 1, vars: vars, sagt: 'Die Variable <code>points</code> bekommt den Wert ' + v + '.' });
+          s.push({ z: 2, vars: vars, sagt: 'Erste Bedingung: ' + urteil(v + ' >= 85', v >= 85) + '.' });
+          if (v >= 85) {
+            s.push({ z: 3, skip: [4, 5, 6, 7], vars: vars, aus: ['sehr gut'], sagt: 'Die erste Bedingung war wahr (Antwort Ja). Deshalb läuft Zeile 3 und gibt „sehr gut“ aus. Die zweite Bedingung wäre auch wahr, aber Java prüft sie gar nicht mehr.' });
           } else {
-            s.push({ z: 6, skip: [5], vars: nach, sagt: 'Die erste Bedingung war falsch (Antwort Nein). Deshalb prüft Java die zweite Bedingung: ' + urteil(b + ' == 0', b === 0) + '.' });
-            if (b === 0) s.push({ z: 7, skip: [5, 8, 9], vars: nach, aus: ['EMPTY'], sagt: 'Die zweite Bedingung war wahr (Antwort Ja). Zeile 7 läuft und gibt „EMPTY“ aus. Java überspringt den <code>else</code>-Block.' });
-            else s.push({ z: 9, skip: [5, 7], vars: nach, aus: ['OVERDRAWN'], sagt: 'Beide Bedingungen waren falsch (Antwort Nein). Deshalb läuft der <code>else</code>-Block in Zeile 9 und gibt „OVERDRAWN“ aus.' });
+            s.push({ z: 4, skip: [3], vars: vars, sagt: 'Die erste Bedingung war falsch (Antwort Nein). Deshalb prüft Java die zweite Bedingung: ' + urteil(v + ' >= 50', v >= 50) + '.' });
+            if (v >= 50) s.push({ z: 5, skip: [3, 6, 7], vars: vars, aus: ['bestanden'], sagt: 'Die zweite Bedingung war wahr (Antwort Ja). Zeile 5 läuft und gibt „bestanden“ aus. Java überspringt den <code>else</code>-Block.' });
+            else s.push({ z: 7, skip: [3, 5], vars: vars, aus: ['nicht bestanden'], sagt: 'Beide Bedingungen waren falsch (Antwort Nein). Deshalb läuft der <code>else</code>-Block in Zeile 7 und gibt „nicht bestanden“ aus.' });
           }
           return s;
         }
@@ -250,8 +248,8 @@
     },
 
     fehler: [
-      { titel: 'Ein Gleichheitszeichen statt zwei', code: ['if (balance = 0) {'], meldung: 'Type mismatch: cannot convert from int to boolean',
-        text: '<p>Das heißt: In den Klammern steht keine Bedingung, sondern eine Zuweisung. Mit „boolean“ meint Java eine Bedingung mit wahr oder falsch. Richtig ist <code>if (balance == 0) {</code>.</p>' },
+      { titel: 'Ein Gleichheitszeichen statt zwei', code: ['if (credit = 0) {'], meldung: 'Type mismatch: cannot convert from int to boolean',
+        text: '<p>Das heißt: In den Klammern steht keine Bedingung, sondern eine Zuweisung. Mit „boolean“ meint Java eine Bedingung mit wahr oder falsch. Richtig ist <code>if (credit == 0) {</code>.</p>' },
       { titel: 'Ein Semikolon direkt hinter der Bedingung', code: ['if (points >= 50); {'],
         text: '<p>Hier unterstreicht VS Code nichts rot. Das macht diesen Fehler tückisch. Das Semikolon beendet das <code>if</code> sofort. Der Block dahinter gehört nicht mehr zum <code>if</code> und läuft deshalb immer. Hinter die runde Klammer der Bedingung gehört kein Semikolon.</p>' },
       { titel: 'Eine geschweifte Klammer fehlt', code: ['if (points >= 50) {', '    System.out.println("bestanden");', 'System.out.println("fertig");'],
@@ -275,14 +273,14 @@
           { t: 'warm und heiß', warum: 'In einer Kette aus if, else if und else läuft immer nur ein einziger Block. Weil 30 > 10 schon wahr ist, läuft nur der erste Block und gibt „warm“ aus.' }
         ] },
       { art: 'zeile', frage: 'In diesem Code steckt ein Fehler, den VS Code rot unterstreicht. Klick auf die fehlerhafte Zeile.',
-        code: ['int balance = 0;', 'if (balance = 0) {', '    System.out.println("leer");', '}'],
+        code: ['int credit = 0;', 'if (credit = 0) {', '    System.out.println("leer");', '}'],
         ok: 2,
         richtig: 'Richtig. Ein einzelnes = ist eine Zuweisung und speichert einen Wert. Zum Vergleichen brauchst du ==. VS Code meldet hier: „Type mismatch: cannot convert from int to boolean“.',
         falsch: 'Diese Zeile ist in Ordnung. Schau auf die Zeile mit der Bedingung: Dort vergleichst du zwei Werte.' },
-      { art: 'luecke', frage: 'Der Status soll OVERDRAWN werden, wenn das Guthaben kleiner als 0 ist. Welches Vergleichszeichen fehlt in der Lücke?',
-        code: ['if (balance ___ 0) {'], ok: ['<'], proben: ['>', '<=', '<'],
-        richtig: 'Stimmt. „kleiner als“ ist das Zeichen <.',
-        falsch: 'Das passt noch nicht. Gesucht ist das Vergleichszeichen für „kleiner als“. Bei genau 0 soll die Bedingung falsch sein.' },
+      { art: 'luecke', frage: '„sehr gut“ gibt es ab 85 Punkten. Bei genau 85 Punkten soll die Bedingung also schon wahr sein. Welches Vergleichszeichen fehlt in der Lücke?',
+        code: ['if (points ___ 85) {'], ok: ['>='], proben: ['>', '>=', '=='],
+        richtig: 'Stimmt. „ab 85“ heißt „größer oder gleich 85“, also >=. Damit zählt 85 schon mit.',
+        falsch: 'Das passt noch nicht. Mit > wäre 85 noch nicht „sehr gut“, mit == nur genau 85. Gesucht ist „größer oder gleich“.' },
       { art: 'wahl', frage: 'Was gibt dieses Programm aus?',
         code: ['int day = 7;', 'if (day == 6 || day == 7) {', '    System.out.println("Wochenende");', '} else {', '    System.out.println("Werktag");', '}'],
         optionen: [
@@ -301,10 +299,10 @@
         text: '<p>Die Methode bekommt ein Alter in der Variable <code>age</code> und gibt den Eintrittspreis in Euro zurück.</p><table><tr><th>Alter</th><th>Preis</th></tr><tr><td>unter 6</td><td>0</td></tr><tr><td>6 bis 17</td><td>5</td></tr><tr><td>ab 18</td><td>9</td></tr></table>',
         tipps: ['Für drei Fälle brauchst du eine Kette aus <code>if</code>, <code>else if</code> und <code>else</code>. In jedem Block gibst du den passenden Preis mit <code>return</code> zurück.', 'Fang mit den Jüngsten an: <code>age &lt; 6</code>. Ist diese Bedingung falsch, ist das Alter automatisch mindestens 6. Für die zweite Bedingung reicht deshalb <code>age &lt; 18</code>.'],
         loesung: ['public static int price(int age) {', '    if (age < 6) {', '        return 0;', '    } else if (age < 18) {', '        return 5;', '    } else {', '        return 9;', '    }', '}'] },
-      { titel: 'Aufgabe 3: Mit der Karte bezahlen', datei: 'PrepaidCard.java, Methode pay', befehl: './gradlew test --tests "*k07.PrepaidCardTest"',
-        text: '<p>Neu in dieser Aufgabe: Die Methode gibt nichts zurück und schreibt nichts in die Ausgabe. Stattdessen ändert sie die Attribute der Karte (ihre Variablen, Kapitel 4).</p><p>Die Karte hat zwei Attribute: ihr Guthaben (<code>balance</code>) und ihren Status (<code>status</code>). Beim Bezahlen ziehst du zuerst den Betrag (<code>amount</code>) vom Guthaben ab. Danach setzt du den neuen Status:</p><table><tr><th>Guthaben danach</th><th>Status</th></tr><tr><td>größer als 0</td><td>ACTIVE</td></tr><tr><td>genau 0</td><td>EMPTY</td></tr><tr><td>kleiner als 0</td><td>OVERDRAWN</td></tr></table><p>Ändere nur den Inhalt zwischen den geschweiften Klammern. Die Zeile <code>public void pay(int amount) {</code> bleibt unverändert.</p>',
-        tipps: ['Erster Schritt, noch vor dem <code>if</code>: Ziehe den Betrag mit einer Zuweisung ab: <code>balance = balance - amount;</code>', 'Danach folgt dieselbe Kette aus <code>if</code>, <code>else if</code> und <code>else</code> wie im Prepaid-Beispiel oben. Statt etwas auszugeben, speicherst du den neuen Status im Attribut <code>status</code>. Vor den Namen des Status schreibst du immer <code>CardStatus.</code>, denn dort sind die drei erlaubten Werte festgelegt (Kapitel 8 erklärt das genauer). Beispiel: <code>status = CardStatus.EMPTY;</code>'],
-        loesung: ['public void pay(int amount) {', '    balance = balance - amount;', '    if (balance > 0) {', '        status = CardStatus.ACTIVE;', '    } else if (balance == 0) {', '        status = CardStatus.EMPTY;', '    } else {', '        status = CardStatus.OVERDRAWN;', '    }', '}'] }
+      { titel: 'Aufgabe 3: Rechtzeitig aufladen', datei: 'PrepaidCard.java, Methode warning', befehl: './gradlew test --tests "*k07.PrepaidCardTest"',
+        text: '<p>Neu in dieser Aufgabe: Die Methode gehört zu einem Objekt, der Prepaid-Karte. Sie hat keinen Parameter. Stattdessen liest sie das Attribut <code>credit</code> der Karte, also ihr Guthaben in Euro (Kapitel 4). Deshalb steht im Methodenkopf auch kein <code>static</code> (Kapitel 6).</p><p>Die Methode gibt je nach Guthaben einen Hinweis als Text zurück:</p><table><tr><th>Guthaben</th><th>Rückgabewert</th></tr><tr><td>ab 20</td><td><code>"genug Guthaben"</code></td></tr><tr><td>5 bis 19</td><td><code>"bald aufladen"</code></td></tr><tr><td>unter 5</td><td><code>"jetzt aufladen"</code></td></tr></table><p>Die Methode ändert das Guthaben nicht, sie liest es nur. Die Zeile <code>public String warning() {</code> bleibt unverändert. Die Zeile <code>return "";</code> darfst du ersetzen.</p>',
+        tipps: ['Für drei Fälle brauchst du wieder eine Kette aus <code>if</code>, <code>else if</code> und <code>else</code>, wie in Aufgabe 2. In jedem Block gibst du einen der drei Texte mit <code>return</code> zurück, zum Beispiel <code>return "bald aufladen";</code>. Schreib die Texte genau wie in der Tabelle.', 'Fang oben mit dem größten Guthaben an: <code>credit &gt;= 20</code>. Ist diese Bedingung falsch, ist das Guthaben höchstens 19. Für den zweiten Fall reicht deshalb <code>credit &gt;= 5</code>.'],
+        loesung: ['public String warning() {', '    if (credit >= 20) {', '        return "genug Guthaben";', '    } else if (credit >= 5) {', '        return "bald aufladen";', '    } else {', '        return "jetzt aufladen";', '    }', '}'] }
     ],
 
     selbsttest: function (log) {

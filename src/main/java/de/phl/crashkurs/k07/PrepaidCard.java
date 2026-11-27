@@ -1,36 +1,31 @@
 package de.phl.crashkurs.k07;
 
 /**
- * Kapitel 7, Aufgabe 3: eine Prepaid-Karte ändert ihren Status.
- * Die Karte hat zwei Variablen: ein Guthaben (balance) und einen Status (status).
+ * Kapitel 7, Aufgabe 3: Die Prepaid-Karte warnt, wenn das Guthaben knapp wird.
+ * Die Karte hat ein Attribut: ihr Guthaben in Euro (credit).
  */
 public class PrepaidCard {
 
-    private int balance;
-    private CardStatus status = CardStatus.ACTIVE;
+    private int credit;
 
-    public PrepaidCard(int balance) {
-        this.balance = balance;
+    public PrepaidCard(int credit) {
+        this.credit = credit;
     }
 
-    public int getBalance() {
-        return balance;
-    }
-
-    public CardStatus getStatus() {
-        return status;
+    public int getCredit() {
+        return credit;
     }
 
     /**
-     * Bezahlt einen Betrag mit der Karte.
-     * Zuerst ziehst du den Betrag vom Guthaben (balance) ab. Danach gilt:
-     * Guthaben größer als 0: Status bleibt ACTIVE (CardStatus.ACTIVE).
-     * Guthaben genau 0: Status wird EMPTY (CardStatus.EMPTY).
-     * Guthaben kleiner als 0: Status wird OVERDRAWN (CardStatus.OVERDRAWN).
+     * Gibt nach dem Guthaben (credit) einen Hinweis zurück:
+     * ab 20 Euro: "genug Guthaben".
+     * 5 bis 19 Euro: "bald aufladen".
+     * unter 5 Euro: "jetzt aufladen".
      *
-     * @param amount der Betrag in Euro
+     * @return der Hinweis als Text
      */
-    public void pay(int amount) {
-        // TODO: Schreib deinen Code hier zwischen die geschweiften Klammern. Die Zeile darüber bleibt unverändert.
+    public String warning() {
+        // TODO: Ersetze die nächste Zeile durch eine Kette aus if, else if und else. Die Zeile darüber bleibt unverändert.
+        return "";
     }
 }

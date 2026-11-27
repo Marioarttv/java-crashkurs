@@ -5,50 +5,40 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("Kapitel 7, Aufgabe 3: PrepaidCard.pay")
+@DisplayName("Kapitel 7, Aufgabe 3: PrepaidCard.warning")
 class PrepaidCardTest {
 
     @Test
-    @DisplayName("Bezahlen zieht den Betrag vom Guthaben ab")
-    void bezahlenZiehtAb() {
-        PrepaidCard card = new PrepaidCard(20);
-        card.pay(5);
-        assertEquals(15, card.getBalance(), "Bei 20 Euro Guthaben müssen nach pay(5) noch 15 Euro übrig sein. Ziehst du amount von balance ab?");
+    @DisplayName("35 Euro: genug Guthaben")
+    void viel() {
+        assertEquals("genug Guthaben", new PrepaidCard(35).warning(), "Bei 35 Euro Guthaben muss warning den Text \"genug Guthaben\" zurückgeben.");
     }
 
     @Test
-    @DisplayName("Guthaben über 0: Status bleibt ACTIVE")
-    void restguthabenBleibtAktiv() {
-        PrepaidCard card = new PrepaidCard(20);
-        card.pay(5);
-        assertEquals(CardStatus.ACTIVE, card.getStatus(), "Solange noch Guthaben über 0 da ist, bleibt der Status ACTIVE.");
+    @DisplayName("Grenze 20 und 19 Euro")
+    void grenzeZwanzig() {
+        assertEquals("genug Guthaben", new PrepaidCard(20).warning(), "Bei genau 20 Euro ist noch genug Guthaben da (20 zählt mit). Brauchst du >= statt >?");
+        assertEquals("bald aufladen", new PrepaidCard(19).warning(), "Bei 19 Euro muss warning \"bald aufladen\" zurückgeben.");
     }
 
     @Test
-    @DisplayName("Guthaben genau 0: Status EMPTY")
-    void genauNullIstLeer() {
-        PrepaidCard card = new PrepaidCard(20);
-        card.pay(20);
-        assertEquals(0, card.getBalance(), "Bei 20 Euro Guthaben muss das Guthaben nach pay(20) genau 0 sein.");
-        assertEquals(CardStatus.EMPTY, card.getStatus(), "Bei genau 0 Euro Guthaben muss der Status EMPTY sein. Prüfe deine Bedingung: Zum Vergleichen brauchst du ==.");
+    @DisplayName("Grenze 5 und 4 Euro")
+    void grenzeFuenf() {
+        assertEquals("bald aufladen", new PrepaidCard(5).warning(), "Bei genau 5 Euro muss warning \"bald aufladen\" zurückgeben (5 zählt mit). Prüfe die zweite Bedingung.");
+        assertEquals("jetzt aufladen", new PrepaidCard(4).warning(), "Bei 4 Euro muss warning \"jetzt aufladen\" zurückgeben.");
     }
 
     @Test
-    @DisplayName("Guthaben unter 0: Status OVERDRAWN")
-    void unterNullIstUeberzogen() {
-        PrepaidCard card = new PrepaidCard(20);
-        card.pay(25);
-        assertEquals(-5, card.getBalance(), "Bei 20 Euro Guthaben muss das Guthaben nach pay(25) genau -5 sein.");
-        assertEquals(CardStatus.OVERDRAWN, card.getStatus(), "Bei einem Guthaben unter 0 Euro muss der Status OVERDRAWN sein.");
+    @DisplayName("0 Euro: jetzt aufladen")
+    void leer() {
+        assertEquals("jetzt aufladen", new PrepaidCard(0).warning(), "Bei 0 Euro Guthaben muss warning \"jetzt aufladen\" zurückgeben. Gibt dein else-Block diesen Text zurück?");
     }
 
     @Test
-    @DisplayName("Zweimal bezahlen: erst ACTIVE, dann EMPTY")
-    void zweimalBezahlen() {
-        PrepaidCard card = new PrepaidCard(10);
-        card.pay(4);
-        assertEquals(CardStatus.ACTIVE, card.getStatus(), "Nach dem ersten Bezahlen sind noch 6 Euro auf der Karte. Der Status muss ACTIVE sein.");
-        card.pay(6);
-        assertEquals(CardStatus.EMPTY, card.getStatus(), "Nach dem zweiten Bezahlen ist das Guthaben 0. Der Status muss EMPTY sein.");
+    @DisplayName("Der Hinweis ändert das Guthaben nicht")
+    void guthabenBleibt() {
+        PrepaidCard card = new PrepaidCard(12);
+        card.warning();
+        assertEquals(12, card.getCredit(), "warning soll das Guthaben nur lesen, nicht ändern. Nach warning() müssen noch 12 Euro auf der Karte sein.");
     }
 }

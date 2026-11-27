@@ -4,11 +4,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Kapitel 2, Aufgabe 2: RoomPlan.main")
 class RoomPlanTest {
+
+    static final String ZIEL = "29 Personen: 7 volle Zimmer, 1 Person übrig";
 
     @Test
     @DisplayName("die vorgegebenen Zeilen sind unverändert")
@@ -26,20 +32,48 @@ class RoomPlanTest {
     }
 
     @Test
-    @DisplayName("fullRooms und leftOver werden aus den Variablen berechnet")
+    @DisplayName("fullRooms und leftOver werden mit den Variablen ausgerechnet, nicht mit Zahlen")
     void rechnung() {
         String text = Quelltext.lies("RoomPlan.java");
-        Quelltext.enthaelt(text, "\\bint\\s+fullRooms\\s*=\\s*students\\s*/\\s*bedsPerRoom\\s*;",
-                "Es fehlt die Zeile int fullRooms = students / bedsPerRoom;");
-        Quelltext.enthaelt(text, "\\bint\\s+leftOver\\s*=\\s*students\\s*%\\s*bedsPerRoom\\s*;",
-                "Es fehlt die Zeile int leftOver = students % bedsPerRoom;");
+        for (String name : new String[] {"fullRooms", "leftOver"}) {
+            Matcher m = Pattern.compile("(?<![\\w.])" + name + "\\s*=(?!=)([^;]*);").matcher(text);
+            boolean gefunden = false;
+            while (m.find()) {
+                gefunden = true;
+                if (m.group(1).strip().equals("0")) {
+                    continue; // Startwert 0 ist erlaubt, wenn die Rechnung später folgt.
+                }
+                assertFalse(m.group(1).matches("(?s).*\\d.*"),
+                        "Rechts von " + name + " = steht eine Zahl: " + m.group(1).strip()
+                                + ". Rechne mit den Namen der Variablen (students, bedsPerRoom), nicht mit Zahlen.");
+            }
+            assertTrue(gefunden, "Speichere das Ergebnis in einer Variable mit dem Namen " + name + ".");
+        }
     }
 
     @Test
-    @DisplayName("gibt Personen, volle Zimmer und Rest aus")
+    @DisplayName("gibt 29 Personen: 7 volle Zimmer, 1 Person übrig aus")
     void ausgabe() {
-        assertEquals(List.of("Personen: 29", "Volle Zimmer: 7", "Rest: 1"), Quelltext.zeilen(() -> RoomPlan.main(new String[0])),
-                "Erwartet sind genau drei Zeilen: Personen: 29, Volle Zimmer: 7, Rest: 1. "
-                        + "Hast du students vor der Rechnung um 3 erhöht? 29 / 4 ist 7, Rest 1.");
+        List<String> zeilen = Quelltext.zeilen(() -> RoomPlan.main(new String[0]));
+        String text = String.join("\n", zeilen);
+        String hinweis;
+        if (text.contains("26 Personen") || text.contains("6 volle Zimmer, 2")) {
+            hinweis = "Java hat noch mit 26 Personen gerechnet. Erhöhe students um 3, bevor du fullRooms und leftOver ausrechnest.";
+        } else {
+            hinweis = "29 / 4 ist 7, Rest 1. Vergleiche jeden Text und jedes Leerzeichen mit der Zeile oben.";
+        }
+        assertEquals(List.of(ZIEL), zeilen, "Erwartet ist genau eine Zeile: " + ZIEL + ". " + hinweis);
+    }
+
+    @Test
+    @DisplayName("die Ausgabe benutzt die Variablen students, fullRooms und leftOver")
+    void variablenInDerAusgabe() {
+        String text = Quelltext.lies("RoomPlan.java");
+        assertFalse(text.contains("\"29") || text.contains("29 Personen") || text.contains(" 7 volle"),
+                "Im Text der Ausgabe steht ein fertiges Ergebnis. Lass Java rechnen und setze die Variablen in die Zeile ein.");
+        for (String name : new String[] {"students", "fullRooms", "leftOver"}) {
+            Quelltext.enthaelt(text, "println\\s*\\([^;]*\\b" + name + "\\b",
+                    "In der Ausgabe fehlt die Variable " + name + ". Die Zahlen in der Zeile sollen aus den Variablen kommen.");
+        }
     }
 }

@@ -38,7 +38,7 @@ Jedes Kapitel hat einen eigenen Ordner: `k01` gehört zu Kapitel 1, `k02` zu Kap
 | 10 | Zählen mit for, Arrays und Listen |
 | 11 | Exceptions |
 | 12 | Wenn es rot wird |
-| 13 | Probelauf auf Zeit |
+| 13 | Alles zusammen |
 
 In jeder Aufgabendatei steht ein Hinweis mit `TODO` (ein Kommentar im Code). Genau dort schreibst du deine Lösung hin.
 
@@ -68,6 +68,6 @@ Fahr mit der Maus über die rote Stelle. VS Code zeigt dir dann eine Fehlermeldu
 
 ## Drei Regeln, die dir Ärger ersparen
 
-1. Ändere nur das, was zwischen den geschweiften Klammern einer Methode (eines benannten Programmteils) steht. Die Zeile mit dem Namen der Methode, zum Beispiel `public void pay(int amount) {`, bleibt unverändert.
+1. Ändere nur das, was zwischen den geschweiften Klammern einer Methode (eines benannten Programmteils) steht. Die Zeile mit dem Namen der Methode, zum Beispiel `public String warning() {`, bleibt unverändert.
 2. Ändere keine Testdateien.
 3. Starte den Test nach jeder kleinen Änderung. So siehst du sofort, ob dein letzter Schritt gestimmt hat.

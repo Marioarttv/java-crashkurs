@@ -16,16 +16,15 @@ public class CoffeeMachine {
     }
 
     /**
-     * Verkauft einen Kaffee in der gewählten Größe.
-     * Legt nach der Größe Preis (in Cent) und Namen fest:
-     * SMALL: 150, "kleiner Kaffee". MEDIUM: 200, "mittlerer Kaffee". LARGE: 250, "großer Kaffee".
-     * Bezahlt den Preis mit der Karte (card.pay) und gibt den Namen zurück.
+     * Gibt den Preis eines Kaffees in Cent zurück.
+     * Grundpreis nach der Größe: SMALL 150, MEDIUM 200, LARGE 250.
+     * Mit eigenem Becher (ownCup ist true) kostet der Kaffee 20 Cent weniger.
      *
-     * @param card die Kaffeekarte, mit der bezahlt wird
-     * @return der Name des Getränks
+     * @param ownCup true, wenn ein eigener Becher mitgebracht wird
+     * @return der Preis in Cent
      */
-    public String sell(CoffeeCard card) {
-        // TODO: Schreib deinen Code hier. Die Zeile mit "public String sell" bleibt unverändert.
-        return "";
+    public int price(boolean ownCup) {
+        // TODO: Schreib deinen Code hier. Die Zeile mit "public int price" bleibt unverändert.
+        return 0;
     }
 }

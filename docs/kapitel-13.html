@@ -3,193 +3,122 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kapitel 13: Probelauf auf Zeit – Java-Crashkurs</title>
+<title>Kapitel 13: Alles zusammen – Java-Crashkurs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="kurs.css">
 <style>
-/* Nur in diesem Kapitel: die Uhr, das Aufgabenblatt und der Punkterechner. */
+/* Nur in diesem Kapitel: die Uhr und die Übersicht über das Projekt. */
 .k13-uhr { border: 2px solid var(--k-ink); border-radius: var(--k-radius); padding: 16px 18px; margin: 16px 0 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
 .k13-zeit { font-family: var(--k-mono); font-size: 52px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; min-width: 5ch; }
 .k13-uhr.k13-knapp .k13-zeit { color: var(--k-orange); }
 .k13-uhr.k13-aus .k13-zeit { color: var(--k-stop); }
 .k13-uhr .k13-rechts { flex: 1 1 240px; }
 .k13-uhr .k13-stand { margin: 0 0 10px; }
-.k13-uhr .k13-knoepfe { display: flex; flex-wrap: wrap; gap: 8px; }
-.k13-blatt { border: 1px solid var(--k-line); border-radius: var(--k-radius); padding: 4px 20px 12px; margin: 16px 0 24px; }
-.k13-blatt h3 { font-size: 22px; margin-top: 26px; }
-.k13-blatt h4 { font-size: 17px; margin: 18px 0 6px; }
-.k13-blatt ol > li, .k13-blatt ul > li { margin-bottom: 8px; }
-.k13-blatt table, .k13-punkte table { border-collapse: collapse; margin: 6px 0 12px; }
-.k13-blatt th, .k13-blatt td, .k13-punkte th, .k13-punkte td { text-align: left; padding: 4px 18px 4px 0; border-bottom: 1px solid var(--k-line); vertical-align: top; }
-.k13-pkt { font-weight: 700; white-space: nowrap; }
-.k13-punkte { border: 1px solid var(--k-line); border-radius: var(--k-radius); padding: 12px 16px; margin: 12px 0 24px; }
-.k13-punkte label { display: flex; gap: 8px; align-items: baseline; cursor: pointer; }
-.k13-punkte .k13-summe { font-size: 19px; font-weight: 700; margin: 10px 0 4px; }
-.k13-punkte .k13-urteil { margin: 0 0 8px; }
+.k13-uhr .k13-knoepfe { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.k13-uhr .k13-dauer { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 10px; }
+.k13-tab { width: 100%; border-collapse: collapse; margin: 6px 0 22px; font-size: 16px; }
+.k13-tab th, .k13-tab td { text-align: left; vertical-align: top; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--k-line); }
+.k13-tab th { font-size: 14px; color: var(--k-muted); }
+.k13-tab code { overflow-wrap: anywhere; }
 .k13-rahmen { overflow-x: auto; }
-@media (max-width: 480px) { .k13-zeit { font-size: 40px; } .k13-blatt { padding: 2px 12px 10px; } }
+@media (max-width: 600px) {
+  .k13-tab tr { display: block; border-bottom: 1px solid var(--k-line); padding: 8px 0; }
+  .k13-tab th { display: none; }
+  .k13-tab td { display: block; border: 0; padding: 2px 0; }
+  .k13-tab td:first-child { font-weight: 700; }
+}
+@media (max-width: 480px) { .k13-zeit { font-size: 40px; } }
 </style>
 </head>
 <body>
 <main class="kurs">
 
-  <p class="vorwissen">Das solltest du schon kennen: alles aus den Kapiteln 1 bis 12. Am wichtigsten sind die Regeln für die Präsenzübung aus Kapitel 12.</p>
+  <p class="vorwissen">Das solltest du schon kennen: alles aus den Kapiteln 1 bis 12. Am meisten brauchst du <code>static</code> aus Kapitel 6, Listen und die for-each-Schleife aus Kapitel 10, Exceptions aus Kapitel 11 und das Vorgehen bei roten Tests aus Kapitel 12.</p>
 
-  <p>Dieses Kapitel ist eine Generalprobe. Du bekommst eine Probe-Präsenzübung zum Thema Musikfestival. Sie ist so aufgebaut, wie eine Präsenzübung aussehen kann: drei Übungen, von einer neuen Klasse bis zu Schleifen und Listen.</p>
-  <p>Die echte Präsenzübung kann anders aussehen und andere Schwerpunkte setzen. In dieser Probe musst du zum Beispiel keine Exception selbst werfen oder abfangen. In der echten Präsenzübung kann das vorkommen. Wiederhole dafür Kapitel 11.</p>
-  <p>Mach die Probe unter echten Bedingungen: allein, 60 Minuten, ohne Suchmaschine, ohne KI und ohne die anderen Kapitel dieser Seite. Deine eigenen Notizen darfst du benutzen. Erst wenn die Zeit um ist, liest du die Auswertung und die Lösung weiter unten.</p>
-  <p>Die Probe hat drei Übungen mit zusammen 110 Punkten. Bestanden hast du ab 66 Punkten. Das sind 60 Prozent.</p>
+  <p>Auf einem Musikfestival gibt es viel zu organisieren: Bändchen für den Eintritt, einen Campingplatz, Stände mit T-Shirts, den Einlass und einen Shuttle-Bus vom Bahnhof. Für jeden dieser Bereiche liegt im Übungsprojekt eine kleine Klasse. Jede braucht noch ein Stück Code von dir.</p>
+  <p>Neu ist in diesem Kapitel fast nichts. Neu ist, dass du die Bausteine aus allen Kapiteln zusammensetzt. In jeder Aufgabe stecken mehrere davon, zum Beispiel <code>static</code> und <code>if</code> oder eine Schleife mit <code>try</code> und <code>catch</code>. Du entscheidest selbst, welchen Baustein du an welcher Stelle brauchst.</p>
+  <p>Die fünf Aufgaben hängen nicht voneinander ab. Jede hat ihre eigene Datei und ihren eigenen Test. Du kannst sie in jeder Reihenfolge lösen.</p>
 
-  <h2>Vorher: kurze Checkliste</h2>
-  <p>Geh die Liste durch, bevor du die Uhr startest. Dann verlierst du in den 60 Minuten keine Zeit mit dem Einrichten.</p>
+  <h2>So arbeitest du in diesem Kapitel</h2>
+  <p>Arbeite allein und ohne die anderen Kapitel dieses Kurses. Wenn du nicht weiterkommst, öffne zuerst einen Tipp und erst danach die Lösung. Geh bei jeder Aufgabe so vor wie in Kapitel 12:</p>
   <ol class="schritte">
-    <li>VS Code ist offen, und das Übungsprojekt ist geladen. Unten links lädt nichts mehr.</li>
-    <li>Du findest den Ordner <code>src/main/java/de/phl/crashkurs/k13</code> mit den drei Ordnern <code>tickets</code>, <code>stage</code> und <code>jam</code>.</li>
-    <li>Du hast schon einmal einen Test gestartet, zum Beispiel aus Kapitel 7. So weißt du, wo der grüne Pfeil ist, und die Tests sind eingerichtet.</li>
-    <li>Im ganzen Projekt ist nichts rot unterstrichen. Sonst läuft mit <code>./gradlew</code> kein einziger Test (Kapitel 12).</li>
-    <li>Du kennst die Regeln aus Kapitel 12: Was nicht kompiliert, kommentierst du aus. Vorgegebene Zeilen, Dateien und Tests änderst du nicht. Nach jedem kleinen Schritt speicherst du und startest den Test.</li>
-    <li>Das Handy liegt weg, andere Tabs sind zu, deine Notizen liegen bereit.</li>
+    <li><strong>Lies die ganze Aufgabe und die Beschreibung über der Methode.</strong> Die Beschreibung steht in der Datei als Kommentar zwischen <code>/**</code> und <code>*/</code>. Sie sagt genau, was die Methode tun soll.</li>
+    <li><strong>Frag dich: Welche Bausteine brauche ich?</strong> Soll dein Code etwas wiederholen, brauchst du eine Schleife. Gibt es mehrere Fälle, brauchst du <code>if</code> oder <code>switch</code>. Kann ein Wert ungültig sein, brauchst du eine Exception.</li>
+    <li><strong>Schreib einen kleinen Schritt, speichere und starte den Test.</strong> Lies bei einem roten Test die Meldung: Welches Beispiel hat der Test geprüft? Was hat er erwartet, und was hat dein Code zurückgegeben?</li>
+    <li><strong>Halte das Projekt kompilierbar.</strong> Ist etwas rot unterstrichen, läuft mit <code>./gradlew</code> kein einziger Test. Was du nicht fertig bekommst, kommentierst du aus.</li>
+    <li><strong>Committe nach jeder fertigen Aufgabe</strong>, wie in Kapitel 12 beschrieben. Das Hochladen (Sync) klappt im Übungsprojekt nicht, in deinem eigenen Repository aber schon.</li>
   </ol>
-  <p>Lies jede Übung ganz, bevor du anfängst. Fang mit dem an, was du sicher kannst. Bleib nicht lange an einer Stelle hängen. Übung 3 bringt die meisten Punkte. Ihre Teile 3.4 und 3.5 bringen auch dann Punkte, wenn 3.1 bis 3.3 noch nicht klappen. Dafür muss das ganze Projekt kompilieren.</p>
+  <p>Vorgegebene Zeilen änderst du nicht: keinen Methodenkopf, keinen Klassennamen und keine Testdatei. Schreib deinen Code an die Stellen mit <code>TODO</code>. In Aufgabe 3 gibt es kein <code>TODO</code>. Dort suchst du Fehler in fertigem Code.</p>
 
-  <h2>Die Uhr: 60 Minuten</h2>
-  <p>Die Uhr zählt rückwärts. Sie läuft weiter, auch wenn du die Seite neu lädst. Zehn Minuten vor Schluss wird sie orange. In der echten Präsenzübung ist das dein Zeichen zum Committen und Synchronisieren (Kapitel 12). Im Probelauf committest du nicht. So kannst du die Probe später zurücksetzen und noch einmal machen.</p>
+  <h2>Die Uhr: teil dir die Zeit ein</h2>
+  <p>Mit der Uhr übst du, dir die Zeit einzuteilen. Such dir eine Dauer aus und starte die Uhr, wenn du mit der ersten Aufgabe anfängst. Rechne mit etwa einem Fünftel der Zeit pro Aufgabe, bei 50 Minuten also mit 10 Minuten. Hängst du länger an einer Stelle, geh zur nächsten Aufgabe und komm später zurück. Die Uhr läuft weiter, auch wenn du die Seite neu lädst. Zehn Minuten vor Schluss wird sie orange.</p>
   <div class="k13-uhr" id="uhr"></div>
 
-  <h2>Die Aufgabenstellung</h2>
-  <div class="k13-blatt">
-    <h3>Probe-Präsenzübung: Musikfestival</h3>
-    <p>Die Probe hat drei Übungen. Übung 1 beginnt mit einer Klasse, die es noch nicht gibt. Übung 3 endet mit Schleifen und einer Liste.</p>
+  <h2>Das Projekt im Überblick</h2>
+  <p>Alle Dateien liegen im Ordner <code>src/main/java/de/phl/crashkurs/k13</code>. Das Enum <code>Pitch</code> und die Klasse <code>Ticket</code> sind fertig. Du liest sie nur.</p>
+  <div class="k13-rahmen">
+  <table class="k13-tab">
+    <tr><th>Aufgabe</th><th>Datei</th><th>Worum es geht</th><th>Bausteine</th></tr>
+    <tr><td>1</td><td><code>Wristband.java</code></td><td>Bändchen, die bis zu einem Festivaltag gelten</td><td><code>static</code>, <code>if</code></td></tr>
+    <tr><td>2</td><td><code>Campsite.java</code> (dazu <code>Pitch.java</code>)</td><td>Preis für einen Stellplatz auf dem Campingplatz</td><td>Exception werfen, <code>switch</code></td></tr>
+    <tr><td>3</td><td><code>MerchStand.java</code></td><td>zwei Denkfehler bei den T-Shirt-Ständen finden</td><td>Fehler finden, <code>static</code>, for-each-Schleife</td></tr>
+    <tr><td>4</td><td><code>Gate.java</code> (dazu <code>Ticket.java</code>)</td><td>Tickets am Einlass prüfen</td><td>Liste, for-each-Schleife, <code>try</code> und <code>catch</code></td></tr>
+    <tr><td>5</td><td><code>Shuttle.java</code></td><td>Leute mit dem Shuttle vom Bahnhof zum Gelände bringen</td><td><code>while</code>, <code>&amp;&amp;</code>, <code>if</code>, Attribute</td></tr>
+  </table>
+  </div>
+  <p>Im Ausgangszustand zeigt VS Code zwei gelbe Warnungen, zum Beispiel <span class="meldung">The value of the field Shuttle.seats is not used</span>. Das heißt: Dein Code benutzt das Attribut noch nirgends. Die Warnung verschwindet, sobald du es verwendest.</p>
 
-    <h4>Deine Dateien</h4>
-    <p>Du schreibst nur im Ordner <code>src/main/java/de/phl/crashkurs/k13/</code>. Dort bearbeitest du nur fünf Dateien: <code>tickets/TicketCalculator.java</code> (diese Datei legst du neu an), <code>stage/FestivalApp.java</code>, <code>jam/Musician.java</code>, <code>jam/Crowd.java</code> und <code>jam/Festival.java</code>.</p>
-    <p>Alle anderen Dateien sind fertig, auch die Tests. Ändere sie nicht. In den vorgegebenen Dateien lässt du den Klassennamen, die Attribute, die Konstruktoren und die Methodenköpfe unverändert. Schreib deinen Code nur an die markierten TODO-Stellen (und ersetze dort eventuelle Platzhalter, wie im Kommentar angegeben).</p>
-    <p>Die Tests lesen teilweise auch deinen Quelltext. Schreib deshalb die Werte, die in der Aufgabe stehen, direkt in den Aufruf, zum Beispiel <code>new Stage("Seebühne", 4)</code>, und nicht zuerst in eigene Hilfsvariablen. Lies jede Übung einmal ganz, bevor du anfängst: Manchmal musst du dir einen Wert schon vor einem späteren Schritt merken.</p>
+  <h2>Eine Exception in einer Schleife abfangen</h2>
+  <p>Hier setzt du zwei bekannte Bausteine neu zusammen: <code>try</code> und <code>catch</code> stehen im Block einer Schleife. Das Beispiel benutzt die Methode <code>fee</code> aus Kapitel 11. Sie berechnet die Parkgebühr und wirft eine Exception, wenn die Parkdauer kleiner als 1 Stunde ist. Diesmal rechnet das Programm für drei Autos auf dem Festivalparkplatz nacheinander die Gebühr aus. Das zweite Auto hat eine ungültige Parkdauer von 0 Stunden.</p>
+  <p>Klick dich zuerst durch die Fassung mit <code>try</code> im Block der Schleife. Stell dann die Fassung mit <code>try</code> um die ganze Schleife ein. Achte darauf, was nach der Exception mit dem dritten Auto passiert.</p>
 
-    <h3>Übung 1: Ticketpreis ausrechnen (20 Punkte)</h3>
-    <p>Fünf Leute aus deinem Semester fahren zusammen aufs Festival. Ein kleines Programm soll ausrechnen, was ihre Tickets zusammen kosten.</p>
+  <div id="lauf1"></div>
+
+  <p>Steht <code>try</code> im Block der Schleife, fängt <code>catch</code> die Exception für genau dieses eine Auto ab. Danach holt die Schleife den nächsten Wert, und das dritte Auto bekommt seine Gebühr. Steht <code>try</code> um die ganze Schleife, bricht Java bei der Exception die ganze Schleife ab. Das dritte Auto prüft das Programm dann gar nicht mehr.</p>
+
+  <div class="merke">
+    <h3>Fünf Regeln zum Merken</h3>
     <ol>
-      <li>Im Ordner <code>k13/tickets</code> gibt es noch keine Klasse. Leg dort eine neue Java-Datei für die Klasse <code>TicketCalculator</code> an. Ihre <code>package</code>-Zeile lautet <code>package de.phl.crashkurs.k13.tickets;</code>. <span class="k13-pkt">(4 Punkte)</span></li>
-      <li>Das Programm braucht einen Startpunkt. Schreib in die Klasse die Methode <code>public static void main(String[] args)</code>. <span class="k13-pkt">(3 Punkte)</span></li>
-      <li>Ein Ticket kostet 79 Euro. Deklariere dafür in <code>main</code> die lokale Variable <code>ticketPrice</code> vom Typ <code>int</code>. Initialisiere sie in derselben Zeile mit <code>79</code>. <span class="k13-pkt">(2 Punkte)</span></li>
-      <li>Deklariere in <code>main</code> eine zweite lokale <code>int</code>-Variable mit dem Namen <code>groupSize</code>. Initialisiere sie in derselben Zeile mit dem Startwert <code>5</code>. <span class="k13-pkt">(2 Punkte)</span></li>
-      <li>Berechne in <code>main</code> den Gesamtpreis: Ticketpreis mal Gruppengröße. Speichere das Ergebnis in einer neuen lokalen <code>int</code>-Variable mit dem Namen <code>totalPrice</code>. Rechne dabei mit den beiden Variablen, nicht mit festen Zahlen. <span class="k13-pkt">(4 Punkte)</span></li>
-      <li>Gib zum Schluss den Gesamtpreis mit <code>System.out.println</code> aus. Die Ausgabe beginnt mit <code>Gesamtpreis:</code>. Danach folgen ein Leerzeichen und der Wert von <code>totalPrice</code>. <span class="k13-pkt">(5 Punkte)</span></li>
-    </ol>
-
-    <h3>Übung 2: Bands auf die Bühne (30 Punkte)</h3>
-    <p>Im Paket <code>de.phl.crashkurs.k13.stage</code> liegen fertige Klassen für Bands, Songs und eine Bühne. Du benutzt diese Klassen, ohne sie zu ändern.</p>
-    <h4>Die vorgegebenen Klassen</h4>
-    <p>Drei Klassen sind vorgegeben: <code>Band</code>, <code>Song</code> und <code>Stage</code>. Hier steht, welche Konstruktoren und Methoden jede Klasse hat.</p>
-    <p><strong><code>Band</code>: eine Band.</strong> Jede Band hat einen Namen (<code>name</code>), eine Musikrichtung (<code>genre</code>) und eine Zahl von Fans (<code>fans</code>).</p>
-    <ul>
-      <li><code>Band(final String name, final String genre, final int fans)</code>: der Konstruktor. Du übergibst ihm den Namen, die Musikrichtung und die Zahl der Fans am Anfang in genau dieser Reihenfolge.</li>
-      <li><code>void play(final Song song)</code>: Die Band spielt den übergebenen Song. Dabei gewinnt sie so viele Fans dazu, wie der Song beliebt ist. Außerdem gibt die Methode aus, welchen Song die Band spielt.</li>
-      <li><code>String getInfo()</code>: gibt einen Text über die Band als Rückgabewert zurück, mit Name, Musikrichtung und aktueller Zahl der Fans.</li>
-      <li><code>String getName()</code>, <code>String getGenre()</code> und <code>int getFans()</code>: Getter für den Namen, die Musikrichtung und die aktuelle Zahl der Fans.</li>
-    </ul>
-    <p><strong><code>Song</code>: ein Song.</strong> Ein Song hat einen Titel (<code>title</code>) und eine Beliebtheit (<code>popularity</code>). Die Beliebtheit ist die Zahl der Fans, die eine Band mit diesem Song dazugewinnt.</p>
-    <ul>
-      <li><code>Song(final String title, final int popularity)</code>: der Konstruktor. Du übergibst zuerst den Titel, dann die Beliebtheit.</li>
-      <li><code>String getInfo()</code>: gibt einen Text mit Titel und Beliebtheit als Rückgabewert zurück.</li>
-    </ul>
-    <p><strong><code>Stage</code>: eine Bühne.</strong> Eine Bühne hat einen Namen (<code>name</code>) und eine feste Zahl von Plätzen im Programm (<code>capacity</code>). In der Liste <code>bands</code> merkt sie sich, welche Bands auf ihr spielen.</p>
-    <ul>
-      <li><code>Stage(final String name, final int capacity)</code>: der Konstruktor. Du übergibst zuerst den Namen, dann die Zahl der Plätze.</li>
-      <li><code>List&lt;Band&gt; getBands()</code>: gibt die Liste der Bands auf dieser Bühne als Rückgabewert zurück.</li>
-      <li><code>void addBand(final Band band)</code>: nimmt die Band ins Programm auf und gibt eine Meldung dazu aus. Ist kein Platz mehr frei, wirft die Methode eine <code>IllegalStateException</code>.</li>
-      <li><code>String getInfo()</code>: gibt einen Text mit dem Namen der Bühne, der Zahl der Plätze und der Zahl der Bands als Rückgabewert zurück.</li>
-    </ul>
-    <h4>Was du tust</h4>
-    <p>Schreib deinen ganzen Code für Übung 2 in die <code>main</code>-Methode von <code>FestivalApp</code> im Paket <code>de.phl.crashkurs.k13.stage</code>. Halte die Reihenfolge der Schritte ein.</p>
-    <ol>
-      <li>Erzeuge die Bühne: ein <code>Stage</code>-Objekt mit dem Namen <code>"Seebühne"</code> und 4 Plätzen. Speichere es in einer Variable. <span class="k13-pkt">(3 Punkte)</span></li>
-      <li>Erzeuge zwei <code>Band</code>-Objekte und speichere jedes in einer Variable. Gib danach für beide Bands den Rückgabewert von <code>getInfo()</code> aus. <span class="k13-pkt">(6 Punkte)</span>
-        <ul><li><code>"The Lindens"</code>, Musikrichtung <code>"Indie"</code>, 1.200 Fans</li><li><code>"Neon Cats"</code>, Musikrichtung <code>"Pop"</code>, 950 Fans</li></ul></li>
-      <li>Nimm beide Bands ins Programm der Seebühne auf. Ruf dafür zweimal <code>addBand</code> an deiner Bühne auf. <span class="k13-pkt">(4 Punkte)</span></li>
-      <li>Erzeuge zwei <code>Song</code>-Objekte und speichere jedes in einer Variable: <span class="k13-pkt">(4 Punkte)</span>
-        <ul><li><code>"Summer Lights"</code> mit der Beliebtheit 150</li><li><code>"Night Drive"</code> mit der Beliebtheit 320</li></ul></li>
-      <li>Lass beide Bands ihren Song spielen: „The Lindens“ spielen „Summer Lights“, und „Neon Cats“ spielen „Night Drive“. Ruf dafür <code>play</code> an der jeweiligen Band auf und übergib den passenden Song. Gib danach von beiden Bands noch einmal den Rückgabewert von <code>getInfo()</code> aus. <span class="k13-pkt">(5 Punkte)</span></li>
-      <li>Berechne für jede Band, wie viele Fans sie mit ihrem Song gewonnen hat: Fans nachher minus Fans vorher. Hol dafür die Zahl der Fans jeweils mit <code>getFans()</code> (einmal vor dem Spielen und einmal nach dem Spielen) und rechne nicht mit festen Zahlen. Gib das Ergebnis in genau dieser Form aus: <span class="k13-pkt">(8 Punkte)</span>
-        <ul><li><code>Neue Fans The Lindens: &lt;Zahl&gt;</code></li><li><code>Neue Fans Neon Cats: &lt;Zahl&gt;</code></li></ul>
-        <p>Den Namen der Band tippst du nicht selbst in den Text. Hol ihn mit <code>getName()</code>. An der Stelle von <code>&lt;Zahl&gt;</code> steht dein berechnetes Ergebnis.</p></li>
-    </ol>
-
-    <h3>Übung 3: Der Auftritt (60 Punkte)</h3>
-    <p>In dieser Übung arbeitest du mit <code>switch</code>, <code>if</code> und Schleifen. Bei einem Auftritt spielt ein Musiker Soli, und das Publikum jubelt für Zugaben. Beides kostet Kraft: Jedes Solo kostet das Publikum Energie. Jeder Jubel kostet den Musiker Energie. Die Klassen liegen im Paket <code>de.phl.crashkurs.k13.jam</code>.</p>
-    <h4>Die vorgegebenen Klassen</h4>
-    <p>Im Paket liegen drei Klassen: <code>Musician</code>, <code>Crowd</code> und <code>Festival</code>. Dazu kommen zwei Enums: <code>Instrument</code> mit den Werten <code>GUITAR</code>, <code>DRUMS</code> und <code>KEYBOARD</code> sowie <code>Status</code> mit den Werten <code>READY</code>, <code>BREAK</code> und <code>DONE</code>.</p>
-    <p><strong><code>Musician</code>: ein Musiker.</strong> Er hat die Attribute Name (<code>name</code>), Instrument (<code>instrument</code>), Energie (<code>energy</code>) und Status (<code>status</code>). Der Status steht am Anfang auf <code>READY</code>.</p>
-    <ul>
-      <li><code>Musician(final String name, final Instrument instrument, final int energy)</code>: der Konstruktor. Du übergibst Name, Instrument und Energie in genau dieser Reihenfolge.</li>
-      <li><code>String playSolo(final Crowd crowd)</code>: Der Musiker spielt ein Solo für das übergebene Publikum. Dabei verliert das Publikum Energie. Der Rückgabewert ist die Beschreibung des Solos. Diese Methode schreibst du in 3.1.</li>
-      <li><code>void loseEnergy(final int amount)</code>: zieht <code>amount</code> von der Energie des Musikers ab und setzt danach den Status neu. Diese Methode schreibst du in 3.2.</li>
-      <li>Getter: <code>getName()</code>, <code>getInstrument()</code>, <code>getEnergy()</code> und <code>getStatus()</code>.</li>
-    </ul>
-    <p><strong><code>Crowd</code>: das Publikum vor einer Bühne.</strong> Es hat die Attribute Name (<code>name</code>), Energie (<code>energy</code>), Lautstärke (<code>volume</code>) und Status (<code>status</code>, am Anfang <code>READY</code>).</p>
-    <ul>
-      <li><code>Crowd(final String name, final int energy, final int volume)</code>: der Konstruktor. Du übergibst Name, Energie und Lautstärke in genau dieser Reihenfolge.</li>
-      <li><code>String cheer(final Musician musician)</code>: Das Publikum jubelt dem übergebenen Musiker zu und will eine Zugabe. Der Musiker verliert dabei so viel Energie, wie das Publikum laut ist. Der Rückgabewert ist ein Satz, der den Jubel beschreibt. Diese Methode ist fertig. Ändere sie nicht.</li>
-      <li><code>void loseEnergy(final int amount)</code>: arbeitet genau wie beim Musiker, nur für das Publikum. Diese Methode schreibst du in 3.2.</li>
-      <li>Getter: <code>getName()</code>, <code>getEnergy()</code>, <code>getVolume()</code> und <code>getStatus()</code>.</li>
-    </ul>
-    <p><strong><code>Festival</code></strong> hat das Array <code>names</code> mit den Namen von 20 Bühnen und drei <code>static</code>-Methoden:</p>
-    <ul>
-      <li><code>public static void main(final String[] args)</code>: startet einen Auftritt (3.4).</li>
-      <li><code>public static void jam(final Musician musician, final Crowd crowd)</code>: lässt den Auftritt laufen, bis der Musiker oder das Publikum nicht mehr kann (3.3).</li>
-      <li><code>public static List&lt;Crowd&gt; createCrowds()</code>: erzeugt das Publikum für 20 Auftritte und gibt es als Liste zurück (3.5).</li>
-    </ul>
-    <h4>Was du tust</h4>
-    <p>Du schreibst deinen Code in <code>Musician</code>, <code>Crowd</code> und <code>Festival</code>. Alle Methodenköpfe sind vorgegeben.</p>
-    <ol>
-      <li><strong><code>playSolo</code> in <code>Musician</code>.</strong> Die Stärke und die Beschreibung des Solos hängen vom Attribut <code>instrument</code> ab. Entscheide beides mit einem <code>switch</code> über <code>instrument</code>:
-        <div class="k13-rahmen"><table><tr><th>Instrument</th><th>Stärke</th><th>Beschreibung</th></tr><tr><td><code>GUITAR</code></td><td>12</td><td><code>Gitarrensolo</code></td></tr><tr><td><code>DRUMS</code></td><td>18</td><td><code>Schlagzeugsolo</code></td></tr><tr><td><code>KEYBOARD</code></td><td>8</td><td><code>Keyboardsolo</code></td></tr></table></div>
-        Das Publikum verliert so viel Energie, wie das Solo stark ist. Ruf dafür <code>loseEnergy</code> am übergebenen Parameter <code>crowd</code> auf und übergib die Stärke. Am Ende gibt die Methode die Beschreibung als Rückgabewert zurück, zum Beispiel <code>"Gitarrensolo"</code>. Sie erzeugt selbst keine Ausgabe. <span class="k13-pkt">(18 Punkte)</span></li>
-      <li><strong><code>loseEnergy</code> in <code>Musician</code> und in <code>Crowd</code>.</strong> Beide Methoden arbeiten genau gleich. Zuerst ziehst du <code>amount</code> vom Attribut <code>energy</code> ab. Der Wert darf dabei negativ werden. Danach setzt du das Attribut <code>status</code> mit einer Kette aus <code>if</code>, <code>else if</code> und <code>else</code>: <span class="k13-pkt">(je 6 Punkte)</span>
-        <div class="k13-rahmen"><table><tr><th>Energie danach</th><th>Status</th></tr><tr><td>mehr als 10</td><td><code>READY</code></td></tr><tr><td>0 bis 10 (0 und 10 zählen mit)</td><td><code>BREAK</code></td></tr><tr><td>weniger als 0</td><td><code>DONE</code></td></tr></table></div></li>
-      <li><strong><code>jam</code> in <code>Festival</code>.</strong> Ein Auftritt läuft in Runden. Schreib dafür eine <code>while</code>-Schleife. Sie läuft, solange der Musiker <strong>und</strong> das Publikum den Status <code>READY</code> haben. In jeder Runde passiert zweierlei, in dieser Reihenfolge: <span class="k13-pkt">(14 Punkte)</span>
-        <ul><li>Der Musiker spielt genau ein Solo für das Publikum: Ruf <code>playSolo</code> einmal am Musiker auf. Gib dazu eine Zeile genau in dieser Form aus: Name des Musikers, ein Leerzeichen, <code>spielt</code>, ein Leerzeichen und der Rückgabewert von <code>playSolo</code>. Beispiel: <code>Mia Stern spielt Schlagzeugsolo</code>.</li>
-          <li>Prüfe danach, ob das Publikum immer noch den Status <code>READY</code> hat. Nur dann jubelt es dem Musiker mit <code>cheer</code> zu. Gib den Rückgabewert von <code>cheer</code> ebenfalls aus.</li></ul>
-        <p>Nach der Schleife gibst du genau eine letzte Zeile aus, die den Status von beiden enthält. Beispiel: <code>Ende: Mia Stern ist READY, Zeltbühne ist BREAK</code>.</p></li>
-      <li><strong><code>main</code> in <code>Festival</code>.</strong> Erzeuge zwei Objekte und ruf danach <code>jam</code> mit dem Musiker und dem Publikum auf: <span class="k13-pkt">(6 Punkte)</span>
-        <ul><li>einen Musiker mit dem Namen <code>"Mia Stern"</code>, dem Instrument <code>DRUMS</code> und 95 Energie,</li><li>ein Publikum mit dem Namen <code>"Zeltbühne"</code>, 75 Energie und der Lautstärke 12.</li></ul></li>
-      <li><strong><code>createCrowds</code> in <code>Festival</code>.</strong> Die Methode legt die Liste <code>crowds</code> schon an und gibt sie am Ende zurück. Schreib dazwischen eine <code>for</code>-Schleife mit einem Index von 0 bis 19. Sie erzeugt genau 20 <code>Crowd</code>-Objekte und fügt jedes mit <code>crowds.add(…)</code> in die Liste <code>crowds</code> ein. Die drei Werte für den Konstruktor hängen vom aktuellen Index der Schleife ab: <span class="k13-pkt">(10 Punkte)</span>
-        <ul><li>Name: der Wert aus dem Array <code>names</code> an diesem Index,</li><li>Energie: 30 plus 4 mal den Index,</li><li>Lautstärke: 8 plus 3 mal den Index.</li></ul>
-        <p>Zur Kontrolle: Das erste Objekt (Index 0) heißt „Zeltbühne“, hat 30 Energie und die Lautstärke 8. Das zweite Objekt (Index 1) heißt „Seebühne“, hat 34 Energie und die Lautstärke 11.</p></li>
+      <li>Ein Attribut mit <code>static</code> gibt es nur einmal. Es gehört der Klasse, und alle Objekte teilen es sich. Ändert eine Methode es, gilt der neue Wert für alle Objekte.</li>
+      <li>Eine Methode mit <code>static</code> rufst du über den Klassennamen auf, zum Beispiel <code>Wristband.nextDay()</code>. Eine Methode ohne <code>static</code> rufst du an einem Objekt auf, zum Beispiel <code>lena.isValid()</code>.</li>
+      <li>Zuerst prüfen, dann rechnen: Ist ein Wert ungültig, wirfst du die Exception am Anfang der Methode, bevor sich etwas ändert.</li>
+      <li>Soll eine Schleife nach einer Exception weiterlaufen, stehen <code>try</code> und <code>catch</code> im Block der Schleife.</li>
+      <li>Steht ein <code>return</code> im Block einer Schleife, endet mit ihm die ganze Methode und damit auch die Schleife.</li>
     </ol>
   </div>
 
-  <h2>Nach 60 Minuten: Auswertung</h2>
-  <p>Ist die Zeit um, hörst du auf zu schreiben. Speichere alle Dateien. Dann startest du alle Tests des Probelaufs. In VS Code findest du sie in der Ansicht „Testing“ (das Symbol mit dem Reagenzglas links) unter den Paketen, die mit <code>de.phl.crashkurs.k13</code> beginnen. Starte jedes Paket mit dem grünen Pfeil daneben. Alle Tests auf einmal startest du im Terminal mit diesem Befehl:</p>
-  <div class="code" data-code='./gradlew test --tests "*k13*"'></div>
-  <p>Jeder Test gehört zu einer Teilaufgabe und bringt deren Punkte, wenn er grün ist. Ein Test zählt ganz oder gar nicht. Hak unten an, welche Tests bei dir grün sind. Der Rechner zählt deine Punkte zusammen.</p>
-  <div class="k13-punkte" id="punkte"></div>
-  <p>Zwei Dinge musst du dabei wissen:</p>
-  <ul>
-    <li><strong>Ist irgendwo im Projekt etwas rot unterstrichen, läuft mit <code>./gradlew</code> kein einziger Test.</strong> Dann hast du in der Probe 0 Punkte, auch für Aufgaben, die stimmen. Das ist ein häufiger Grund für verlorene Punkte. Deshalb steht in Kapitel 12: Was nicht kompiliert, kommentierst du aus.</li>
-    <li><strong>3.3 baut auf 3.1 und 3.2 auf.</strong> Der Test für <code>jam</code> lässt den Musiker wirklich spielen. Er kann nur grün werden, wenn <code>playSolo</code> und beide <code>loseEnergy</code>-Methoden stimmen. Ist 3.3 rot, schau deshalb zuerst, ob 3.1 und 3.2 grün sind.</li>
-  </ul>
+  <h2>Vier Fehler beim Zusammensetzen</h2>
+  <p>Diese Fehler passieren oft, wenn mehrere Bausteine zusammenkommen. Die ersten beiden unterstreicht VS Code rot. Der dritte erzeugt eine gelbe Warnung. Den vierten findet erst der Test.</p>
+  <div id="fehler"></div>
 
-  <h2>Lösung mit Erklärung</h2>
-  <p>Lies die Lösung erst, wenn du die Auswertung gemacht hast. Vergleiche sie Zeile für Zeile mit deinem Code. Zu jeder Teilaufgabe steht dabei, in welchem Kapitel du das Thema wiederholen kannst. Hak eine Übung ab, wenn alle ihre Tests grün sind.</p>
+  <h2>Die fünf Aufgaben</h2>
+  <p>Öffne das Übungsprojekt in VS Code und geh in den Ordner <code>src/main/java/de/phl/crashkurs/k13</code>. Zu jeder Aufgabe gehört ein Test. Du startest ihn in der Testdatei mit dem grünen Pfeil links neben dem Klassennamen. Oder du tippst den Befehl aus der Aufgabe ins Terminal (unter Windows <code>.\gradlew.bat</code> statt <code>./gradlew</code>).</p>
+  <p>Am Anfang sind fast alle Tests rot. In Aufgabe 3 sind drei Tests schon grün. Sie zeigen dir, welche Fälle schon stimmen. Hak jede Aufgabe ab, sobald ihr Test grün ist. Die Häkchen sind deine Checkliste.</p>
   <div id="aufgaben"></div>
 
+  <h2>Am Ende: alles prüfen</h2>
+  <p>Wenn du fertig bist oder die Zeit um ist, speichere alle Dateien. Starte dann alle Tests dieses Kapitels auf einmal. In VS Code findest du sie in der Ansicht „Testing“ (das Reagenzglas links) unter <code>de.phl.crashkurs.k13</code>. Im Terminal startest du sie mit diesem Befehl:</p>
+  <div class="code" data-code='./gradlew test --tests "*k13*"' data-legende="nein"></div>
+  <p>Geh danach diese Liste durch:</p>
+  <ol class="schritte">
+    <li>Im ganzen Projekt ist nichts rot unterstrichen. Sonst läuft mit <code>./gradlew</code> kein einziger Test.</li>
+    <li>Jede Aufgabe, deren Test grün ist, hat ihr Häkchen.</li>
+    <li>Code, der nicht fertig wurde, hast du auskommentiert. Methoden mit Rückgabewert behalten einen Platzhalter wie <code>return 0;</code> oder <code>return false;</code> (Kapitel 12).</li>
+    <li>Du hast deinen letzten Stand committet.</li>
+  </ol>
+
   <h2>Wie geht es weiter?</h2>
-  <p>Hast du unter 66 Punkte erreicht? Dann such dir in der Tabelle die Teilaufgaben, bei denen du Punkte verloren hast. Wiederhole genau diese Kapitel. Mach die Probe danach noch einmal. Setz dafür die Dateien in <code>k13</code> zurück: Öffne in VS Code die Ansicht „Source Control“ (Quellcodeverwaltung). Klick dort bei jeder geänderten Datei auf den gebogenen Pfeil „Discard Changes“ (Änderungen verwerfen). Die neue Datei <code>TicketCalculator.java</code> löschst du. Das klappt nur, solange du die Probe nicht committet hast.</p>
+  <p>Ist eine Aufgabe rot geblieben, wiederhole die Kapitel aus der Tabelle. Danach löst du die Aufgabe noch einmal. Willst du von vorn anfangen, setzt du die Dateien zurück: Öffne in VS Code die Ansicht „Source Control“ (Quellcodeverwaltung). Klick dort bei jeder geänderten Datei auf den gebogenen Pfeil „Discard Changes“ (Änderungen verwerfen). Das klappt nur für Änderungen, die du noch nicht committet hast. In Aufgaben, die du schon committet hast, löschst du deinen Code von Hand wieder.</p>
   <div class="k13-rahmen">
-  <table class="zeichen">
-    <tr><th>Teilaufgabe</th><th>Thema</th><th>Kapitel</th></tr>
-    <tr><td>1.1 bis 1.2</td><td>Klasse im richtigen Paket anlegen, <code>main</code></td><td>1</td></tr>
-    <tr><td>1.3 bis 1.6</td><td>Variablen, Rechnen, Ausgabe mit Text und Zahl</td><td>2</td></tr>
-    <tr><td>2.1 bis 2.4</td><td>Objekte mit <code>new</code> erzeugen, Methoden an Objekten aufrufen</td><td>4 und 5</td></tr>
-    <tr><td>2.5 bis 2.6</td><td>Objekt übergeben, Wert vorher merken, Differenz</td><td>5</td></tr>
-    <tr><td>3.1</td><td><code>switch</code> über ein Enum, Methode eines übergebenen Objekts</td><td>8</td></tr>
-    <tr><td>3.2</td><td><code>if</code>, <code>else if</code>, <code>else</code>, Status setzen</td><td>7</td></tr>
-    <tr><td>3.3</td><td><code>while</code> mit <code>&amp;&amp;</code>, <code>if</code> in der Schleife</td><td>9</td></tr>
-    <tr><td>3.4</td><td>Objekte mit Enum-Wert erzeugen, <code>static</code>-Methode aufrufen</td><td>4, 6 und 8</td></tr>
-    <tr><td>3.5</td><td><code>for</code>, Array, Liste</td><td>10</td></tr>
+  <table class="k13-tab">
+    <tr><th>Aufgabe</th><th>Thema</th><th>Kapitel</th></tr>
+    <tr><td>1</td><td><code>static</code>-Attribut und <code>static</code>-Methode, Methode eines Objekts, Vergleich mit <code>&lt;=</code></td><td>2, 4, 6 und 7</td></tr>
+    <tr><td>2</td><td>Exception werfen, <code>switch</code> über ein Enum, Rückgabewert</td><td>3, 7, 8 und 11</td></tr>
+    <tr><td>3</td><td>Testmeldung lesen, Code im Kopf durchgehen, <code>static</code>, for-each-Schleife</td><td>6, 10 und 12</td></tr>
+    <tr><td>4</td><td>Liste, for-each-Schleife, <code>try</code> und <code>catch</code>, <code>e.getMessage()</code></td><td>10 und 11</td></tr>
+    <tr><td>5</td><td><code>while</code> mit <code>&amp;&amp;</code>, <code>if</code> im Block, Attribute ändern</td><td>3, 4, 7 und 9</td></tr>
   </table>
   </div>
 
@@ -198,33 +127,40 @@
 <script src="kurs.js"></script>
 <script>
 (function () {
-  var el = Kurs.el, knopf = Kurs.knopf;
+  var el = Kurs.el, knopf = Kurs.knopf, urteil = Kurs.urteil;
 
   /* ---------- Die Uhr (nur in diesem Kapitel) ----------
-     Zustand im Browserspeicher unter crashkurs-k13-uhr: { laeuft, start (ms), verbraucht (ms) }. */
-  var DAUER = 60 * 60 * 1000, KNAPP = 10 * 60 * 1000, SCHLUESSEL = 'crashkurs-k13-uhr';
-  var uhrBox = document.getElementById('uhr'), zeitEl, standEl, startK, pauseK, nullK, takt = null, titel = document.title, letzterStand = '';
+     Zustand im Browserspeicher unter crashkurs-k13-uhr: { laeuft, start (ms), verbraucht (ms), dauer (Minuten) }. */
+  var DAUERN = [30, 50, 75], STANDARD = 50, KNAPP = 10 * 60 * 1000, SCHLUESSEL = 'crashkurs-k13-uhr';
+  var uhrBox = document.getElementById('uhr'), zeitEl, standEl, startK, pauseK, nullK, dauerK = [], takt = null, titel = document.title, letzterStand = '';
   function lies() {
-    try { var z = JSON.parse(Kurs.holen(SCHLUESSEL)); if (z && typeof z.verbraucht === 'number') return z; } catch (e) {}
-    return { laeuft: false, start: 0, verbraucht: 0 };
+    try {
+      var z = JSON.parse(Kurs.holen(SCHLUESSEL));
+      if (z && typeof z.verbraucht === 'number') { if (DAUERN.indexOf(z.dauer) < 0) z.dauer = STANDARD; return z; }
+    } catch (e) {}
+    return { laeuft: false, start: 0, verbraucht: 0, dauer: STANDARD };
   }
   function schreib(z) { Kurs.merken(SCHLUESSEL, JSON.stringify(z)); }
-  function rest(z, jetzt) { return Math.max(0, DAUER - z.verbraucht - (z.laeuft ? jetzt - z.start : 0)); }
+  function rest(z, jetzt) { return Math.max(0, z.dauer * 60 * 1000 - z.verbraucht - (z.laeuft ? jetzt - z.start : 0)); }
   function format(ms) { var s = Math.ceil(ms / 1000), m = Math.floor(s / 60); s = s % 60; return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s; }
   function zeigeUhr(jetzt) {
-    var z = lies(), r = rest(z, jetzt == null ? Date.now() : jetzt), stand;
+    var z = lies(), r = rest(z, jetzt == null ? Date.now() : jetzt), stand, begonnen = z.laeuft || z.verbraucht > 0 || z.start > 0;
     zeitEl.textContent = format(r);
     uhrBox.classList.toggle('k13-knapp', r > 0 && r <= KNAPP);
     uhrBox.classList.toggle('k13-aus', r === 0);
-    if (r === 0) stand = 'Die Zeit ist um. Hör auf zu schreiben und speichere alle Dateien. Dann geht es mit der Auswertung weiter.';
-    else if (z.laeuft && r <= KNAPP) stand = 'Noch höchstens zehn Minuten. Speichere jetzt. Was nicht kompiliert, kommentierst du aus. In der echten Präsenzübung committest und synchronisierst du jetzt.';
-    else if (z.laeuft) stand = 'Die Uhr läuft. Viel Erfolg.';
-    else if (z.verbraucht > 0) stand = 'Die Uhr ist angehalten.';
-    else stand = 'Die Uhr steht auf 60 Minuten. Starte sie, wenn du die Checkliste durchgegangen bist.';
+    if (r === 0) stand = 'Die Zeit ist um. Speichere alle Dateien und geh die Liste unter „Am Ende: alles prüfen“ durch.';
+    else if (z.laeuft && r <= KNAPP) stand = 'Noch höchstens zehn Minuten. Speichere jetzt. Was nicht kompiliert, kommentierst du aus. Committe deinen Stand.';
+    else if (z.laeuft) stand = 'Die Uhr läuft. Rechne mit etwa ' + (z.dauer / 5) + ' Minuten pro Aufgabe.';
+    else if (begonnen) stand = 'Die Uhr ist angehalten.';
+    else stand = 'Die Uhr steht auf ' + z.dauer + ' Minuten. Starte sie, wenn du mit der ersten Aufgabe anfängst.';
     if (stand !== letzterStand) { standEl.textContent = stand; letzterStand = stand; }
     startK.disabled = z.laeuft || r === 0;
     pauseK.disabled = !z.laeuft || r === 0;
-    startK.textContent = z.verbraucht > 0 && !z.laeuft ? 'Weiter' : 'Start';
+    startK.textContent = begonnen && !z.laeuft ? 'Weiter' : 'Start';
+    dauerK.forEach(function (k) {
+      var an = k._minuten === z.dauer;
+      k.classList.toggle('an', an); k.setAttribute('aria-pressed', an ? 'true' : 'false'); k.disabled = begonnen;
+    });
     document.title = z.laeuft && r > 0 ? format(r) + ' – ' + titel : titel;
     if (z.laeuft && r > 0 && !takt) takt = setInterval(function () { zeigeUhr(); }, 1000);
     if ((!z.laeuft || r === 0) && takt) { clearInterval(takt); takt = null; }
@@ -232,95 +168,191 @@
   function uhr() {
     zeitEl = el('div', 'k13-zeit'); zeitEl.setAttribute('role', 'timer'); zeitEl.setAttribute('aria-label', 'Restzeit in Minuten und Sekunden');
     var rechts = el('div', 'k13-rechts');
+    var dauer = el('div', 'k13-dauer'); dauer.appendChild(el('span', null, 'Dauer:'));
+    DAUERN.forEach(function (m) {
+      var k = knopf('chip', m + ' Minuten', function () { var z = lies(); if (z.laeuft || z.verbraucht > 0 || z.start > 0) return; z.dauer = m; schreib(z); zeigeUhr(); });
+      k._minuten = m; dauerK.push(k); dauer.appendChild(k);
+    });
     standEl = el('p', 'k13-stand'); standEl.setAttribute('aria-live', 'polite');
     var reihe = el('div', 'k13-knoepfe');
     startK = knopf('knopf haupt', 'Start', function () { var z = lies(); z.laeuft = true; z.start = Date.now(); schreib(z); zeigeUhr(); });
-    pauseK = knopf('knopf', 'Pause', function () { var z = lies(), j = Date.now(); z.verbraucht = Math.min(DAUER, z.verbraucht + j - z.start); z.laeuft = false; schreib(z); zeigeUhr(); });
-    nullK = knopf('knopf', 'Zurücksetzen', function () { schreib({ laeuft: false, start: 0, verbraucht: 0 }); zeigeUhr(); });
+    pauseK = knopf('knopf', 'Pause', function () { var z = lies(), j = Date.now(); z.verbraucht = Math.min(z.dauer * 60 * 1000, z.verbraucht + j - z.start); z.laeuft = false; schreib(z); zeigeUhr(); });
+    nullK = knopf('knopf', 'Zurücksetzen', function () { var z = lies(); schreib({ laeuft: false, start: 0, verbraucht: 0, dauer: z.dauer }); zeigeUhr(); });
     [startK, pauseK, nullK].forEach(function (k) { reihe.appendChild(k); });
-    rechts.appendChild(standEl); rechts.appendChild(reihe);
+    rechts.appendChild(dauer); rechts.appendChild(standEl); rechts.appendChild(reihe);
     uhrBox.appendChild(zeitEl); uhrBox.appendChild(rechts);
     zeigeUhr();
   }
 
-  /* ---------- Punkterechner (nur in diesem Kapitel) ---------- */
-  var TESTS = [
-    ['Übung 1', [['1.1 Klasse TicketCalculator im Paket tickets', 4], ['1.2 public static void main(String[] args)', 3], ['1.3 int ticketPrice = 79', 2], ['1.4 int groupSize = 5', 2], ['1.5 int totalPrice = ticketPrice * groupSize', 4], ['1.6 Ausgabe „Gesamtpreis: 395“', 5]]],
-    ['Übung 2', [['2.1 Bühne „Seebühne“ mit 4 Plätzen', 3], ['2.2 zwei Bands erzeugt und mit getInfo() ausgegeben', 6], ['2.3 beide Bands auf die Bühne', 4], ['2.4 zwei Songs erzeugt', 4], ['2.5 die Bands spielen, danach getInfo() erneut', 5], ['2.6 neue Fans mit getName() und Differenz ausgegeben', 8]]],
-    ['Übung 3', [['3.1 playSolo mit switch über das Instrument', 18], ['3.2 loseEnergy im Musician setzt Energie und Status', 6], ['3.2 loseEnergy in Crowd setzt Energie und Status', 6], ['3.3 jam mit while, bis einer nicht mehr kann', 14], ['3.4 main erzeugt Mia Stern und die Zeltbühne und ruft jam auf', 6], ['3.5 createCrowds erstellt mit for genau 20 Crowd-Objekte', 10]]]
-  ];
-  var summeEl, urteilEl, haken = [];
-  function punkte() {
-    var box = document.getElementById('punkte');
-    TESTS.forEach(function (u) {
-      var max = u[1].reduce(function (s, t) { return s + t[1]; }, 0);
-      box.appendChild(el('h3', null, u[0] + ' (' + max + ' Punkte)'));
-      u[1].forEach(function (t) {
-        var lab = el('label'), cb = document.createElement('input'); cb.type = 'checkbox'; cb._punkte = t[1];
-        cb.onchange = rechne;
-        lab.appendChild(cb); lab.appendChild(el('span', null, Kurs.esc(t[0]) + ' <span class="k13-pkt">(' + t[1] + ')</span>'));
-        box.appendChild(lab); haken.push(cb);
-      });
-    });
-    summeEl = el('p', 'k13-summe'); summeEl.setAttribute('aria-live', 'polite');
-    urteilEl = el('p', 'k13-urteil');
-    box.appendChild(summeEl); box.appendChild(urteilEl);
-    rechne();
+  /* ---------- Der Lauf: try und catch in einer Schleife ---------- */
+  var TEXT = 'Parkdauer muss mindestens 1 Stunde sein';
+  var GARAGE = ['public class ParkingGarage {', '    public static int fee(int hours) {', '        if (hours < 1) {',
+    '            «violett:throw new» «typ:IllegalArgumentException»(«tuerkis:"Parkdauer muss mindestens 1 Stunde sein"»);',
+    '        }', '        return hours * 2;', '    }', '}'];
+  var STAYS = [3, 0, 5];
+  function mainCode(innen) {
+    var kopf = ['public class Main {', '    public static void main(String[] args) {', '        int[] stays = {3, 0, 5};'];
+    var fuss = ['        System.out.println("Ende");', '    }', '}'];
+    var mitte = innen
+      ? ['        for (int hours : stays) {', '            try {', '                int price = ParkingGarage.fee(hours);', '                System.out.println("Gebühr: " + price + " Euro");',
+         '            } catch («typ:IllegalArgumentException» e) {', '                System.out.println("Fehler: " + e.getMessage());', '            }', '        }']
+      : ['        try {', '            for (int hours : stays) {', '                int price = ParkingGarage.fee(hours);', '                System.out.println("Gebühr: " + price + " Euro");',
+         '            }', '        } catch («typ:IllegalArgumentException» e) {', '            System.out.println("Fehler: " + e.getMessage());', '        }'];
+    return kopf.concat(mitte, fuss);
   }
-  function rechne() {
-    var s = 0;
-    haken.forEach(function (c) { if (c.checked) s += c._punkte; });
-    summeEl.textContent = s + ' von 110 Punkten';
-    urteilEl.innerHTML = s >= 66 ? '<span class="urteil wahr">bestanden</span> Ab 66 Punkten (60 Prozent) ist die Probe bestanden.'
-      : '<span class="urteil falsch">noch nicht bestanden</span> Es ' + (66 - s === 1 ? 'fehlt 1 Punkt' : 'fehlen ' + (66 - s) + ' Punkte') + ' bis 66 (60 Prozent).';
+  /* Zeilen in Main.java: innen  for 4, try 5, Aufruf 6, Ausgabe 7, catch 8, Fehlertext 9, Ende 12
+                          außen  try 4, for 5, Aufruf 6, Ausgabe 7, catch 9, Fehlertext 10, Ende 12 */
+  function inFee(a, h) {
+    a.bereich('fee(…)', 'ParkingGarage.java', 6).setze('hours', h)
+      .schritt(2, 'Java springt in die Methode <code>fee</code>. Ihr Parameter <code>hours</code> bekommt den Wert ' + h + '. Zeile 6 in <code>Main.java</code> wartet so lange.');
+    a.schritt(3, 'Die Methode prüft zuerst den Parameter: ' + urteil(h + ' < 1', h < 1) + '.');
+    if (h < 1) {
+      a.objekt('1', 'IllegalArgumentException', [['message', '"' + TEXT + '"']])
+        .schritt(4, '<code>throw</code> wirft eine Exception mit dem Text aus der Klammer. Die Methode <code>fee</code> bricht sofort ab.', { abbruch: true });
+      a.verlasse();
+      return true;
+    }
+    a.schritt(6, 'Die Bedingung war falsch. <code>return</code> gibt ' + h + ' * 2 = ' + (h * 2) + ' zurück.', { skip: [4] });
+    a.verlasse().setze('price', h * 2).schritt(6, 'Zurück in <code>Main.java</code>. Java speichert den Rückgabewert ' + (h * 2) + ' in <code>price</code>.');
+    return false;
   }
-
-  /* ---------- Lösungen ---------- */
-  var MUSICIAN = ['public String playSolo(final Crowd crowd) {', '    String description = "";', '    int strength = 0;', '    switch (instrument) {', '        case GUITAR:', '            description = "Gitarrensolo";', '            strength = 12;', '            break;', '        case DRUMS:', '            description = "Schlagzeugsolo";', '            strength = 18;', '            break;', '        case KEYBOARD:', '            description = "Keyboardsolo";', '            strength = 8;', '            break;', '    }', '    crowd.loseEnergy(strength);', '    return description;', '}', '', 'public void loseEnergy(final int amount) {', '    energy = energy - amount;', '    if (energy > 10) {', '        status = Status.READY;', '    } else if (energy >= 0) {', '        status = Status.BREAK;', '    } else {', '        status = Status.DONE;', '    }', '}'];
-  var CROWD = ['public void loseEnergy(final int amount) {', '    energy = energy - amount;', '    if (energy > 10) {', '        status = Status.READY;', '    } else if (energy >= 0) {', '        status = Status.BREAK;', '    } else {', '        status = Status.DONE;', '    }', '}'];
-  var FESTIVAL = ['public static void main(final String[] args) {', '    Musician mia = new Musician("Mia Stern", Instrument.DRUMS, 95);', '    Crowd crowd = new Crowd("Zeltbühne", 75, 12);', '    jam(mia, crowd);', '}', '',
-    'public static void jam(final Musician musician, final Crowd crowd) {', '    while (musician.getStatus() == Status.READY && crowd.getStatus() == Status.READY) {', '        System.out.println(musician.getName() + " spielt " + musician.playSolo(crowd));', '        if (crowd.getStatus() == Status.READY) {', '            System.out.println(crowd.cheer(musician));', '        }', '    }', '    System.out.println("Ende: " + musician.getName() + " ist " + musician.getStatus() + ", " + crowd.getName() + " ist " + crowd.getStatus());', '}', '',
-    'public static List<Crowd> createCrowds() {', '    List<Crowd> crowds = new ArrayList<>();', '    for (int i = 0; i < 20; i++) {', '        Crowd c = new Crowd(names[i], 30 + i * 4, 8 + i * 3);', '        crowds.add(c);', '    }', '    return crowds;', '}'];
 
   Kurs.start({
     nr: 13,
-    aufgaben: [
-      { titel: 'Übung 1: Ticketpreis ausrechnen (20 Punkte)', datei: 'k13/tickets/TicketCalculator.java (neu)', befehl: './gradlew test --tests "*k13.tickets*"',
-        text: '<p>Die Aufgabe steht oben im Aufgabenblatt.</p>',
-        tipps: ['Rechtsklick auf den Ordner <code>tickets</code>, dann „New Java File“ und „Class“. Als Namen tippst du <code>TicketCalculator</code>. VS Code schreibt die <code>package</code>-Zeile selbst (Kapitel 1).', 'Der Test sucht genau die Zeilen <code>int ticketPrice = 79;</code>, <code>int groupSize = 5;</code> und <code>int totalPrice = ticketPrice * groupSize;</code>. Rechne mit den Variablen, nicht mit den Zahlen (Kapitel 2).'],
-        loesung: [{ datei: 'TicketCalculator.java', code: ['package de.phl.crashkurs.k13.tickets;', '', 'public class TicketCalculator {', '', '    public static void main(String[] args) {', '        int ticketPrice = 79;', '        int groupSize = 5;', '        int totalPrice = ticketPrice * groupSize;', '        System.out.println("Gesamtpreis: " + totalPrice);', '    }', '}'] }],
-        erklaerung: '<ul><li><strong>1.1 und 1.2</strong> (Kapitel 1): Die Datei heißt wie die Klasse, und die <code>package</code>-Zeile passt zum Ordner <code>k13/tickets</code>. Die Zeile mit <code>main</code> schreibst du genau so ab.</li><li><strong>1.3 bis 1.5</strong> (Kapitel 2): Typ, Name, <code>=</code>, Wert. Für den Gesamtpreis rechnet Java rechts 79 * 5 aus und speichert 395 in <code>totalPrice</code>.</li><li><strong>1.6</strong> (Kapitel 2): Text und Zahl verbindest du mit <code>+</code>. Die Ausgabe lautet dann „Gesamtpreis: 395“.</li></ul>' },
-      { titel: 'Übung 2: Bands auf die Bühne (30 Punkte)', datei: 'k13/stage/FestivalApp.java, Methode main', befehl: './gradlew test --tests "*k13.stage*"',
-        text: '<p>Die Aufgabe und die Beschreibung der Klassen stehen oben im Aufgabenblatt.</p>',
-        tipps: ['Lies zuerst die Konstruktoren in der Beschreibung: Welche Werte, in welcher Reihenfolge? Dann gilt für jedes Objekt dasselbe Muster: <code>Band lindens = new Band("The Lindens", "Indie", 1200);</code> (Kapitel 4 und 5).', 'Für 2.6 merkst du dir die Fans, <strong>bevor</strong> die Band spielt: <code>int lindensBefore = lindens.getFans();</code>. Nach <code>play</code> rechnest du <code>lindens.getFans() - lindensBefore</code> (Kapitel 5).'],
-        loesung: [{ datei: 'FestivalApp.java, Methode main', code: ['public static void main(String[] args) {', '    Stage stage = new Stage("Seebühne", 4);', '', '    Band lindens = new Band("The Lindens", "Indie", 1200);', '    Band neonCats = new Band("Neon Cats", "Pop", 950);', '    System.out.println(lindens.getInfo());', '    System.out.println(neonCats.getInfo());', '', '    stage.addBand(lindens);', '    stage.addBand(neonCats);', '', '    Song summerLights = new Song("Summer Lights", 150);', '    Song nightDrive = new Song("Night Drive", 320);', '', '    int lindensBefore = lindens.getFans();', '    int neonCatsBefore = neonCats.getFans();', '', '    lindens.play(summerLights);', '    neonCats.play(nightDrive);', '    System.out.println(lindens.getInfo());', '    System.out.println(neonCats.getInfo());', '', '    int lindensGain = lindens.getFans() - lindensBefore;', '    int neonCatsGain = neonCats.getFans() - neonCatsBefore;', '    System.out.println("Neue Fans " + lindens.getName() + ": " + lindensGain);', '    System.out.println("Neue Fans " + neonCats.getName() + ": " + neonCatsGain);', '}'] }],
-        erklaerung: '<ul><li><strong>2.1, 2.2 und 2.4</strong> (Kapitel 4): Jedes <code>new</code> erzeugt ein Objekt. Die Werte stehen in der Reihenfolge des Konstruktors. 1.200 Fans schreibst du ohne Punkt als <code>1200</code>.</li><li><strong>2.3 und 2.5</strong> (Kapitel 5): Der Punkt heißt „frag dieses Objekt“. <code>stage.addBand(lindens)</code> übergibt das Band-Objekt an die Bühne. <code>lindens.play(summerLights)</code> übergibt den Song an die Band.</li><li><strong>2.6</strong> (Kapitel 5): Du merkst dir den Wert mit <code>getFans()</code>, bevor <code>play</code> ihn ändert. Holst du ihn erst danach, kommt 0 heraus.</li></ul>' },
-      { titel: 'Übung 3: Der Auftritt (60 Punkte)', datei: 'k13/jam: Musician.java, Crowd.java, Festival.java', befehl: './gradlew test --tests "*k13.jam*"',
-        text: '<p>Die Aufgabe und die Beschreibung der Klassen stehen oben im Aufgabenblatt.</p>',
-        tipps: ['3.1: Leg vor dem <code>switch</code> zwei Variablen an: <code>String description = "";</code> und <code>int strength = 0;</code>. Setz sie in jedem <code>case</code> und vergiss das <code>break</code> nicht. Nach dem <code>switch</code> rufst du <code>crowd.loseEnergy(strength);</code> auf und gibst <code>description</code> zurück (Kapitel 8).', '3.3: Die Bedingung der Schleife lautet <code>musician.getStatus() == Status.READY &amp;&amp; crowd.getStatus() == Status.READY</code>. Im Block gibst du zuerst das Solo aus. Danach prüfst du mit <code>if</code>, ob das Publikum noch <code>READY</code> ist (Kapitel 9).'],
-        loesung: [{ datei: 'Musician.java', code: MUSICIAN }, { datei: 'Crowd.java', code: CROWD }, { datei: 'Festival.java', code: FESTIVAL }],
-        erklaerung: '<ul><li><strong>3.1</strong> (Kapitel 8): Hier nutzt du das Muster „Variable vor dem <code>switch</code> anlegen, in jedem Fall setzen, danach benutzen“. Ohne <code>break</code> würde Java in den nächsten <code>case</code> weiterlaufen.</li><li><strong>3.2</strong> (Kapitel 7): Erst abziehen, dann prüfen. Die Kette aus <code>if</code>, <code>else if</code> und <code>else</code> setzt genau einen Status. Die Reihenfolge der Bedingungen zählt: Bei <code>else if (energy &gt;= 0)</code> kommt Java nur an, wenn <code>energy &gt; 10</code> falsch war. Deshalb reicht dort eine einzige Bedingung für „0 bis 10“.</li><li><strong>3.3</strong> (Kapitel 9): Die Schleife endet, sobald einer der beiden nicht mehr <code>READY</code> ist. Sie endet, weil <code>playSolo</code> und <code>cheer</code> bei jeder Runde Energie abziehen. Das <code>if</code> im Block verhindert, dass ein erschöpftes Publikum noch jubelt. Mit Mia Stern gibt es vier Soli. Danach hat das Publikum noch 3 Energie (<code>BREAK</code>), und Mia hat noch 59.</li><li><strong>3.4</strong> (Kapitel 4, 6 und 8): Ein Enum-Wert steht mit dem Namen des Enums davor: <code>Instrument.DRUMS</code>. <code>jam</code> ist <code>static</code> und steht in derselben Klasse. Deshalb reicht <code>jam(mia, crowd);</code>.</li><li><strong>3.5</strong> (Kapitel 10): „Genau 20 Mal“ heißt <code>i &lt; 20</code> mit Start bei 0. <code>names[i]</code> holt den Namen aus dem Fach <code>i</code>, und Java rechnet Punkt vor Strich: <code>30 + i * 4</code>.</li></ul>' }
+    legende: { violett: 'Schlüsselwort', blau: 'Block', typ: 'Typ', tuerkis: 'Wert' },
+
+    laeufe: {
+      lauf1: {
+        eingabe: { art: 'wahl', label: 'Fassung', werte: [{ text: 'try im Block der Schleife', wert: 'innen' }, { text: 'try um die ganze Schleife', wert: 'aussen' }] },
+        untereinander: true,
+        dateien: function (v) { return [{ name: 'Main.java', code: mainCode(v === 'innen') }, { name: 'ParkingGarage.java', code: GARAGE }]; },
+        schritte: function (v) {
+          var a = Kurs.ablauf().datei('Main.java'), innen = v === 'innen', i, h, geworfen;
+          a.setze('stays', { array: STAYS }).schritt(3, 'Das Array <code>stays</code> enthält die Parkdauer von drei Autos in Stunden.');
+          if (!innen) a.schritt(4, 'Der <code>try</code>-Block beginnt. Er umfasst die ganze Schleife.');
+          for (i = 0; i < STAYS.length; i++) {
+            h = STAYS[i];
+            a.loesche('price').setze('hours', h).schritt(innen ? 4 : 5, (i === 0 ? 'Die for-each-Schleife holt den ersten Wert aus <code>stays</code>: ' : 'Die Schleife holt den nächsten Wert: ') + '<code>hours</code> ist ' + h + '.');
+            if (innen) a.schritt(5, 'Der <code>try</code>-Block beginnt. Er steht im Block der Schleife und gilt nur für dieses eine Auto.');
+            a.schritt(6, 'Java ruft <code>fee</code> auf und gibt ihr den Wert ' + h + ' mit.');
+            geworfen = inFee(a, h);
+            if (!geworfen) {
+              a.aus('Gebühr: ' + (h * 2) + ' Euro').schritt(7, 'Java gibt „Gebühr: ' + (h * 2) + ' Euro“ aus.');
+              continue;
+            }
+            if (innen) {
+              a.schritt(6, 'Die Exception kommt zurück in Zeile 6. Diese Zeile steht im <code>try</code>-Block. Java bricht nur den <code>try</code>-Block ab. Zeile 7 läuft für dieses Auto nicht.', { abbruch: true });
+              a.setze('e', { ref: '1' }).schritt(8, 'Der Typ passt. Der <code>catch</code>-Block fängt die <code>IllegalArgumentException</code> ab, und <code>e</code> zeigt auf die Exception ①.');
+              a.aus('Fehler: ' + TEXT).schritt(9, '<code>e.getMessage()</code> gibt den Text der Exception zurück. Java gibt „Fehler: ' + TEXT + '“ aus.');
+              a.loesche('e');
+            } else {
+              a.loesche('hours').schritt(6, 'Die Exception kommt zurück in Zeile 6. Der <code>try</code>-Block umfasst die ganze Schleife. Also bricht Java die ganze Schleife ab. Das Auto mit ' + STAYS[2] + ' Stunden kommt nicht mehr dran.', { abbruch: true });
+              a.setze('e', { ref: '1' }).schritt(9, 'Der <code>catch</code>-Block fängt die <code>IllegalArgumentException</code> ab, und <code>e</code> zeigt auf die Exception ①.', { skip: [7] });
+              a.aus('Fehler: ' + TEXT).schritt(10, 'Java gibt „Fehler: ' + TEXT + '“ aus. Danach macht es hinter dem <code>catch</code>-Block weiter, nicht in der Schleife.');
+              a.loesche('e').aus('Ende').schritt(12, 'Java gibt „Ende“ aus. Für das dritte Auto steht keine Gebühr in der Ausgabe.');
+              return a.schritte;
+            }
+          }
+          a.loesche('price').loesche('hours').schritt(4, 'In <code>stays</code> gibt es keinen weiteren Wert. Die Schleife ist zu Ende.');
+          a.aus('Ende').schritt(12, 'Java gibt „Ende“ aus. Es hat alle drei Autos geprüft. Nur das Auto mit 0 Stunden hat eine Fehlermeldung ausgelöst.');
+          return a.schritte;
+        }
+      }
+    },
+
+    fehler: [
+      { titel: 'Eine Methode ohne static über den Klassennamen aufrufen', code: ['Wristband lena = new Wristband("Lena", 1);', 'if (Wristband.isValid()) {'], rot: [2],
+        meldung: 'Cannot make a static reference to the non-static method isValid() from the type Wristband',
+        text: '<p>Das heißt: Die Methode <code>isValid</code> hat kein <code>static</code>. Sie gehört zu jedem einzelnen Bändchen, denn jedes hat seinen eigenen letzten Tag. Java weiß hier nicht, welches Bändchen gemeint ist. Ruf die Methode am Objekt auf: <code>if (lena.isValid()) {</code>.</p>' },
+      { titel: 'In einer static-Methode ein Attribut des Objekts benutzen', code: ['public static boolean isValid() {', '    return today <= lastDay;', '}'], rot: [2],
+        meldung: 'Cannot make a static reference to the non-static field lastDay',
+        text: '<p>Hier steht <code>static</code> an der falschen Methode. Eine Methode mit <code>static</code> läuft ohne Objekt (Kapitel 6). Sie kommt deshalb nicht an <code>lastDay</code>, denn dieses Attribut gehört zu jedem Objekt einzeln. Lass den Methodenkopf unverändert: <code>public boolean isValid()</code> ohne <code>static</code>.</p>' },
+      { titel: 'Eine static-Methode an einem Objekt aufrufen', code: ['lena.nextDay();'], rot: [1], quelle: 'Warnung',
+        meldung: 'The static method nextDay() from the type Wristband should be accessed in a static way',
+        text: '<p>Das ist nur eine gelbe Warnung. Der Code läuft. Er sieht aber so aus, als ob der nächste Tag nur für Lena beginnt. In Wahrheit ändert <code>nextDay</code> den Tag für alle Bändchen. Schreib deshalb den Klassennamen davor: <code>Wristband.nextDay();</code>.</p>' },
+      { titel: 'try und catch um die ganze Schleife', code: ['try {', '    for (Ticket ticket : tickets) {', '        ticket.check();', '        admitted++;', '    }', '} catch (IllegalArgumentException e) {', '    rejected++;', '}'], quelle: 'Test',
+        meldung: 'Von den Tickets 12, 3456 und 100000 ist nur 3456 gültig. admitted muss 1 sein. Stehen try und catch im Block der Schleife, damit die Schleife nach einer Exception weiterläuft? ==> expected: <1> but was: <0>',
+        text: '<p>VS Code unterstreicht nichts. Erst der Test aus Aufgabe 4 findet den Fehler. Das erste Ticket ist ungültig. Die Exception bricht die ganze Schleife ab. Die beiden anderen Tickets prüft das Programm nicht mehr. Setz <code>try</code> und <code>catch</code> in den Block der Schleife, wie im Lauf oben.</p>' }
     ],
+
+    aufgaben: [
+      { titel: 'Aufgabe 1: Bändchen für einen oder drei Tage', datei: 'Wristband.java, Methoden nextDay und isValid', befehl: './gradlew test --tests "*k13.WristbandTest"',
+        text: '<p>Das Festival dauert drei Tage. Jedes Bändchen gilt bis zu einem bestimmten Festivaltag. Dieser Tag steht im Attribut <code>lastDay</code>: Ein Bändchen nur für den ersten Tag hat <code>lastDay</code> 1, ein Bändchen für alle drei Tage hat <code>lastDay</code> 3.</p>' +
+          '<p>Welcher Festivaltag gerade ist, steht im Attribut <code>today</code>. Es hat <code>static</code>. Deshalb gibt es dieses Attribut nur einmal für alle Bändchen. Am Anfang ist <code>today</code> 1. Die Methoden <code>startFestival</code> und <code>getToday</code> sind schon fertig.</p>' +
+          '<ol><li><code>nextDay()</code>: Der nächste Festivaltag beginnt. Zähl <code>today</code> um 1 hoch.</li>' +
+          '<li><code>isValid()</code>: Gib <code>true</code> zurück, wenn das Bändchen heute noch gilt, also wenn <code>today</code> höchstens so groß ist wie <code>lastDay</code>. Sonst gib <code>false</code> zurück.</li></ol>' +
+          '<p>Ein einziger Aufruf <code>Wristband.nextDay()</code> ändert damit die Antwort von <code>isValid()</code> bei allen Bändchen.</p>',
+        tipps: ['<code>nextDay</code> braucht nur eine Zeile. Wie du eine Zahl um 1 hochzählst, steht in Kapitel 2.',
+          '„höchstens“ heißt <code>&lt;=</code> (Kapitel 7). Am Tag 1 gilt ein Bändchen mit <code>lastDay</code> 1 noch. Mit <code>&lt;</code> allein wäre es schon am ersten Tag ungültig.'],
+        loesung: [{ datei: 'Wristband.java', code: ['public static void nextDay() {', '    today++;', '}', '', 'public boolean isValid() {', '    if (today <= lastDay) {', '        return true;', '    } else {', '        return false;', '    }', '}'] }],
+        erklaerung: '<ul><li><strong><code>nextDay</code></strong> (Kapitel 6): <code>today</code> gehört der Klasse. Die Methode hat <code>static</code> und braucht kein Objekt. Sie darf <code>today</code> ändern, weil auch <code>today</code> der Klasse gehört.</li>' +
+          '<li><strong><code>isValid</code></strong> (Kapitel 4, 6 und 7): Die Methode hat kein <code>static</code>. Sie gehört zu einem Bändchen und vergleicht dessen eigenes <code>lastDay</code> mit dem gemeinsamen <code>today</code>. Weil es <code>today</code> nur einmal gibt, wirkt ein Aufruf von <code>nextDay</code> auf alle Bändchen.</li></ul>' },
+      { titel: 'Aufgabe 2: Preis für den Campingplatz', datei: 'Campsite.java, Methode price', befehl: './gradlew test --tests "*k13.CampsiteTest"',
+        text: '<p>Auf dem Campingplatz gibt es drei Arten von Stellplätzen. Sie stehen im Enum <code>Pitch</code>: <code>TENT</code> (nur ein Zelt), <code>CAR</code> (ein Auto mit Zelt) und <code>VAN</code> (ein Wohnmobil). Die Methode <code>price</code> bekommt die Art des Stellplatzes (<code>pitch</code>) und die Zahl der Nächte (<code>nights</code>). Sie gibt den Preis in Euro zurück.</p>' +
+          '<ol><li>Prüf zuerst die Zahl der Nächte. Ist sie kleiner als 1 oder größer als 4, wirf eine <code>IllegalArgumentException</code> mit dem Text <code>Erlaubt sind 1 bis 4 Nächte</code>.</li>' +
+          '<li>Sonst bestimme mit einem <code>switch</code> über <code>pitch</code> den Preis pro Nacht:' +
+          '<table><tr><th>Stellplatz</th><th>Preis pro Nacht</th></tr><tr><td><code>TENT</code></td><td>6 Euro</td></tr><tr><td><code>CAR</code></td><td>10 Euro</td></tr><tr><td><code>VAN</code></td><td>18 Euro</td></tr></table></li>' +
+          '<li>Gib den Preis pro Nacht mal die Zahl der Nächte zurück. Ein Wohnmobil für 2 Nächte kostet also 36 Euro.</li></ol>',
+        tipps: ['Für die Prüfung brauchst du zwei Bedingungen, die mit <code>||</code> (oder) verbunden sind (Kapitel 7). Das <code>throw</code> steht ganz am Anfang, so wie bei <code>fee</code> in Kapitel 11.',
+          'Leg vor dem <code>switch</code> eine Variable mit Startwert an: <code>int perNight = 0;</code>. Setze ihren Wert in jedem <code>case</code> und schließ jeden Fall mit <code>break;</code> ab. Nach dem <code>switch</code> kommt das <code>return</code>. Ein <code>return</code> in jedem Fall ohne <code>default</code> unterstreicht VS Code rot (Kapitel 8).'],
+        loesung: [{ datei: 'Campsite.java', code: ['public static int price(Pitch pitch, int nights) {', '    if (nights < 1 || nights > 4) {', '        throw new IllegalArgumentException("Erlaubt sind 1 bis 4 Nächte");', '    }', '    int perNight = 0;', '    switch (pitch) {', '        case TENT:', '            perNight = 6;', '            break;', '        case CAR:', '            perNight = 10;', '            break;', '        case VAN:', '            perNight = 18;', '            break;', '    }', '    return perNight * nights;', '}'] }],
+        erklaerung: '<ul><li><strong>Die Prüfung</strong> (Kapitel 7 und 11): Bei <code>throw</code> bricht die Methode sofort ab. Alles darunter läuft dann nicht. Ist die Zahl der Nächte gültig, ist die Bedingung falsch, und es geht mit dem <code>switch</code> weiter.</li>' +
+          '<li><strong>Der <code>switch</code></strong> (Kapitel 8): In den Fällen steht nur der Name des Werts, also <code>case TENT:</code> ohne <code>Pitch.</code> davor. Ohne <code>break</code> würde Java in den nächsten Fall weiterlaufen, und alle Preise wären 18 Euro.</li>' +
+          '<li><strong>Der Rückgabewert</strong> (Kapitel 3): Die Methode gibt nichts aus. Sie gibt das Ergebnis mit <code>return</code> zurück.</li></ul>' },
+      { titel: 'Aufgabe 3: Zwei Denkfehler bei den T-Shirt-Ständen', datei: 'MerchStand.java', befehl: './gradlew test --tests "*k13.MerchStandTest"',
+        text: '<p>Auf dem Gelände verkaufen mehrere Stände T-Shirts. Jeder Stand ist ein <code>MerchStand</code>-Objekt. Die Klasse ist fertig geschrieben und kompiliert. Sie enthält aber zwei Denkfehler. Zwei Tests sind deshalb rot. Drei Tests sind schon grün.</p>' +
+          '<p>Starte den Test und lies die Meldung jedes roten Tests. Lies dann die Beschreibung über dem Attribut oder der Methode, um die es geht. Geh den Code mit dem Beispiel aus der Meldung im Kopf durch, bis du die Stelle findest, an der der Wert falsch wird. Ändere nur diese Stelle. Die Methodenköpfe bleiben unverändert.</p>',
+        tipps: ['Erster Fehler: Laut Beschreibung zählt <code>totalSold</code> die T-Shirts <em>aller</em> Stände zusammen. Wie viele Attribute <code>totalSold</code> gibt es im Moment, wenn zwei Stände existieren? Kapitel 6 zeigt dasselbe Problem am Anfang.',
+          'Zweiter Fehler: Geh <code>hasSoldOut</code> mit dem Bestand <code>{5, 0, 3}</code> durch. Was passiert schon beim ersten Wert 5? Denk daran: <code>return</code> beendet die ganze Methode, auch mitten in der Schleife.'],
+        loesung: [{ datei: 'MerchStand.java, das Attribut totalSold', code: ['private static int totalSold = 0;'] },
+          { datei: 'MerchStand.java, Methode hasSoldOut', code: ['public static boolean hasSoldOut(int[] stock) {', '    for (int count : stock) {', '        if (count == 0) {', '            return true;', '        }', '    }', '    return false;', '}'] }],
+        erklaerung: '<ul><li><strong>Erster Fehler</strong> (Kapitel 6): Ohne <code>static</code> hat jeder Stand sein eigenes <code>totalSold</code>. Jeder zählt dann nur seine eigenen Verkäufe. Sobald zwei Stände verkaufen, stimmt die Summe nicht mehr. Mit <code>static</code> gibt es <code>totalSold</code> nur einmal, und alle Stände zählen in dasselbe Attribut.</li>' +
+          '<li><strong>Zweiter Fehler</strong> (Kapitel 10 und 12): Das <code>else</code> mit <code>return false</code> beendet die Methode schon beim ersten Motiv, das nicht ausverkauft ist. Die Motive dahinter schaut die Schleife nie an. Ob kein Motiv ausverkauft ist, weißt du erst, wenn die Schleife alle Werte geprüft hat. Deshalb steht <code>return false;</code> nach der Schleife.</li>' +
+          '<li>Zwei der grünen Tests im Ausgangszustand prüfen <code>hasSoldOut</code> und zeigen den zweiten Fehler trotzdem nicht. Beim Bestand <code>{0, 4, 7}</code> ist schon der erste Wert 0, beim Bestand <code>{3, 4, 7}</code> stimmt <code>false</code> zufällig. Erst das Beispiel <code>{5, 0, 3}</code> deckt ihn auf.</li></ul>' },
+      { titel: 'Aufgabe 4: Tickets am Einlass', datei: 'Gate.java, Methode checkAll', befehl: './gradlew test --tests "*k13.GateTest"',
+        text: '<p>Am Einlass zeigt jede Person ihr Ticket. Die Klasse <code>Ticket</code> ist fertig. Lies sie zuerst: Ihre Methode <code>check()</code> prüft ein Ticket. Ist es ungültig (weil es den Code nicht gibt oder das Ticket schon benutzt ist), wirft sie eine <code>IllegalArgumentException</code>. Der Text der Exception nennt den Grund.</p>' +
+          '<p>Der Einlass (<code>Gate</code>) zählt in zwei Attributen mit: <code>admitted</code> für die Leute, die hereinkommen, und <code>rejected</code> für die Leute, die er abweist. Schreib die Methode <code>checkAll</code>. Sie bekommt eine Liste von Tickets und prüft jedes Ticket mit <code>check()</code>:</p>' +
+          '<ul><li>Wirft <code>check()</code> keine Exception, zähl <code>admitted</code> um 1 hoch.</li>' +
+          '<li>Wirft <code>check()</code> eine <code>IllegalArgumentException</code>, zähl <code>rejected</code> um 1 hoch. Gib außerdem <code>Abgewiesen: </code> und den Text der Exception aus, zum Beispiel <code>Abgewiesen: Ticket 99 gibt es nicht</code>.</li></ul>' +
+          '<p>Die Methode prüft immer alle Tickets der Liste und bricht nie mit einer Exception ab.</p>',
+        tipps: ['Fang mit der for-each-Schleife an: <code>for (Ticket ticket : tickets) {</code> (Kapitel 10). Im Block rufst du <code>ticket.check();</code> auf.',
+          'Setz <code>try</code> und <code>catch</code> in den Block der Schleife, wie im Lauf oben. Das <code>admitted++;</code> gehört in den <code>try</code>-Block direkt nach <code>ticket.check();</code>. Es läuft dann nur, wenn <code>check()</code> keine Exception wirft. Den Text der Exception holst du mit <code>e.getMessage()</code> (Kapitel 11).'],
+        loesung: [{ datei: 'Gate.java', code: ['public void checkAll(ArrayList<Ticket> tickets) {', '    for (Ticket ticket : tickets) {', '        try {', '            ticket.check();', '            admitted++;', '        } catch (IllegalArgumentException e) {', '            rejected++;', '            System.out.println("Abgewiesen: " + e.getMessage());', '        }', '    }', '}'] }],
+        erklaerung: '<ul><li><strong>Die Schleife</strong> (Kapitel 10): <code>ticket</code> ist in jeder Runde das nächste Ticket aus der Liste. Ein Index ist nicht nötig.</li>' +
+          '<li><strong><code>try</code> im Block der Schleife</strong> (Kapitel 11): Wirft <code>check()</code> eine Exception, überspringt Java den Rest des <code>try</code>-Blocks, also <code>admitted++</code>. Es macht im <code>catch</code>-Block weiter. Danach läuft die Schleife mit dem nächsten Ticket weiter.</li>' +
+          '<li><strong>Warum nicht selbst prüfen?</strong> Ob ein Ticket schon benutzt wurde, weiß nur das Ticket selbst. Sein Attribut <code>used</code> ist <code>private</code>. Deshalb prüfst du das Ticket mit <code>check()</code> und reagierst auf die Exception.</li></ul>' },
+      { titel: 'Aufgabe 5: Der Shuttle vom Bahnhof', datei: 'Shuttle.java, Methode run', befehl: './gradlew test --tests "*k13.ShuttleTest"',
+        text: '<p>Ein E-Shuttle bringt Leute vom Bahnhof zum Festivalgelände. Er hat <code>seats</code> Sitzplätze und einen Akku (<code>battery</code>, in Prozent). Jede Fahrt verbraucht 15 Prozent Akku. Das Attribut <code>trips</code> zählt, wie oft der Shuttle schon gefahren ist.</p>' +
+          '<p>Die Methode <code>run</code> bekommt die Zahl der Leute, die am Bahnhof warten (<code>waiting</code>). Der Shuttle fährt, solange noch jemand wartet <strong>und</strong> der Akku für eine Fahrt reicht, also noch mindestens 15 Prozent hat. Bei jeder Fahrt passieren drei Dinge:</p>' +
+          '<ul><li>Er nimmt bis zu <code>seats</code> Leute mit. Warten weniger Leute, nimmt er alle mit. <code>waiting</code> wird also nie kleiner als 0.</li>' +
+          '<li>Der Akku sinkt um 15.</li><li><code>trips</code> wird um 1 größer.</li></ul>' +
+          '<p>Am Ende gibt die Methode zurück, wie viele Leute danach noch warten. Beispiel: Ein Shuttle mit 8 Plätzen und vollem Akku fährt für 20 Leute dreimal (8, 8 und 4). Danach wartet niemand mehr, und der Akku hat noch 55 Prozent.</p>',
+        tipps: ['Die Bedingung der Schleife verbindet zwei Bedingungen mit <code>&amp;&amp;</code>: <code>while (waiting &gt; 0 &amp;&amp; battery &gt;= 15) {</code> (Kapitel 7 und 9).',
+          'Im Block entscheidet ein <code>if</code>, wie viele Leute mitfahren. Warten mehr als <code>seats</code>, ziehst du <code>seats</code> ab. Sonst setzt du <code>waiting</code> auf 0. Danach änderst du <code>battery</code> und <code>trips</code>. Nach der Schleife kommt <code>return waiting;</code>.'],
+        loesung: [{ datei: 'Shuttle.java', code: ['public int run(int waiting) {', '    while (waiting > 0 && battery >= 15) {', '        if (waiting > seats) {', '            waiting = waiting - seats;', '        } else {', '            waiting = 0;', '        }', '        battery = battery - 15;', '        trips++;', '    }', '    return waiting;', '}'] }],
+        erklaerung: '<ul><li><strong>Die Bedingung</strong> (Kapitel 7 und 9): Die Schleife endet, sobald eine der beiden Seiten falsch ist: wenn niemand mehr wartet oder wenn der Akku unter 15 Prozent liegt. Bei genau 15 Prozent fährt der Shuttle noch einmal, deshalb <code>&gt;=</code>.</li>' +
+          '<li><strong>Das <code>if</code> im Block</strong> (Kapitel 7): Ohne das <code>if</code> würde <code>waiting</code> bei der letzten Fahrt negativ, zum Beispiel 4 - 8 = -4.</li>' +
+          '<li><strong>Attribute und Parameter</strong> (Kapitel 3 und 4): <code>battery</code> und <code>trips</code> sind Attribute. Ihre Werte bleiben nach dem Aufruf erhalten. Rufst du <code>run</code> später noch einmal auf, startet der Shuttle mit dem übrigen Akku. <code>waiting</code> ist ein Parameter. Er gilt nur während dieses einen Aufrufs.</li></ul>' }
+    ],
+
     selbsttest: function (log) {
       var vorher = Kurs.holen(SCHLUESSEL);
-      function stand(was) { log('UHR ' + was + ': ' + zeitEl.textContent + ' | ' + standEl.textContent + ' | Start ' + (startK.disabled ? 'aus' : 'an') + ', Pause ' + (pauseK.disabled ? 'aus' : 'an') + ' | ' + uhrBox.className); }
-      nullK.click(); stand('zurückgesetzt');
+      function stand(was) { log('UHR ' + was + ': ' + zeitEl.textContent + ' | ' + standEl.textContent + ' | Start ' + (startK.disabled ? 'aus' : 'an') + ', Pause ' + (pauseK.disabled ? 'aus' : 'an') + ' | Dauer ' + dauerK.map(function (k) { return k._minuten + (k.classList.contains('an') ? '*' : '') + (k.disabled ? '-' : ''); }).join(' ') + ' | ' + uhrBox.className); }
+      schreib({ laeuft: false, start: 0, verbraucht: 0, dauer: STANDARD }); zeigeUhr(); stand('zurückgesetzt');
+      dauerK[0].click(); stand('30 gewählt');
+      dauerK[2].click(); stand('75 gewählt');
       startK.click(); log('UHR gestartet: ' + standEl.textContent + ' | Start ' + (startK.disabled ? 'aus' : 'an') + ', Pause ' + (pauseK.disabled ? 'aus' : 'an') + ' | Titel beginnt mit Zeit: ' + /^\d\d:\d\d – /.test(document.title));
+      dauerK[1].click(); log('UHR Dauer während des Laufs gesperrt: ' + (lies().dauer === 75));
       pauseK.click(); log('UHR angehalten: ' + standEl.textContent + ' | Knopf heißt ' + startK.textContent);
       var j = Date.now();
-      schreib({ laeuft: true, start: j - 50.5 * 60 * 1000, verbraucht: 0 }); zeigeUhr(j); stand('nach 50,5 Minuten');
-      schreib({ laeuft: true, start: j - 61 * 60 * 1000, verbraucht: 0 }); zeigeUhr(j); stand('nach 61 Minuten');
+      schreib({ laeuft: true, start: j - 65.5 * 60 * 1000, verbraucht: 0, dauer: 75 }); zeigeUhr(j); stand('nach 65,5 von 75 Minuten');
+      schreib({ laeuft: true, start: j - 76 * 60 * 1000, verbraucht: 0, dauer: 75 }); zeigeUhr(j); stand('nach 76 von 75 Minuten');
       nullK.click(); stand('wieder zurückgesetzt');
       if (vorher == null) { try { localStorage.removeItem(SCHLUESSEL); } catch (e) {} } else Kurs.merken(SCHLUESSEL, vorher);
       zeigeUhr();
-      haken[0].click(); haken[12].click(); log('PUNKTE ' + summeEl.textContent + ' | ' + urteilEl.textContent);
-      haken.forEach(function (c) { if (!c.checked) c.click(); }); log('PUNKTE ' + summeEl.textContent + ' | ' + urteilEl.textContent);
-      haken.forEach(function (c, i) { if (c.checked && i >= 13) c.click(); }); log('PUNKTE ' + summeEl.textContent + ' | ' + urteilEl.textContent);
-      haken.forEach(function (c) { if (c.checked) c.click(); }); log('PUNKTE ' + summeEl.textContent);
     }
   });
   uhr();
-  punkte();
 })();
 </script>
 </body>

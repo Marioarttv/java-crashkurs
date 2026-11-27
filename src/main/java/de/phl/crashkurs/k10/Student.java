@@ -1,30 +1,24 @@
 package de.phl.crashkurs.k10;
 
 /**
- * Eine Schülerin oder ein Schüler mit Sitzplatz und Schließfach.
+ * Eine Schülerin oder ein Schüler mit Name und Reihe im Sitzplan.
  * Diese Datei änderst du nicht.
  */
 public class Student {
 
     private String name;
-    private int seat;
-    private int locker;
+    private int row;
 
-    public Student(String name, int seat, int locker) {
+    public Student(String name, int row) {
         this.name = name;
-        this.seat = seat;
-        this.locker = locker;
+        this.row = row;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getSeat() {
-        return seat;
-    }
-
-    public int getLocker() {
-        return locker;
+    public int getRow() {
+        return row;
     }
 }

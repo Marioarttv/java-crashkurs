@@ -4,60 +4,59 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DisplayName("Kapitel 10, Aufgabe 3: SeatingPlan.createStudents")
+@DisplayName("Kapitel 10, Aufgabe 3: SeatingPlan.countInRow")
 class SeatingPlanTest {
 
-    private static List<Student> liste() {
-        return Pruefen.mitZeitlimit(SeatingPlan::createStudents);
+    private static List<Student> klasse() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Ali", 2));
+        students.add(new Student("Bea", 1));
+        students.add(new Student("Cem", 2));
+        students.add(new Student("Dana", 3));
+        students.add(new Student("Emil", 1));
+        students.add(new Student("Fatma", 2));
+        return students;
     }
 
     @Test
-    @DisplayName("Genau 20 Objekte in der Liste")
-    void zwanzig() {
-        assertEquals(20, liste().size(), "Die Liste muss genau 20 Student-Objekte enthalten. Läuft deine Schleife von i = 0 solange i < 20? Rufst du in der Schleife students.add(...) auf?");
+    @DisplayName("Reihe 2: drei Personen")
+    void reiheZwei() {
+        assertEquals(3, (int) Pruefen.mitZeitlimit(() -> SeatingPlan.countInRow(klasse(), 2)),
+                "In Reihe 2 sitzen Ali, Cem und Fatma, also 3 Personen. Zählst du nur, wenn s.getRow() == row ist?");
     }
 
     @Test
-    @DisplayName("Das erste Objekt: Ali, Platz 1, Schließfach 100")
-    void erstes() {
-        List<Student> l = liste();
-        assertTrue(l.size() >= 1, "Die Liste ist leer. Rufst du in der Schleife students.add(...) auf?");
-        Student s = l.get(0);
-        assertEquals("Ali", s.getName(), "Das erste Objekt muss den Namen names[0] haben, also \"Ali\". Beginnt deine Schleife bei 0?");
-        assertEquals(1, s.getSeat(), "Das erste Objekt (i = 0) muss Sitzplatz 1 haben: i + 1.");
-        assertEquals(100, s.getLocker(), "Das erste Objekt (i = 0) muss Schließfach 100 haben: 100 + i * 2.");
+    @DisplayName("Reihe 1: drei Personen, auch die erste in der Liste zählt")
+    void reiheEins() {
+        List<Student> students = klasse();
+        students.add(0, new Student("Ida", 1));
+        assertEquals(3, (int) Pruefen.mitZeitlimit(() -> SeatingPlan.countInRow(students, 1)),
+                "In Reihe 1 sitzen Ida (ganz vorn in der Liste), Bea und Emil, also 3 Personen. Gehst du mit for-each durch die ganze Liste?");
     }
 
     @Test
-    @DisplayName("Ein Objekt aus der Mitte: Kian, Platz 11, Schließfach 120")
-    void mitte() {
-        List<Student> l = liste();
-        assertTrue(l.size() >= 11, "Die Liste hat weniger als 11 Objekte. Läuft deine Schleife bis i < 20?");
-        Student s = l.get(10);
-        assertEquals("Kian", s.getName(), "Das Objekt mit der Nummer 10 muss den Namen names[10] haben, also \"Kian\".");
-        assertEquals(11, s.getSeat(), "Das Objekt mit der Nummer 10 muss Sitzplatz 11 haben: i + 1.");
-        assertEquals(120, s.getLocker(), "Das Objekt mit der Nummer 10 muss Schließfach 120 haben: 100 + 10 * 2.");
+    @DisplayName("Reihe 5: niemand")
+    void niemand() {
+        assertEquals(0, (int) Pruefen.mitZeitlimit(() -> SeatingPlan.countInRow(klasse(), 5)),
+                "In Reihe 5 sitzt niemand. Das Ergebnis muss 0 sein. Startet dein Zähler bei 0?");
     }
 
     @Test
-    @DisplayName("Das letzte Objekt: Tilda, Platz 20, Schließfach 138")
-    void letztes() {
-        List<Student> l = liste();
-        assertTrue(l.size() >= 20, "Die Liste hat weniger als 20 Objekte. Läuft deine Schleife bis i < 20?");
-        Student s = l.get(19);
-        assertEquals("Tilda", s.getName(), "Das letzte Objekt muss den Namen names[19] haben, also \"Tilda\".");
-        assertEquals(20, s.getSeat(), "Das letzte Objekt (i = 19) muss Sitzplatz 20 haben.");
-        assertEquals(138, s.getLocker(), "Das letzte Objekt (i = 19) muss Schließfach 138 haben: 100 + 19 * 2.");
+    @DisplayName("Leere Liste: 0")
+    void leer() {
+        assertEquals(0, (int) Pruefen.mitZeitlimit(() -> SeatingPlan.countInRow(new ArrayList<>(), 1)),
+                "In einer leeren Liste sitzt niemand. Das Ergebnis muss 0 sein.");
     }
 
     @Test
     @DisplayName("Die Methode benutzt for")
     void benutztFor() throws IOException {
-        assertTrue(Pruefen.benutzt("SeatingPlan.java", "for"), "In der Methode createStudents soll eine for-Schleife stehen.");
+        assertTrue(Pruefen.benutzt("SeatingPlan.java", "for"), "In der Methode countInRow soll eine for-each-Schleife stehen: for (Student s : students).");
     }
 }

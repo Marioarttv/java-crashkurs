@@ -8,56 +8,46 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DisplayName("Kapitel 8, Aufgabe 3: CoffeeMachine.sell")
+@DisplayName("Kapitel 8, Aufgabe 3: CoffeeMachine.price")
 class CoffeeMachineTest {
 
     @Test
-    @DisplayName("SMALL: Name kleiner Kaffee")
-    void kleinName() {
-        CoffeeMachine machine = new CoffeeMachine(Size.SMALL);
-        assertEquals("kleiner Kaffee", machine.sell(new CoffeeCard(1000)), "Bei SMALL muss sell den Text \"kleiner Kaffee\" zurückgeben. Gibst du am Ende name zurück? Endet case SMALL mit break? Sonst überschreiben die Fälle darunter den Namen.");
+    @DisplayName("SMALL ohne eigenen Becher: 150 Cent")
+    void kleinOhne() {
+        assertEquals(150, new CoffeeMachine(Size.SMALL).price(false), "Ein kleiner Kaffee (SMALL) ohne eigenen Becher kostet 150 Cent. Endet case SMALL mit break? Sonst überschreiben die Fälle darunter den Preis.");
     }
 
     @Test
-    @DisplayName("SMALL: Karte zahlt 150 Cent")
-    void kleinPreis() {
-        CoffeeMachine machine = new CoffeeMachine(Size.SMALL);
-        CoffeeCard card = new CoffeeCard(1000);
-        machine.sell(card);
-        assertEquals(850, card.getBalance(), "Bei SMALL kostet der Kaffee 150 Cent. Von 1000 Cent müssen 850 übrig sein. Rufst du nach dem switch card.pay(price) auf? Endet case SMALL mit break?");
+    @DisplayName("MEDIUM ohne eigenen Becher: 200 Cent")
+    void mittelOhne() {
+        assertEquals(200, new CoffeeMachine(Size.MEDIUM).price(false), "Ein mittlerer Kaffee (MEDIUM) ohne eigenen Becher kostet 200 Cent. Fehlt ein break?");
     }
 
     @Test
-    @DisplayName("MEDIUM: mittlerer Kaffee für 200 Cent")
-    void mittel() {
-        CoffeeMachine machine = new CoffeeMachine(Size.MEDIUM);
-        CoffeeCard card = new CoffeeCard(1000);
-        assertEquals("mittlerer Kaffee", machine.sell(card), "Bei MEDIUM muss sell den Text \"mittlerer Kaffee\" zurückgeben.");
-        assertEquals(800, card.getBalance(), "Bei MEDIUM kostet der Kaffee 200 Cent. Von 1000 Cent müssen 800 übrig sein. Fehlt ein break?");
+    @DisplayName("LARGE ohne eigenen Becher: 250 Cent")
+    void grossOhne() {
+        assertEquals(250, new CoffeeMachine(Size.LARGE).price(false), "Ein großer Kaffee (LARGE) ohne eigenen Becher kostet 250 Cent.");
     }
 
     @Test
-    @DisplayName("LARGE: großer Kaffee für 250 Cent")
-    void gross() {
-        CoffeeMachine machine = new CoffeeMachine(Size.LARGE);
-        CoffeeCard card = new CoffeeCard(1000);
-        assertEquals("großer Kaffee", machine.sell(card), "Bei LARGE muss sell den Text \"großer Kaffee\" zurückgeben.");
-        assertEquals(750, card.getBalance(), "Bei LARGE kostet der Kaffee 250 Cent. Von 1000 Cent müssen 750 übrig sein.");
+    @DisplayName("Mit eigenem Becher: 20 Cent weniger")
+    void mitBecher() {
+        assertEquals(130, new CoffeeMachine(Size.SMALL).price(true), "SMALL mit eigenem Becher kostet 150 - 20 = 130 Cent. Ziehst du nach dem switch mit if (ownCup) 20 Cent ab?");
+        assertEquals(180, new CoffeeMachine(Size.MEDIUM).price(true), "MEDIUM mit eigenem Becher kostet 200 - 20 = 180 Cent.");
+        assertEquals(230, new CoffeeMachine(Size.LARGE).price(true), "LARGE mit eigenem Becher kostet 250 - 20 = 230 Cent.");
     }
 
     @Test
-    @DisplayName("Zweimal verkaufen: Karte zahlt zweimal")
+    @DisplayName("Zweimal fragen: gleicher Preis")
     void zweimal() {
         CoffeeMachine machine = new CoffeeMachine(Size.MEDIUM);
-        CoffeeCard card = new CoffeeCard(1000);
-        machine.sell(card);
-        machine.sell(card);
-        assertEquals(600, card.getBalance(), "Zwei mittlere Kaffees kosten zusammen 400 Cent. Von 1000 Cent müssen 600 übrig sein.");
+        machine.price(true);
+        assertEquals(180, machine.price(true), "Wer zweimal nach dem Preis fragt, bekommt zweimal denselben Preis. Rechnest du in einer Variable der Methode statt in einem Attribut?");
     }
 
     @Test
     @DisplayName("Die Methode benutzt switch")
     void benutztSwitch() throws IOException {
-        assertTrue(Quelltext.benutzt("CoffeeMachine.java", "switch"), "In der Methode sell soll ein switch über das Attribut size stehen.");
+        assertTrue(Quelltext.benutzt("CoffeeMachine.java", "switch"), "In der Methode price soll ein switch über das Attribut size stehen.");
     }
 }

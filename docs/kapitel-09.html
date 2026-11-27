@@ -16,35 +16,35 @@
 <body>
 <main class="kurs">
 
-  <p class="vorwissen">Das solltest du schon kennen: <code>if</code> und <code>&amp;&amp;</code> aus Kapitel 7, Enum-Werte mit <code>==</code> vergleichen aus Kapitel 8 und Methoden eines Objekts aufrufen aus Kapitel 4 und 5.</p>
+  <p class="vorwissen">Das solltest du schon kennen: <code>if</code> und <code>&amp;&amp;</code> aus Kapitel 7, <code>switch</code> und Enum aus Kapitel 8 und Methoden eines Objekts aufrufen aus Kapitel 4 und 5.</p>
 
-  <p>Beim Tischtennistraining steht ein Korb voller Bälle neben der Platte. Die Regel ist: <em>Solange noch Bälle im Korb sind, schlag einen auf.</em> Du fragst also vor jedem Aufschlag dasselbe: Ist noch ein Ball da? Bei Ja schlägst du auf und fragst danach wieder. Erst bei Nein hörst du auf.</p>
+  <p>Auf deinem Handy läuft eine Playlist mit Videos. Ist ein Video zu Ende, startet das nächste von selbst. Das Handy folgt dabei einer Regel: <em>Solange noch Videos in der Playlist sind, spiel das nächste.</em> Nach jedem Video fragt es also dasselbe: Ist noch ein Video da? Bei Ja spielt es das nächste und fragt danach wieder. Erst bei Nein hört es auf.</p>
   <p>Ein Programm kann das auch. Ein Programmteil, den Java wiederholt ausführt, heißt <strong>Schleife</strong>. Die erste Schleife heißt <code>while</code>, auf Deutsch „solange“. Sie hat denselben Aufbau wie ein <code>if</code>:</p>
 
   <div class="aufbau">
     <div class="teil" data-farbe="violett"><span class="stueck">while</span><span class="heisst"><b>Das Wort „solange“</b>Damit fängt die Schleife an.</span></div>
-    <div class="teil" data-farbe="orange"><span class="stueck">(balls &gt; 0)</span><span class="heisst"><b>Die Bedingung</b>Eine Frage mit der Antwort wahr oder falsch, wie bei <code>if</code>.</span></div>
+    <div class="teil" data-farbe="orange"><span class="stueck">(videos &gt; 0)</span><span class="heisst"><b>Die Bedingung</b>Eine Frage mit der Antwort wahr oder falsch, wie bei <code>if</code>.</span></div>
     <div class="teil" data-farbe="blau"><span class="stueck">{ ... }</span><span class="heisst"><b>Der Block</b>Läuft, wenn die Bedingung wahr ist. Danach springt Java zurück zur Bedingung.</span></div>
   </div>
-  <p class="vorlesen"><span class="t-violett">Solange</span> <span class="t-orange"><code>balls</code> größer als 0 ist</span>, <span class="t-blau">mach das, was im Block steht</span>. Danach frag wieder.</p>
+  <p class="vorlesen"><span class="t-violett">Solange</span> <span class="t-orange"><code>videos</code> größer als 0 ist</span>, <span class="t-blau">mach das, was im Block steht</span>. Danach frag wieder.</p>
   <p>Der einzige Unterschied zum <code>if</code> steckt im letzten Satz: Nach dem Block springt Java zurück nach oben und prüft die Bedingung noch einmal. Erst wenn sie falsch ist, geht es hinter dem Block weiter.</p>
 
   <h2>Eine Schleife Schritt für Schritt</h2>
-  <p>Im Beispiel liegen 3 Bälle im Korb. Klick dich durch und schau, wie die gelbe Zeile nach Zeile 4 wieder nach oben in Zeile 2 springt. Probier danach 1 Ball und 0 Bälle.</p>
+  <p>Im Beispiel sind 3 Videos in der Playlist. Klick dich durch und schau, wie die gelbe Zeile nach Zeile 4 wieder nach oben in Zeile 2 springt. Probier danach 1 Video und 0 Videos.</p>
 
   <div id="lauf-runter"></div>
 
-  <p>Bei 0 Bällen ist die Bedingung schon beim ersten Mal falsch. Dann läuft der Block kein einziges Mal. Auch das ist eine Schleife, nur eine, die sofort fertig ist.</p>
-  <p>Zeile 4 ist die wichtigste Zeile der Schleife: <code>balls -= 1;</code> zieht 1 ab, wie in Kapitel 2. Nur weil sich <code>balls</code> im Block ändert, wird die Bedingung irgendwann falsch.</p>
+  <p>Bei 0 Videos ist die Bedingung schon beim ersten Mal falsch. Dann läuft der Block kein einziges Mal. Auch das ist eine Schleife, nur eine, die sofort fertig ist.</p>
+  <p>Zeile 4 ist die wichtigste Zeile der Schleife: <code>videos -= 1;</code> zieht 1 ab, wie in Kapitel 2. Nur weil sich <code>videos</code> im Block ändert, wird die Bedingung irgendwann falsch.</p>
 
   <h2>Wenn die Schleife nicht aufhört</h2>
-  <p>Fehlt Zeile 4, ändert sich <code>balls</code> nie. Die Bedingung <code>balls &gt; 0</code> ist dann immer wahr, und Java fragt und fragt und fragt:</p>
-  <div class="code" data-code='int balls = 3;
-while (balls > 0) {
-    System.out.println("Aufschlag " + balls);
+  <p>Fehlt Zeile 4, ändert sich <code>videos</code> nie. Die Bedingung <code>videos &gt; 0</code> ist dann immer wahr, und Java fragt und fragt und fragt:</p>
+  <div class="code" data-code='int videos = 3;
+while (videos > 0) {
+    System.out.println("Playlist: noch " + videos);
 }
-System.out.println("Pause");'></div>
-  <p>Das heißt <strong>Endlosschleife</strong>. VS Code unterstreicht hier nichts. Das Programm gibt „Aufschlag 3“ ohne Ende aus, und „Pause“ kommt nie. So hältst du es an:</p>
+System.out.println("Playlist zu Ende");'></div>
+  <p>Das heißt <strong>Endlosschleife</strong>. VS Code unterstreicht hier nichts. Das Programm gibt „Playlist: noch 3“ ohne Ende aus, und „Playlist zu Ende“ kommt nie. So hältst du es an:</p>
   <ul>
     <li>Hast du das Programm in VS Code mit „Run“ gestartet: Oben erscheint eine kleine Leiste mit Knöpfen. Klick auf das rote Quadrat (Stop) oder drück <kbd>Umschalt</kbd> + <kbd>F5</kbd>.</li>
     <li>Läuft es im Terminal: Klick ins Terminal und drück <kbd>Strg</kbd> + <kbd>C</kbd> (auch am Mac die Taste <kbd>control</kbd>, nicht <kbd>cmd</kbd>).</li>
@@ -54,23 +54,23 @@ System.out.println("Pause");'></div>
 
   <h2>Zwei Bedingungen und ein if in der Schleife</h2>
   <p>Wie bei <code>if</code> kannst du zwei Bedingungen mit <code>&amp;&amp;</code> verbinden (Kapitel 7). Die Schleife läuft dann nur weiter, solange <strong>beide</strong> wahr sind.</p>
-  <p>Im Beispiel trainierst du höchstens 3 Ballwechsel. Jeder Ballwechsel kostet 4 Punkte Konzentration. Ist die Konzentration aufgebraucht, hörst du früher auf. Die Variable <code>rounds</code> zählt die Ballwechsel mit: <code>rounds++</code> zählt in jeder Runde 1 dazu.</p>
-  <p>Im Block steht außerdem ein <code>if</code>. Es läuft in jedem Durchlauf einmal und meldet sich nur, wenn du müde bist. Probier 6, 20 und 0 als Konzentration.</p>
+  <p>Im Beispiel schaust du in der Pause höchstens 3 Videos. Jedes Video kostet 20 Prozent Akku. Ein neues Video startest du nur, wenn der Akku dafür reicht, also bei mindestens 20 Prozent. Die Variable <code>videos</code> zählt die Videos mit: <code>videos++</code> zählt in jedem Durchlauf 1 dazu.</p>
+  <p>Im Block steht außerdem ein <code>if</code>. Es läuft in jedem Durchlauf einmal und meldet sich nur, wenn der Akku fast leer ist. Probier 50, 100 und 10 Prozent.</p>
 
   <div id="lauf-und"></div>
 
-  <p>Bei 6 wurde die linke Bedingung falsch, bei 20 die rechte. In beiden Fällen ist die ganze Bedingung falsch, denn bei <code>&amp;&amp;</code> müssen beide Seiten wahr sein.</p>
+  <p>Bei 50 Prozent wird die linke Bedingung falsch, bei 100 Prozent die rechte. In beiden Fällen ist die ganze Bedingung falsch. Bei <code>&amp;&amp;</code> müssen beide Seiten wahr sein.</p>
 
-  <h2>Zwei Spieler wechseln sich ab</h2>
-  <p>Jetzt spielen zwei Objekte gegeneinander. Jedes Objekt der Klasse <code>Player</code> hat eine Konzentration und einen Status: <code>PlayerStatus.READY</code> (bereit) oder <code>PlayerStatus.TIRED</code> (müde). <code>PlayerStatus</code> ist ein Enum wie in Kapitel 8. Die Methode <code>loseConcentration</code> zieht Konzentration ab. Ist danach nichts mehr übrig, setzt sie den Status auf TIRED.</p>
-  <p>Anna schlägt auf. Jeder Ball von Anna kostet Ben 2 Punkte Konzentration. Ist Ben danach noch bereit, spielt er zurück, und das kostet Anna 2 Punkte. Das geht so lange, bis einer der beiden müde ist.</p>
-  <p class="vorlesen"><span class="t-violett">Solange</span> <span class="t-orange">Anna bereit ist und Ben bereit ist</span>, <span class="t-blau">spielt Anna zu Ben, und wenn Ben noch bereit ist, spielt Ben zurück</span>.</p>
-  <p>Wähl oben im Kasten, wie viel Konzentration die beiden am Anfang haben. Achte auf die Objektkarten unter dem Code.</p>
+  <h2>Eine Schleife fragt ein Objekt</h2>
+  <p>In der Bedingung darf auch ein Methodenaufruf stehen. Dann fragt die Schleife vor jedem Durchlauf ein Objekt nach einem Wert.</p>
+  <p>Im Beispiel hängt dein Handy in der Pause am Ladegerät. Jedes Objekt der Klasse <code>Phone</code> hat das Attribut <code>battery</code> für den Akkustand in Prozent. Die Methode <code>charge</code> lädt eine Runde, also eine Viertelstunde: Der Akku bekommt 25 Prozent dazu, aber nie mehr als 100. Die Pause reicht für höchstens 3 Runden.</p>
+  <p class="vorlesen"><span class="t-violett">Solange</span> <span class="t-orange">der Akku des Handys unter 100 Prozent ist und weniger als 3 Runden vorbei sind</span>, <span class="t-blau">lade eine Runde und zeig den Akkustand an</span>.</p>
+  <p>Stell oben im Kasten ein, wie voll der Akku am Anfang ist. Achte auf die Objektkarte unter dem Code.</p>
 
-  <div id="lauf-spiel" class="k09-stapel"></div>
+  <div id="lauf-laden" class="k09-stapel"></div>
 
-  <p>Schau dir die Bedingung in Zeile 6 genau an. Links und rechts von <code>&amp;&amp;</code> steht je ein Vergleich wie in Kapitel 8: Ein Getter holt den Status, und <code>==</code> vergleicht ihn mit einem Enum-Wert.</p>
-  <p>Das <code>if</code> in Zeile 10 schützt Anna. Ohne dieses <code>if</code> würde Ben auch dann noch zurückspielen, wenn er schon müde ist. Probier dazu die Variante „Anna 4, Ben 4“: Ben wird in Runde 2 müde, und Anna behält ihre letzten 2 Punkte.</p>
+  <p>Schau dir die Bedingung in Zeile 5 genau an. Links von <code>&amp;&amp;</code> ruft sie die Methode <code>getBattery</code> auf. Das Objekt gibt seinen Akkustand zurück, und <code>&lt;</code> vergleicht ihn mit 100. Rechts steht ein normaler Vergleich mit dem Zähler.</p>
+  <p>Die Schleife selbst ändert <code>battery</code> nicht. Das macht die Methode <code>charge</code> in Zeile 7. Auch hier gilt: Im Block muss sich etwas ändern, das die Bedingung irgendwann falsch macht. Hier ändern sich der Akku im Objekt und der Zähler <code>rounds</code>.</p>
 
   <div class="merke">
     <h3>Fünf Regeln zum Merken</h3>
@@ -79,7 +79,7 @@ System.out.println("Pause");'></div>
       <li>Ist die Bedingung von Anfang an falsch, läuft der Block kein einziges Mal.</li>
       <li>Im Block muss sich etwas ändern, das die Bedingung irgendwann falsch macht. Sonst entsteht eine Endlosschleife. Stoppen: rotes Quadrat oder <kbd>Umschalt</kbd> + <kbd>F5</kbd> in VS Code, <kbd>Strg</kbd> + <kbd>C</kbd> im Terminal.</li>
       <li>Mit <code>&amp;&amp;</code> läuft die Schleife nur, solange beide Bedingungen wahr sind. Sie hört auf, sobald eine falsch wird.</li>
-      <li>Runden zählen: Leg vor der Schleife <code>int rounds = 0;</code> an und zähl im Block mit <code>rounds++;</code> hoch.</li>
+      <li>Mitzählen: Leg vor der Schleife einen Zähler an, zum Beispiel <code>int videos = 0;</code>, und zähl im Block mit <code>videos++;</code> hoch.</li>
     </ol>
   </div>
 
@@ -92,14 +92,14 @@ System.out.println("Pause");'></div>
   <div id="fragen"></div>
 
   <h2>Jetzt schreibst du selbst: drei Aufgaben im Projekt</h2>
-  <p>Die Aufgaben liegen im Ordner <code>src/main/java/de/phl/crashkurs/k09</code>. Die Klassen <code>Player</code> und <code>PlayerStatus</code> sind dort fertig vorgegeben. <code>Player</code> hat im Projekt mehr als im Beispiel oben: Der Konstruktor braucht drei Werte (Name, Konzentration und Kraft). Außerdem gibt es die Methode <code>hit</code>. Lies <code>Player.java</code> deshalb einmal wie einen Steckbrief (Kapitel 5). Geh dann bei jeder Aufgabe so vor:</p>
+  <p>Die Aufgaben liegen im Ordner <code>src/main/java/de/phl/crashkurs/k09</code>. Die Klasse <code>Phone</code> und das Enum <code>Quality</code> sind dort fertig vorgegeben. <code>Phone</code> hat im Projekt mehr als im Beispiel oben: Es gibt zusätzlich die Methode <code>playVideo</code>. Lies <code>Phone.java</code> deshalb einmal wie einen Steckbrief (Kapitel 5). Geh dann bei jeder Aufgabe so vor:</p>
   <ol class="schritte">
     <li>Formuliere die Bedingung auf Deutsch: „Solange …“. Dann schreib sie mit Vergleichszeichen.</li>
     <li>Überleg, was sich im Block ändern muss, damit die Bedingung irgendwann falsch wird.</li>
     <li>Braucht die Aufgabe einen Zähler, leg ihn vor der Schleife mit 0 an und zähl im Block hoch.</li>
     <li>Starte den Test. Hängt er, bricht er nach 3 Sekunden ab und meldet „Deine Schleife hört nicht auf“. Dann fehlt die Änderung aus Schritt 2.</li>
   </ol>
-  <p>Den Test startest du wie in den Kapiteln davor: Öffne die Testdatei und klick auf den grünen Pfeil neben dem Klassennamen. Oder tipp den Befehl aus der Aufgabe ins Terminal (unter Windows <code>.\gradlew.bat</code> statt <code>./gradlew</code>). Einzelne Tests können schon vor deiner Lösung grün sein.</p>
+  <p>Den Test startest du wie in den Kapiteln davor: Öffne die Testdatei und klick auf den grünen Pfeil neben dem Klassennamen. Oder tippe den Befehl aus der Aufgabe ins Terminal (unter Windows <code>.\gradlew.bat</code> statt <code>./gradlew</code>). Einzelne Tests können schon vor deiner Lösung grün sein.</p>
   <div id="aufgaben"></div>
 
 </main>
@@ -108,25 +108,21 @@ System.out.println("Pause");'></div>
 <script>
 (function () {
   var urteil = Kurs.urteil;
-  var STATUS = 'public enum PlayerStatus {\n    READY, TIRED\n}\n';
-  var READY = 'PlayerStatus.READY', TIRED = 'PlayerStatus.TIRED';
 
   var RUNTER = function (v) {
-    return ['int balls = ' + v + ';', 'while (balls > 0) {', '    System.out.println("Aufschlag " + balls);', '    balls -= 1;', '}', 'System.out.println("Pause");'];
+    return ['int videos = ' + v + ';', 'while (videos > 0) {', '    System.out.println("Playlist: noch " + videos);', '    videos -= 1;', '}', 'System.out.println("Playlist zu Ende");'];
   };
   var UND = function (v) {
-    return ['int concentration = ' + v + ';', 'int rounds = 0;', 'while (concentration > 0 && rounds < 3) {', '    rounds++;', '    concentration -= 4;', '    if (concentration <= 0) {', '        System.out.println("Runde " + rounds + ": müde");', '    }', '}', 'System.out.println("Runden: " + rounds);'];
+    return ['int battery = ' + v + ';', 'int videos = 0;', 'while (battery >= 20 && videos < 3) {', '    videos++;', '    battery -= 20;', '    if (battery < 20) {', '        System.out.println("Video " + videos + ": Akku fast leer");', '    }', '}', 'System.out.println("Videos: " + videos);'];
   };
-  var PLAYER = ['public class Player {', '    private String name;', '    private int concentration;', '    private PlayerStatus status = PlayerStatus.READY;', '',
-    '    public Player(String name, int concentration) {', '        this.name = name;', '        this.concentration = concentration;', '    }', '',
-    '    public PlayerStatus getStatus() {', '        return status;', '    }', '',
-    '    public void loseConcentration(int amount) {', '        concentration -= amount;', '        if (concentration <= 0) {', '            status = PlayerStatus.TIRED;', '        }', '    }', '}'];
-  function spielMain(v) {
-    var w = v.split(',');
-    return ['public class Main {', '    public static void main(String[] args) {', '        Player anna = new Player("Anna", ' + w[0] + ');', '        Player ben = new Player("Ben", ' + w[1] + ');', '        int rounds = 0;',
-      '        while (anna.getStatus() == PlayerStatus.READY && ben.getStatus() == PlayerStatus.READY) {', '            rounds++;', '            System.out.println("Ballwechsel " + rounds);', '            ben.loseConcentration(2);',
-      '            if (ben.getStatus() == PlayerStatus.READY) {', '                anna.loseConcentration(2);', '            }', '        }',
-      '        System.out.println("Runden: " + rounds);', '        System.out.println("Anna: " + anna.getStatus());', '        System.out.println("Ben: " + ben.getStatus());', '    }', '}'];
+  var PHONE = ['public class Phone {', '    private int battery;', '',
+    '    public Phone(int battery) {', '        this.battery = battery;', '    }', '',
+    '    public int getBattery() {', '        return battery;', '    }', '',
+    '    public void charge() {', '        battery += 25;', '        if (battery > 100) {', '            battery = 100;', '        }', '    }', '}'];
+  function ladeMain(v) {
+    return ['public class Main {', '    public static void main(String[] args) {', '        Phone phone = new Phone(' + v + ');', '        int rounds = 0;',
+      '        while (phone.getBattery() < 100 && rounds < 3) {', '            rounds++;', '            phone.charge();', '            System.out.println(phone.getBattery() + " %");', '        }',
+      '        System.out.println("Runden: " + rounds);', '    }', '}'];
   }
 
   Kurs.start({
@@ -135,166 +131,156 @@ System.out.println("Pause");'></div>
 
     laeufe: {
       'lauf-runter': {
-        eingabe: { art: 'zahl', label: 'Bälle im Korb', start: 3, proben: [3, 1, 0], min: 0, max: 5 },
+        eingabe: { art: 'zahl', label: 'Videos in der Playlist', start: 3, proben: [3, 1, 0], min: 0, max: 5 },
         code: RUNTER,
         schritte: function (v) {
-          var a = Kurs.ablauf(), b = v, runde = 0;
-          a.setze('balls', b).schritt(1, 'Die Variable <code>balls</code> bekommt den Wert ' + v + '.');
-          while (b > 0) {
+          var a = Kurs.ablauf(), n = v, runde = 0;
+          a.setze('videos', n).schritt(1, 'Die Variable <code>videos</code> bekommt den Wert ' + v + '.');
+          while (n > 0) {
             runde++;
-            a.schritt(2, (runde === 1 ? 'Java prüft die Bedingung zum ersten Mal: ' : 'Zurück in Zeile 2. Java prüft die Bedingung noch einmal: ') + urteil(b + ' > 0', true) + '. Also läuft der Block' + (runde === 1 ? '.' : ' ein weiteres Mal.'));
-            a.aus('Aufschlag ' + b).schritt(3, 'Java gibt „Aufschlag ' + b + '“ aus.');
-            b -= 1;
-            a.setze('balls', b).schritt(4, '<code>balls -= 1</code> zieht 1 ab: <code>balls</code> ist jetzt ' + b + '. Der Block ist zu Ende. Java springt zurück zur Bedingung.');
+            a.schritt(2, (runde === 1 ? 'Java prüft die Bedingung zum ersten Mal: ' : 'Zurück in Zeile 2. Java prüft die Bedingung noch einmal: ') + urteil(n + ' > 0', true) + '. Also läuft der Block' + (runde === 1 ? '.' : ' ein weiteres Mal.'));
+            a.aus('Playlist: noch ' + n).schritt(3, 'Java gibt „Playlist: noch ' + n + '“ aus.');
+            n -= 1;
+            a.setze('videos', n).schritt(4, '<code>videos -= 1</code> zieht 1 ab: <code>videos</code> ist jetzt ' + n + '. Der Block ist zu Ende. Java springt zurück zur Bedingung.');
           }
-          a.schritt(2, (runde === 0 ? 'Java prüft die Bedingung: ' : 'Zurück in Zeile 2: ') + urteil(b + ' > 0', false) + '. ' + (runde === 0 ? 'Die Bedingung ist schon beim ersten Mal falsch. Der Block läuft nicht.' : 'Jetzt ist die Bedingung falsch. Die Schleife ist zu Ende.'));
-          a.aus('Pause').schritt(6, 'Java macht hinter dem Block weiter und gibt „Pause“ aus. Der Block ist ' + (runde === 1 ? 'einmal' : runde === 0 ? 'keinmal' : runde + '-mal') + ' gelaufen.', { skip: [3, 4] });
+          a.schritt(2, (runde === 0 ? 'Java prüft die Bedingung: ' : 'Zurück in Zeile 2: ') + urteil(n + ' > 0', false) + '. ' + (runde === 0 ? 'Die Bedingung ist schon beim ersten Mal falsch. Der Block läuft nicht.' : 'Jetzt ist die Bedingung falsch. Die Schleife ist zu Ende.'));
+          a.aus('Playlist zu Ende').schritt(6, 'Java macht hinter dem Block weiter und gibt „Playlist zu Ende“ aus. Der Block ist ' + (runde === 1 ? 'einmal' : runde === 0 ? 'keinmal' : runde + '-mal') + ' gelaufen.', { skip: [3, 4] });
           return a.schritte;
         }
       },
 
       'lauf-und': {
-        eingabe: { art: 'zahl', label: 'Konzentration', start: 6, proben: [6, 20, 0], min: 0, max: 30 },
+        eingabe: { art: 'zahl', label: 'Akku in Prozent', start: 50, proben: [50, 100, 10], min: 0, max: 100 },
         code: UND,
         schritte: function (v) {
-          var a = Kurs.ablauf(), c = v, r = 0;
-          a.setze('concentration', c).schritt(1, 'Die Konzentration am Anfang ist ' + v + '.');
-          a.setze('rounds', 0).schritt(2, 'Der Zähler <code>rounds</code> beginnt bei 0. Noch ist kein Ballwechsel gespielt.');
+          var a = Kurs.ablauf(), b = v, n = 0;
+          a.setze('battery', b).schritt(1, 'Der Akku hat am Anfang ' + v + ' Prozent.');
+          a.setze('videos', 0).schritt(2, 'Der Zähler <code>videos</code> beginnt bei 0. Noch ist kein Video gelaufen.');
           for (;;) {
-            var links = c > 0, rechts = r < 3, erst = r === 0 ? 'Java prüft die Bedingung' : 'Zurück zur Bedingung';
+            var links = b >= 20, rechts = n < 3, erst = n === 0 ? 'Java prüft die Bedingung' : 'Zurück zur Bedingung';
             if (!links) {
-              a.schritt(3, erst + '. Links: ' + urteil(c + ' > 0', false) + '. Damit ist die ganze Bedingung falsch, rechts muss Java nicht mehr prüfen. Die Schleife ' + (r === 0 ? 'läuft gar nicht.' : 'ist zu Ende.'));
+              a.schritt(3, erst + '. Links: ' + urteil(b + ' >= 20', false) + '. Damit ist die ganze Bedingung falsch. Rechts prüft Java gar nicht mehr. Die Schleife ' + (n === 0 ? 'läuft gar nicht.' : 'ist zu Ende.'));
               break;
             }
             if (!rechts) {
-              a.schritt(3, erst + '. Links: ' + urteil(c + ' > 0', true) + '. Rechts: ' + urteil(r + ' < 3', false) + '. Eine Seite ist falsch, also ist die ganze Bedingung falsch. Die Schleife ist zu Ende.');
+              a.schritt(3, erst + '. Links: ' + urteil(b + ' >= 20', true) + '. Rechts: ' + urteil(n + ' < 3', false) + '. Eine Seite ist falsch, also ist die ganze Bedingung falsch. Die Schleife ist zu Ende.');
               break;
             }
-            a.schritt(3, erst + '. Links: ' + urteil(c + ' > 0', true) + '. Rechts: ' + urteil(r + ' < 3', true) + '. Beide sind wahr. Also läuft der Block.');
-            r++;
-            a.setze('rounds', r).schritt(4, '<code>rounds++</code> zählt 1 dazu: Das ist Ballwechsel ' + r + '.');
-            c -= 4;
-            a.setze('concentration', c).schritt(5, 'Der Ballwechsel kostet 4 Punkte: Die Konzentration ist jetzt ' + c + '.');
-            if (c <= 0) {
-              a.schritt(6, 'Das <code>if</code> im Block fragt: ' + urteil(c + ' <= 0', true) + '.');
-              a.aus('Runde ' + r + ': müde').schritt(7, 'Also läuft der Block des <code>if</code> und meldet: „Runde ' + r + ': müde“.');
+            a.schritt(3, erst + '. Links: ' + urteil(b + ' >= 20', true) + '. Rechts: ' + urteil(n + ' < 3', true) + '. Beide sind wahr. Also läuft der Block.');
+            n++;
+            a.setze('videos', n).schritt(4, '<code>videos++</code> zählt 1 dazu: Das ist Video ' + n + '.');
+            b -= 20;
+            a.setze('battery', b).schritt(5, 'Das Video kostet 20 Prozent: Der Akku hat jetzt ' + b + ' Prozent.');
+            if (b < 20) {
+              a.schritt(6, 'Das <code>if</code> im Block fragt: ' + urteil(b + ' < 20', true) + '.');
+              a.aus('Video ' + n + ': Akku fast leer').schritt(7, 'Also läuft der Block des <code>if</code> und meldet: „Video ' + n + ': Akku fast leer“.');
             } else {
-              a.schritt(6, 'Das <code>if</code> im Block fragt: ' + urteil(c + ' <= 0', false) + '. Java überspringt den <code>if</code>-Block. Damit endet dieser Durchlauf der Schleife.');
+              a.schritt(6, 'Das <code>if</code> im Block fragt: ' + urteil(b + ' < 20', false) + '. Java überspringt den <code>if</code>-Block. Damit endet dieser Durchlauf der Schleife.');
             }
           }
-          a.aus('Runden: ' + r).schritt(10, 'Java macht hinter der Schleife weiter und gibt die Zahl der Ballwechsel aus.', { skip: [4, 5, 6, 7] });
+          a.aus('Videos: ' + n).schritt(10, 'Java macht hinter der Schleife weiter und gibt die Zahl der Videos aus.', { skip: [4, 5, 6, 7] });
           return a.schritte;
         }
       },
 
-      'lauf-spiel': {
-        eingabe: { art: 'wahl', label: 'Konzentration am Anfang', werte: [{ text: 'Anna 4, Ben 4', wert: '4,4' }, { text: 'Anna 2, Ben 6', wert: '2,6' }, { text: 'Anna 6, Ben 2', wert: '6,2' }] },
+      'lauf-laden': {
+        eingabe: { art: 'zahl', label: 'Akku am Anfang in Prozent', start: 10, proben: [10, 60, 100], min: 0, max: 100 },
         nebeneinander: true,
-        dateien: function (v) { return [{ name: 'Main.java', code: spielMain(v) }, { name: 'Player.java', code: PLAYER }]; },
-        java: function (v) { return { dateien: { 'Main.java': spielMain(v).join('\n') + '\n', 'Player.java': PLAYER.join('\n') + '\n', 'PlayerStatus.java': STATUS }, main: 'Main' }; },
+        dateien: function (v) { return [{ name: 'Main.java', code: ladeMain(v) }, { name: 'Phone.java', code: PHONE }]; },
+        java: function (v) { return { dateien: { 'Main.java': ladeMain(v).join('\n') + '\n', 'Phone.java': PHONE.join('\n') + '\n' }, main: 'Main' }; },
         schritte: function (v) {
-          var w = v.split(','), conc = { 1: Number(w[0]), 2: Number(w[1]) }, st = { 1: READY, 2: READY }, NAME = { 1: 'Anna', 2: 'Ben' };
-          var a = Kurs.ablauf().datei('Main.java'), r = 0, gesprungen = false;
-          a.objekt('1', 'Player', [['name', '"Anna"'], ['concentration', conc[1]], ['status', READY]]).setze('anna', { ref: '1' })
-            .schritt(3, 'Das Objekt Anna entsteht mit ' + conc[1] + ' Punkten Konzentration. Der Status ist am Anfang READY (Zeile 4 in <code>Player.java</code>).');
-          a.objekt('2', 'Player', [['name', '"Ben"'], ['concentration', conc[2]], ['status', READY]]).setze('ben', { ref: '2' })
-            .schritt(4, 'Das Objekt Ben entsteht mit ' + conc[2] + ' Punkten.');
-          a.setze('rounds', 0).schritt(5, 'Der Zähler <code>rounds</code> beginnt bei 0.');
-          function verliert(id, zeile) {
-            conc[id] -= 2;
-            var muede = conc[id] <= 0, name = NAME[id];
-            if (!gesprungen || muede) {
-              a.bereich('loseConcentration(2)', 'Player.java').setze('this', { ref: id }).setze('amount', 2)
-                .schritt(15, 'Java springt in die Methode <code>loseConcentration</code> von ' + name + ' (Karte ' + (id === '1' ? '①' : '②') + '). Zeile ' + zeile + ' in <code>Main.java</code> wartet.');
-              a.attr(id, 'concentration', conc[id]).schritt(16, name + ' verliert 2 Punkte. Die Konzentration ist jetzt ' + conc[id] + '.');
-              a.schritt(17, 'Die Methode prüft: ' + urteil(conc[id] + ' <= 0', muede) + '.');
-              if (muede) { st[id] = TIRED; a.attr(id, 'status', TIRED).schritt(18, name + ' ist müde. Der Status auf der Karte wird TIRED.'); }
-              a.verlasse().schritt(zeile, 'Die Methode ist fertig. Java springt zurück in Zeile ' + zeile + ' von <code>Main.java</code>.');
+          var a = Kurs.ablauf().datei('Main.java'), b = v, r = 0, gesprungen = false;
+          a.objekt('1', 'Phone', [['battery', b]]).setze('phone', { ref: '1' })
+            .schritt(3, 'Ein Handy entsteht. Der Konstruktor speichert ' + b + ' im Attribut <code>battery</code>, wie in Kapitel 4. Der Ablauf überspringt den Sprung in den Konstruktor.');
+          a.setze('rounds', 0).schritt(4, 'Der Zähler <code>rounds</code> beginnt bei 0.');
+          for (;;) {
+            var t = r === 0 ? 'Java prüft die Bedingung. ' : 'Zurück zur Bedingung. ';
+            var frage = '<code>phone.getBattery()</code> fragt das Handy nach seinem Akkustand: ' + b + '. ';
+            if (!(b < 100)) { a.schritt(5, t + frage + 'Links: ' + urteil(b + ' < 100', false) + '. Damit ist die ganze Bedingung falsch. Die Schleife ' + (r === 0 ? 'läuft gar nicht.' : 'ist zu Ende.')); break; }
+            if (!(r < 3)) { a.schritt(5, t + frage + 'Links: ' + urteil(b + ' < 100', true) + '. Rechts: ' + urteil(r + ' < 3', false) + '. Die ganze Bedingung ist falsch. Die Schleife ist zu Ende.'); break; }
+            a.schritt(5, t + frage + 'Links: ' + urteil(b + ' < 100', true) + '. Rechts: ' + urteil(r + ' < 3', true) + '. Beide sind wahr. Also läuft der Block.');
+            r++;
+            a.setze('rounds', r).schritt(6, '<code>rounds++</code>: Runde ' + r + '.');
+            var voll = b + 25 > 100, alt = b;
+            b = Math.min(100, b + 25);
+            if (!gesprungen || voll) {
+              a.bereich('charge()', 'Phone.java').setze('this', { ref: '1' })
+                .schritt(12, 'Java springt in die Methode <code>charge</code> des Handys (Karte ①). Zeile 7 in <code>Main.java</code> wartet.');
+              a.attr('1', 'battery', alt + 25).schritt(13, 'Der Akku bekommt 25 Prozent dazu: ' + alt + ' + 25 = ' + (alt + 25) + '.');
+              a.schritt(14, 'Die Methode prüft: ' + urteil((alt + 25) + ' > 100', voll) + '.');
+              if (voll) a.attr('1', 'battery', 100).schritt(15, 'Mehr als 100 Prozent gibt es nicht. Die Methode setzt den Akku auf 100.');
+              a.verlasse().schritt(7, 'Die Methode ist fertig. Java springt zurück in Zeile 7 von <code>Main.java</code>.');
               gesprungen = true;
             } else {
-              a.attr(id, 'concentration', conc[id]).schritt(zeile, name + ' verliert 2 Punkte und hat jetzt ' + conc[id] + '. Die Methode läuft genauso wie beim ersten Mal. Der Ablauf zeigt den Sprung hinein nur, wenn sich der Status ändert.');
+              a.attr('1', 'battery', b).schritt(7, '<code>charge</code> lädt wieder 25 Prozent: Der Akku hat jetzt ' + b + ' Prozent. Die Methode läuft genauso wie beim ersten Mal. Der Ablauf zeigt den Sprung in die Methode nur, wenn der Akku über 100 käme.');
             }
+            a.aus(b + ' %').schritt(8, 'Java fragt das Handy noch einmal nach dem Akkustand und gibt „' + b + ' %“ aus.');
           }
-          for (;;) {
-            var aBereit = st[1] === READY, bBereit = st[2] === READY;
-            var t = r === 0 ? 'Java prüft die Bedingung. ' : 'Zurück zur Bedingung. ';
-            if (!aBereit) { a.schritt(6, t + 'Links: Annas Status ist TIRED, also ist <code>anna.getStatus() == PlayerStatus.READY</code> <span class="urteil falsch">falsch</span>. Damit ist die ganze Bedingung falsch. Die Schleife ist zu Ende.'); break; }
-            if (!bBereit) { a.schritt(6, t + 'Links: Anna ist READY, das ist <span class="urteil wahr">wahr</span>. Rechts: Bens Status ist TIRED, also ist <code>ben.getStatus() == PlayerStatus.READY</code> <span class="urteil falsch">falsch</span>. Die ganze Bedingung ist falsch. Die Schleife ist zu Ende.'); break; }
-            a.schritt(6, t + 'Anna ist READY und Ben ist READY. Beide Vergleiche sind <span class="urteil wahr">wahr</span>, also läuft der Block.');
-            r++;
-            a.setze('rounds', r).schritt(7, '<code>rounds++</code>: Runde ' + r + '.');
-            a.aus('Ballwechsel ' + r).schritt(8, 'Java gibt „Ballwechsel ' + r + '“ aus.');
-            verliert('2', 9);
-            var benOk = st[2] === READY;
-            a.schritt(10, 'Das <code>if</code> fragt, ob Ben noch bereit ist: ' + (benOk ? 'Bens Status ist READY. Das ist <span class="urteil wahr">wahr</span>, also spielt Ben zurück.' : 'Bens Status ist TIRED. Das ist <span class="urteil falsch">falsch</span>. Ben kann nicht mehr zurückspielen. Java überspringt Zeile 11.'));
-            if (benOk) verliert('1', 11);
-          }
-          a.aus('Runden: ' + r).schritt(14, 'Java macht hinter der Schleife weiter und gibt die Zahl der Runden aus.', { skip: [7, 8, 9, 10, 11] });
-          a.aus('Anna: ' + st[1].replace('PlayerStatus.', '')).schritt(15, 'Java gibt Annas Status aus. Bei einem Enum-Wert schreibt <code>println</code> nur den Namen, also READY oder TIRED.', { skip: [7, 8, 9, 10, 11] });
-          a.aus('Ben: ' + st[2].replace('PlayerStatus.', '')).schritt(16, 'Java gibt Bens Status aus. ' + (st[1] === TIRED ? 'Anna ist zuerst müde geworden.' : 'Ben ist zuerst müde geworden.'), { skip: [7, 8, 9, 10, 11] });
+          a.aus('Runden: ' + r).schritt(10, 'Java macht hinter der Schleife weiter und gibt die Zahl der Runden aus. ' + (b === 100 ? 'Der Akku ist voll.' : 'Der Akku ist noch nicht voll, aber die Pause ist vorbei.'), { skip: [6, 7, 8] });
           return a.schritte;
         }
       }
     },
 
     fehler: [
-      { titel: 'Die Änderung im Block vergessen', code: ['int concentration = 10;', 'int rounds = 0;', 'while (concentration > 0) {', '    rounds++;', '}', 'return rounds;'], rot: [3],
+      { titel: 'Die Änderung im Block vergessen', code: ['int battery = 100;', 'int videos = 0;', 'while (battery >= 20) {', '    videos++;', '}', 'return videos;'], rot: [3],
         quelle: 'Test', meldung: 'Deine Schleife hört nicht auf. Ändert sich im Block etwas, das die Bedingung irgendwann falsch macht?',
-        text: '<p>Im Block ändert sich nur <code>rounds</code>. Die Bedingung fragt aber nach <code>concentration</code>, und die bleibt immer 10. Das ist eine Endlosschleife. Die Tests zu diesem Kapitel brechen nach 3 Sekunden ab und melden das. Behebung: Im Block muss sich die Variable ändern, nach der die Bedingung fragt, zum Beispiel <code>concentration -= 3;</code>.</p>' },
-      { titel: 'Ein Semikolon direkt hinter der Bedingung', code: ['while (balls > 0); {', '    System.out.println("Aufschlag " + balls);', '    balls -= 1;', '}'], rot: [1],
-        text: '<p>VS Code unterstreicht nichts. Das Semikolon beendet die Schleife sofort: Ihr Block ist leer. Java prüft also immer wieder <code>balls &gt; 0</code>, ohne dass sich etwas ändert. Das Programm hängt, ohne etwas auszugeben. Der Block in geschweiften Klammern gehört nicht mehr zur Schleife. Hinter die runde Klammer der Bedingung gehört kein Semikolon, wie bei <code>if</code> in Kapitel 7.</p>' },
-      { titel: 'Ein Durchlauf zu viel', code: ['int balls = 3;', 'while (balls >= 0) {', '    System.out.println("Aufschlag " + balls);', '    balls -= 1;', '}'], rot: [2],
-        text: '<p>Mit <code>&gt;=</code> läuft der Block auch noch bei 0. Die Ausgabe ist „Aufschlag 3“, „Aufschlag 2“, „Aufschlag 1“ und dann „Aufschlag 0“, obwohl kein Ball mehr da ist. Prüf an der Grenze: Soll der Block bei genau 0 noch laufen? Hier nicht, also <code>balls &gt; 0</code>.</p>' },
-      { titel: 'Oder statt und', code: ['while (anna.getStatus() == PlayerStatus.READY || ben.getStatus() == PlayerStatus.READY) {'], rot: [1],
-        text: '<p>Mit <code>||</code> (oder) läuft die Schleife weiter, solange <strong>einer</strong> der beiden bereit ist. Im Spiel oben wird Ben müde, Anna ist aber noch bereit. Also läuft die Schleife weiter. Ben spielt nicht mehr zurück, Anna verliert nichts mehr und bleibt für immer READY: eine Endlosschleife. „Solange beide …“ heißt <code>&amp;&amp;</code>.</p>' },
-      { titel: 'Die Bedingung ist von Anfang an falsch', code: ['int balls = 3;', 'while (balls < 0) {', '    System.out.println("Aufschlag " + balls);', '    balls -= 1;', '}'], rot: [2],
-        text: '<p>Das Vergleichszeichen zeigt in die falsche Richtung. 3 &lt; 0 ist falsch, also läuft der Block kein einziges Mal. Es kommt keine Fehlermeldung, nur keine Ausgabe. Lies die Bedingung laut: „Solange <code>balls</code> kleiner als 0 ist“ ergibt hier keinen Sinn.</p>' }
+        text: '<p>Im Block ändert sich nur <code>videos</code>. Die Bedingung fragt aber nach <code>battery</code>, und der Akku bleibt immer bei 100. Das ist eine Endlosschleife. Die Tests zu diesem Kapitel brechen nach 3 Sekunden ab und melden das. So behebst du den Fehler: Im Block muss sich die Variable ändern, nach der die Bedingung fragt, hier mit <code>battery -= 20;</code>.</p>' },
+      { titel: 'Ein Semikolon direkt hinter der Bedingung', code: ['while (videos > 0); {', '    System.out.println("Playlist: noch " + videos);', '    videos -= 1;', '}'], rot: [1],
+        text: '<p>VS Code unterstreicht nichts. Das Semikolon beendet die Schleife sofort: Ihr Block ist leer. Java prüft also immer wieder <code>videos &gt; 0</code>, ohne dass sich etwas ändert. Das Programm läuft endlos weiter und gibt nichts aus. Der Block in geschweiften Klammern gehört nicht mehr zur Schleife. Hinter die runde Klammer der Bedingung gehört kein Semikolon, wie bei <code>if</code> in Kapitel 7.</p>' },
+      { titel: 'Ein Durchlauf zu viel', code: ['int videos = 3;', 'while (videos >= 0) {', '    System.out.println("Playlist: noch " + videos);', '    videos -= 1;', '}'], rot: [2],
+        text: '<p>Mit <code>&gt;=</code> läuft der Block auch noch bei 0. Die Ausgabe zeigt „Playlist: noch 3“, „Playlist: noch 2“, „Playlist: noch 1“ und dann „Playlist: noch 0“, obwohl kein Video mehr da ist. Prüf die Grenze: Soll der Block bei genau 0 noch laufen? Hier nicht. Deshalb brauchst du <code>videos &gt; 0</code>.</p>' },
+      { titel: 'Oder statt und', code: ['while (phone.getBattery() < 100 || rounds < 3) {'], rot: [1],
+        text: '<p>Mit <code>||</code> (oder) läuft die Schleife weiter, solange <strong>eine</strong> der beiden Seiten wahr ist. Im Ladebeispiel oben gilt die Grenze von 3 Runden dann nicht mehr: Bei 10 Prozent lädt das Handy 4 Runden, bis es voll ist. Bei 60 Prozent ist es nach 2 Runden voll, lädt aber trotzdem eine dritte Runde. „Solange beides gilt“ heißt <code>&amp;&amp;</code>.</p>' },
+      { titel: 'Die Bedingung ist von Anfang an falsch', code: ['int videos = 3;', 'while (videos < 0) {', '    System.out.println("Playlist: noch " + videos);', '    videos -= 1;', '}'], rot: [2],
+        text: '<p>Das Vergleichszeichen zeigt in die falsche Richtung. 3 &lt; 0 ist falsch, also läuft der Block kein einziges Mal. Java zeigt keine Fehlermeldung, gibt aber nichts aus. Lies die Bedingung laut: „Solange <code>videos</code> kleiner als 0 ist“ ergibt hier keinen Sinn.</p>' }
     ],
 
     fragen: [
-      { art: 'wahl', frage: 'Wie oft gibt dieses Programm „Ball“ aus?',
-        code: ['int i = 0;', 'while (i < 3) {', '    System.out.println("Ball");', '    i += 1;', '}'],
+      { art: 'wahl', frage: 'Wie oft gibt dieses Programm „Video“ aus?',
+        code: ['int i = 0;', 'while (i < 3) {', '    System.out.println("Video");', '    i += 1;', '}'],
         optionen: [
           { t: '2-mal', warum: 'Geh die Durchläufe durch: i ist 0, 1 und 2. Bei allen drei Werten ist i < 3 wahr. Erst bei i = 3 ist die Bedingung falsch.' },
           { t: '3-mal', ok: true, warum: 'Richtig. Der Block läuft bei i = 0, 1 und 2. Danach ist i gleich 3, und 3 < 3 ist falsch.' },
           { t: '4-mal', warum: 'Bei i = 3 ist die Bedingung 3 < 3 schon falsch. Dann läuft der Block nicht mehr. Er läuft also nur bei 0, 1 und 2.' }
         ] },
       { art: 'zeile', frage: 'Diese Schleife hört nie auf. Klick auf die Zeile, die schuld ist.',
-        code: ['int balls = 3;', 'while (balls > 0) {', '    System.out.println("Aufschlag");', '    balls += 1;', '}'],
+        code: ['int videos = 3;', 'while (videos > 0) {', '    System.out.println("Playlist: noch " + videos);', '    videos += 1;', '}'],
         ok: 4,
-        richtig: 'Richtig. <code>balls += 1</code> zählt hoch statt herunter. <code>balls</code> wird immer größer, die Bedingung <code>balls &gt; 0</code> bleibt immer wahr. Richtig ist <code>balls -= 1;</code>.',
-        falsch: 'Diese Zeile ist in Ordnung. Frag dich: Was ändert sich in jedem Durchlauf an <code>balls</code>? Wird <code>balls &gt; 0</code> dadurch irgendwann falsch?',
-        warum: { 2: 'Die Bedingung selbst ist sinnvoll: Solange Bälle da sind, schlag auf. Das Problem ist, wie sich <code>balls</code> im Block ändert.' } },
-      { art: 'luecke', frage: 'Die Schleife soll laufen, solange beide Spieler bereit sind. Welches Zeichen fehlt? (Eine lange Bedingung darf über zwei Zeilen gehen.)',
-        code: ['while (anna.getStatus() == PlayerStatus.READY', '        ___ ben.getStatus() == PlayerStatus.READY) {'], ok: ['&&'], proben: ['||', '&', '&&'],
-        falschBei: { '||': '<code>||</code> heißt „oder“. Dann liefe die Schleife weiter, solange einer der beiden bereit ist. Gesucht ist „und“.', '&': 'Fast. In Java schreibst du „und“ in einer Bedingung mit zwei Zeichen.' },
+        richtig: 'Richtig. <code>videos += 1</code> zählt hoch statt herunter. <code>videos</code> wird immer größer. Die Bedingung <code>videos &gt; 0</code> bleibt immer wahr. Richtig ist <code>videos -= 1;</code>.',
+        falsch: 'Diese Zeile ist in Ordnung. Frag dich: Was ändert sich in jedem Durchlauf an <code>videos</code>? Wird <code>videos &gt; 0</code> dadurch irgendwann falsch?',
+        warum: { 2: 'Die Bedingung selbst ist sinnvoll: Solange Videos da sind, spiel das nächste. Das Problem ist, wie sich <code>videos</code> im Block ändert.' } },
+      { art: 'luecke', frage: 'Die Schleife soll laufen, solange der Akku unter 100 Prozent ist und weniger als 3 Runden vorbei sind. Welches Zeichen fehlt?',
+        code: ['while (phone.getBattery() < 100 ___ rounds < 3) {'], ok: ['&&'], proben: ['||', '&', '&&'],
+        falschBei: { '||': '<code>||</code> heißt „oder“. Dann läuft die Schleife weiter, solange eine der beiden Seiten wahr ist. Gesucht ist „und“.', '&': 'Fast. In Java schreibst du „und“ in einer Bedingung mit zwei Zeichen.' },
         richtig: 'Stimmt. <code>&amp;&amp;</code> heißt „und“: Beide Vergleiche müssen wahr sein.',
         falsch: 'Das passt noch nicht. Gesucht ist das Zeichen für „und“ aus Kapitel 7.' },
-      { art: 'wahl', frage: 'Im Spiel von oben fehlt jetzt das if. Anna und Ben starten mit je 4 Punkten. Welchen Status hat Anna am Ende?',
-        code: ['while (anna.getStatus() == PlayerStatus.READY && ben.getStatus() == PlayerStatus.READY) {', '    ben.loseConcentration(2);', '    anna.loseConcentration(2);', '}'],
+      { art: 'wahl', frage: 'Ein Video startet nur, wenn der Akku mindestens 20 Prozent hat. Was gibt dieses Programm aus?',
+        code: ['int battery = 70;', 'int videos = 0;', 'while (battery >= 20) {', '    battery -= 20;', '    videos++;', '}', 'System.out.println(videos);'],
         optionen: [
-          { t: 'READY', warum: 'Geh die Runden durch. Runde 1: Ben 2, Anna 2. Runde 2: Ben 0, also TIRED. Ohne <code>if</code> läuft Zeile 3 trotzdem: Anna 0, also auch TIRED.' },
-          { t: 'TIRED', ok: true, warum: 'Richtig. In Runde 2 wird Ben müde. Ohne <code>if</code> spielt er trotzdem zurück, und Anna verliert ihre letzten 2 Punkte. Mit dem <code>if</code> bliebe Anna READY.' }
+          { t: '2', warum: 'Geh die Durchläufe durch. Vor dem dritten Durchlauf hat der Akku noch 30 Prozent, und 30 >= 20 ist wahr. Also läuft auch ein drittes Video.' },
+          { t: '3', ok: true, warum: 'Richtig. Die Bedingung ist bei 70, 50 und 30 wahr. Danach hat der Akku 10 Prozent, und 10 >= 20 ist falsch.' },
+          { t: '4', warum: 'Nach drei Videos hat der Akku 10 Prozent. 10 >= 20 ist falsch, also startet kein viertes Video.' }
         ] },
-      { art: 'reihenfolge', frage: 'Bring die Zeilen in die richtige Reihenfolge. Die Ausgabe soll „Aufschlag 3“, „Aufschlag 2“, „Aufschlag 1“ und danach „Pause“ sein.',
-        zeilen: ['int balls = 3;', 'while (balls > 0) {', '    System.out.println("Aufschlag " + balls);', '    balls -= 1;', '}', 'System.out.println("Pause");'],
+      { art: 'reihenfolge', frage: 'Bring die Zeilen in die richtige Reihenfolge. Die Ausgabe soll „Playlist: noch 3“, „Playlist: noch 2“, „Playlist: noch 1“ und danach „Playlist zu Ende“ sein.',
+        zeilen: ['int videos = 3;', 'while (videos > 0) {', '    System.out.println("Playlist: noch " + videos);', '    videos -= 1;', '}', 'System.out.println("Playlist zu Ende");'],
         richtig: 'Richtig. Erst die Variable anlegen, dann die Schleife mit Ausgabe und Änderung im Block, danach die Zeile hinter der Schleife.',
-        falsch: 'Die rot markierten Zeilen stehen noch am falschen Platz. Die Variable braucht ihren Wert vor der Bedingung. Ausgabe und Änderung gehören in den Block, und zwar erst die Ausgabe: Sonst käme zuerst „Aufschlag 2“. „Pause“ kommt nur einmal, also hinter die Schleife.' }
+        falsch: 'Die rot markierten Zeilen stehen noch am falschen Platz. Die Variable braucht ihren Wert vor der Bedingung. Ausgabe und Änderung gehören in den Block, und zwar erst die Ausgabe. Sonst erscheint zuerst „Playlist: noch 2“. „Playlist zu Ende“ kommt nur einmal, also hinter die Schleife.' }
     ],
 
     aufgaben: [
-      { titel: 'Aufgabe 1: Ballwechsel zählen', datei: 'Training.java, Methode countRounds', befehl: './gradlew test --tests "*k09.TrainingTest"',
-        text: '<p>Die Methode bekommt die Konzentration am Anfang im Parameter <code>concentration</code>. Jeder Ballwechsel kostet 3 Punkte. Solange die Konzentration größer als 0 ist, gibt es einen weiteren Ballwechsel. Die Methode gibt zurück, wie viele Ballwechsel es waren.</p><p>Beispiel: Bei 10 gibt es 4 Ballwechsel (10, 7, 4, 1 sind größer als 0, danach ist sie -2). Bei 0 gibt es keinen.</p><p>Die Zeile <code>public static int countRounds(int concentration) {</code> bleibt unverändert. Die Zeile <code>return 0;</code> darfst du ersetzen.</p>',
-        tipps: ['Du brauchst einen Zähler: <code>int rounds = 0;</code> vor der Schleife und <code>return rounds;</code> am Ende.', 'Im Block stehen zwei Zeilen: <code>concentration -= 3;</code> und <code>rounds++;</code>. Die Bedingung heißt <code>concentration &gt; 0</code>.'],
-        loesung: ['public static int countRounds(int concentration) {', '    int rounds = 0;', '    while (concentration > 0) {', '        concentration -= 3;', '        rounds++;', '    }', '    return rounds;', '}'] },
-      { titel: 'Aufgabe 2: Aufwärmen', datei: 'Training.java, Methode warmUp', befehl: './gradlew test --tests "*k09.WarmUpTest"',
-        text: '<p>Die Methode bekommt einen Spieler (ein Objekt der Klasse <code>Player</code>). Er wärmt sich mit höchstens 5 Bällen auf. Solange er <code>READY</code> ist <strong>und</strong> weniger als 5 Bälle gespielt hat:</p><ol><li>einen Ball zählen,</li><li><code>player.loseConcentration(2)</code> aufrufen,</li><li>wenn der Spieler danach <code>TIRED</code> ist: <code>NAME ist müde</code> ausgeben. Für NAME setzt du den Namen des Spielers ein (<code>player.getName()</code>).</li></ol><p>Die Methode gibt die Zahl der gespielten Bälle zurück. Die Zeile <code>public static int warmUp(Player player) {</code> bleibt unverändert.</p>',
-        tipps: ['Die Bedingung hat zwei Teile, verbunden mit <code>&amp;&amp;</code>: <code>player.getStatus() == PlayerStatus.READY</code> und <code>balls &lt; 5</code>. Leg <code>int balls = 0;</code> vor der Schleife an.', 'Das <code>if</code> steht im Block der Schleife, nach <code>player.loseConcentration(2);</code>. Es fragt <code>player.getStatus() == PlayerStatus.TIRED</code>. Die Ausgabe ist <code>System.out.println(player.getName() + " ist müde");</code>'],
-        loesung: ['public static int warmUp(Player player) {', '    int balls = 0;', '    while (player.getStatus() == PlayerStatus.READY && balls < 5) {', '        balls++;', '        player.loseConcentration(2);', '        if (player.getStatus() == PlayerStatus.TIRED) {', '            System.out.println(player.getName() + " ist müde");', '        }', '    }', '    return balls;', '}'] },
-      { titel: 'Aufgabe 3: Ein Spiel bis zur Müdigkeit', datei: 'Match.java, Methode play', befehl: './gradlew test --tests "*k09.MatchTest"',
-        text: '<p>Diese Aufgabe ist so aufgebaut wie eine typische Aufgabe in der Präsenzübung. Die Methode bekommt zwei Spieler <code>a</code> und <code>b</code>. Die Methode <code>hit</code> der Klasse <code>Player</code> ist schon fertig: <code>a.hit(b)</code> spielt einen Ball von a zu b. Das kostet b Konzentration, und die Methode gibt einen Satz wie <code>Lea spielt zu Jonas</code> zurück.</p><p>Schreib eine <code>while</code>-Schleife: Solange <strong>beide</strong> Spieler <code>READY</code> sind,</p><ol><li>zählst du eine Runde,</li><li>spielt a zu b, und du gibst den Satz von <code>a.hit(b)</code> aus,</li><li>wenn b danach noch <code>READY</code> ist, spielt b zu a, und du gibst den Satz von <code>b.hit(a)</code> aus.</li></ol><p>Nach der Schleife gibst du den Endstatus beider Spieler aus, erst a, dann b, je in einer Zeile wie <code>Lea: READY</code>. Die Methode gibt die Zahl der Runden zurück. Die Zeile <code>public static int play(Player a, Player b) {</code> bleibt unverändert.</p>',
-        tipps: ['Ausgeben und aufrufen geht in einer Zeile: <code>System.out.println(a.hit(b));</code> Java ruft zuerst <code>hit</code> auf und gibt dann den zurückgegebenen Satz aus.', 'Der Aufbau ist derselbe wie im Spiel von Anna und Ben oben: Bedingung mit zwei Status-Vergleichen und <code>&amp;&amp;</code>, im Block ein <code>if</code> mit <code>b.getStatus() == PlayerStatus.READY</code>. Der Endstatus: <code>System.out.println(a.getName() + ": " + a.getStatus());</code>'],
-        loesung: ['public static int play(Player a, Player b) {', '    int rounds = 0;', '    while (a.getStatus() == PlayerStatus.READY && b.getStatus() == PlayerStatus.READY) {', '        rounds++;', '        System.out.println(a.hit(b));', '        if (b.getStatus() == PlayerStatus.READY) {', '            System.out.println(b.hit(a));', '        }', '    }', '    System.out.println(a.getName() + ": " + a.getStatus());', '    System.out.println(b.getName() + ": " + b.getStatus());', '    return rounds;', '}'] }
+      { titel: 'Aufgabe 1: Wie lange lädt das Handy?', datei: 'Charger.java, Methode quarterHours', befehl: './gradlew test --tests "*k09.ChargerTest"',
+        text: '<p>Die Methode bekommt den Akkustand am Anfang in Prozent im Parameter <code>battery</code>. Das Ladegerät in dieser Aufgabe ist langsamer als die Methode <code>charge</code> im Beispiel oben: Es lädt in jeder Viertelstunde nur 20 Prozent dazu. Solange der Akku unter 100 Prozent ist, lädt es eine weitere Viertelstunde. Die Methode gibt zurück, wie viele Viertelstunden es waren.</p><p>Beispiel: Bei 40 sind es 3 Viertelstunden (40, 60 und 80 sind unter 100, danach sind es genau 100). Bei 100 sind es 0 Viertelstunden.</p><p>Die Zeile <code>public static int quarterHours(int battery) {</code> bleibt unverändert. Die Zeile <code>return 0;</code> darfst du ersetzen.</p>',
+        tipps: ['Du brauchst einen Zähler: <code>int quarters = 0;</code> vor der Schleife und <code>return quarters;</code> am Ende.', 'Im Block stehen zwei Zeilen: <code>battery += 20;</code> und <code>quarters++;</code>. Die Bedingung heißt <code>battery &lt; 100</code>.'],
+        loesung: ['public static int quarterHours(int battery) {', '    int quarters = 0;', '    while (battery < 100) {', '        battery += 20;', '        quarters++;', '    }', '    return quarters;', '}'] },
+      { titel: 'Aufgabe 2: Videos im Bus', datei: 'BusRide.java, Methode watchVideos', befehl: './gradlew test --tests "*k09.BusRideTest"',
+        text: '<p>Die Methode bekommt ein Handy (ein Objekt der Klasse <code>Phone</code>) und den Parameter <code>maxVideos</code>. Er gibt an, wie viele Videos die Busfahrt höchstens dauert. Die Methode <code>playVideo</code> des Handys ist schon fertig. Ein Video kostet 20 Prozent Akku.</p><p>Ein neues Video startet nur, solange der Akku <strong>mindestens 20 Prozent</strong> hat <strong>und</strong> weniger als <code>maxVideos</code> Videos gelaufen sind. Für jedes Video rufst du <code>phone.playVideo()</code> auf und zählst mit. Die Methode gibt zurück, wie viele Videos gelaufen sind.</p><p>Die Zeile <code>public static int watchVideos(Phone phone, int maxVideos) {</code> bleibt unverändert.</p>',
+        tipps: ['Leg <code>int videos = 0;</code> vor der Schleife an. Die Bedingung hat zwei Teile, verbunden mit <code>&amp;&amp;</code>: <code>phone.getBattery() &gt;= 20</code> und <code>videos &lt; maxVideos</code>.', 'Im Block stehen <code>phone.playVideo();</code> und <code>videos++;</code>. Den Akkustand fragst du jedes Mal neu mit <code>phone.getBattery()</code> ab. Eine eigene Variable für den Akku brauchst du nicht.'],
+        loesung: ['public static int watchVideos(Phone phone, int maxVideos) {', '    int videos = 0;', '    while (phone.getBattery() >= 20 && videos < maxVideos) {', '        phone.playVideo();', '        videos++;', '    }', '    return videos;', '}'] },
+      { titel: 'Aufgabe 3: Wie viele Videos schafft der Akku?', datei: 'Streaming.java, Methode countVideos', befehl: './gradlew test --tests "*k09.StreamingTest"',
+        text: '<p>Diese Aufgabe verbindet die Schleife mit einem <code>switch</code> aus Kapitel 8. Die Methode bekommt den Akkustand in Prozent (<code>battery</code>) und die Bildqualität (<code>quality</code>, ein Wert aus dem Enum <code>Quality</code>). Je besser das Bild, desto mehr Akku kostet ein Video:</p><table><tr><th>Qualität</th><th>Akku je Video in Prozent</th></tr><tr><td><code>LOW</code></td><td>5</td></tr><tr><td><code>MEDIUM</code></td><td>10</td></tr><tr><td><code>HIGH</code></td><td>20</td></tr></table><p>Ein Video startet nur, wenn der Akku für das ganze Video reicht. Die Methode gibt zurück, wie viele Videos nacheinander laufen. Beispiel: Bei 50 Prozent und <code>HIGH</code> sind es 2 Videos (50 und 30 reichen, 10 nicht mehr).</p><p>Die Zeile <code>public static int countVideos(int battery, Quality quality) {</code> bleibt unverändert.</p>',
+        tipps: ['Erst kommt der <code>switch</code>, dann die Schleife. Leg vor dem <code>switch</code> <code>int cost = 0;</code> an und setze in jedem Fall den Wert aus der Tabelle. Jeden Fall schließt du mit <code>break;</code> ab. Vergisst du einen Fall, bleibt <code>cost</code> bei 0. Dann wird der Akku nie kleiner, und die Schleife hört nicht auf.', 'Die Schleife heißt <code>while (battery &gt;= cost)</code>. Im Block ziehst du <code>cost</code> vom Akku ab und zählst <code>videos</code> mit <code>videos++</code> hoch. Am Ende steht <code>return videos;</code>.'],
+        loesung: ['public static int countVideos(int battery, Quality quality) {', '    int cost = 0;', '    switch (quality) {', '        case LOW:', '            cost = 5;', '            break;', '        case MEDIUM:', '            cost = 10;', '            break;', '        case HIGH:', '            cost = 20;', '            break;', '    }', '    int videos = 0;', '    while (battery >= cost) {', '        battery -= cost;', '        videos++;', '    }', '    return videos;', '}'] }
     ]
   });
 })();

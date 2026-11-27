@@ -28,15 +28,21 @@ public class Bike {
     }
 
     /**
-     * Das Rad fährt: Der Akku sinkt um 1 Prozent pro Minute.
+     * Die Reichweite: wie viele ganze Kilometer das Rad mit seinem Akku noch fährt.
+     * Für einen Kilometer braucht es 2 Prozent Akku. Bleibt beim Teilen ein Rest, wird abgerundet.
      *
-     * @param minutes wie lange gefahren wird
+     * @return die Reichweite in Kilometern
      */
-    public void drive(final int minutes) {
-        battery = battery - minutes;
+    public int getRange() {
+        return battery / 2;
     }
 
-    public String getInfo() {
-        return "Rad " + number + ", Akku " + battery + " Prozent";
+    /**
+     * Lädt den Akku auf.
+     *
+     * @param percent um wie viel Prozent der Akkustand steigt
+     */
+    public void charge(final int percent) {
+        battery = battery + percent;
     }
 }
